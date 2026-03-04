@@ -1,37 +1,37 @@
 <template>
   <div class="index-container">
     <div class="nav-container">
-
-
       <Navbar />
     </div>
     <div class="carousel-container">
       <IndexSwiper ref="treatSwiperRef" :swiperData="swiperData" :activeIndex="testIndex" />
     </div>
 
-    <!-- <div class="main-business">
-         <MainBusiness />
-       </div> -->
+    <div class="main-product">
+      <MainProduct :productData="productData" />
+    </div>
 
-    <!-- <div class="main-product">
-         <MainProduct />
-       </div> -->
+    <div class="main-select">
+      <MainSelect :selectContentItems="selectContentItems" />
+    </div>
 
-    <!-- <div class="main-demo">
-         <Demo />
-       </div> -->
 
-    <!-- <div class="about">
-         <About />
-       </div> -->
-    <!-- 
-       <div class="news">
-         <News />
-       </div> -->
-    <!-- 
-       <div class="footer-one">
-         <FooterOne />
-       </div> -->
+
+    <div class="main-top">
+      <MainTop :topData="topData" />
+    </div>
+
+
+    <div class="news">
+      <News :newsContentItems="newsContentItems" />
+    </div>
+
+
+
+
+    <div class="footer-one">
+      <FooterOne />
+    </div>
 
     <!-- <div class="footer-two">
          <FooterTwo />
@@ -50,24 +50,167 @@
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
 import Navbar from "@/components/Navbar.vue";
 import IndexSwiper from "@/components/IndexSwiper.vue";
-// import MainBusiness from "@/components/MainBusiness.vue";
-// import MainProduct from "@/components/MainProduct.vue";
-// import Demo from "@/components/Demo.vue";
-// import About from "@/components/About.vue";
-// import News from "@/components/News.vue";
-// import FooterOne from "@/components/FooterOne.vue";
+import MainProduct from "@/components/MainProduct.vue";
+import MainSelect from "@/components/MainSelect.vue";
+import MainTop from "@/components/MainTop.vue";
+import News from "@/components/News.vue";
+
+
+
+import FooterOne from "@/components/FooterOne.vue";
 // import FooterTwo from "@/components/FooterTwo.vue";
 
-const router = useRouter();
+
 
 // 轮播数据
 
 const swiperData = ref([
-  { id: 1, url: "/images/big.png" },
-  { id: 2, url: "/images/big.png" },
-  { id: 3, url: "/images/big.png" },
+  { id: 3, url: "/images/swiper/v3.png" },
+  { id: 1, url: "/images/swiper/v1.png" },
+  { id: 2, url: "/images/swiper/v2.png" },
 ]);
 const testIndex = ref(-1);
+
+
+// 产品中心
+const productData = ref([
+  { id: 1, type: 'SCARA系列', name: "IER50-1200-SR", img: '/images/product/1.png' },
+  { id: 2, type: 'SCARA系列', name: "iER20-1000-SR-UNO", img: '/images/product/1.png' },
+  { id: 3, type: 'SCARA系列', name: "iER20-1000-SR-HI", img: '/images/product/2.png' },
+  { id: 4, type: '中小负载系列', name: "iER70-2100", img: '/images/product/3.png' },
+  { id: 5, type: '中小负载系列', name: "iER50-2700", img: '/images/product/3.png' },
+  { id: 6, type: '中小负载系列', name: "iER50-2100", img: '/images/product/3.png' },
+]);
+
+//共同选择
+const selectContentItems = ref([
+  {
+    id: 1,
+    name: "",
+    text: "",
+    pic: "/images/select/s1.png",
+  },
+  {
+    id: 2,
+    name: "光伏行业",
+    text: "锂电行业",
+    pic: "/images/select/s2.png",
+  },
+  {
+    id: 3,
+    name: "",
+    text: "",
+    pic: "/images/select/s3.png",
+  },
+
+
+]);
+
+//行业top
+const topData = ref([
+  [{
+    id: 1,
+    img: "/images/top/t1.png",
+  },
+  {
+    id: 2,
+    img: "/images/top/t2.png",
+  },
+  {
+    id: 3,
+    img: "/images/top/t3.png",
+  },
+  {
+    id: 4,
+    img: "/images/top/t4.png",
+  },
+
+  {
+    id: 5,
+    img: "/images/top/t5.png",
+  },
+  {
+    id: 6,
+    img: "/images/top/t6.png",
+  }],
+  [{
+    id: 7,
+    img: "/images/top/t7.png",
+  },
+  {
+    id: 8,
+    img: "/images/top/t8.png",
+  },
+  {
+    id: 9,
+    img: "/images/top/t9.png",
+  },
+  {
+    id: 10,
+    img: "/images/top/t10.png",
+  },
+  {
+    id: 11,
+    img: "/images/top/t11.png",
+  },
+  {
+    id: 12,
+    img: "/images/top/t12.png",
+  }],
+  [{
+    id: 13,
+    img: "/images/top/t13.png",
+  },
+  {
+    id: 14,
+    img: "/images/top/t14.png",
+  },
+  {
+    id: 15,
+    img: "/images/top/t15.png",
+  },
+  {
+    id: 16,
+    img: "/images/top/t16.png",
+  },
+  {
+    id: 17,
+    img: "/images/top/t17.png",
+  },
+  {
+    id: 18,
+    img: "/images/top/t18.png",
+  }]
+])
+
+//新闻
+const newsContentItems = ref([
+  {
+    id: 1,
+    title: " 阜瑞快讯|埃斯顿机器人全国联保网络正式启动，华北授权网点高效服务保驾护航！",
+    name:
+      "华北区域唯一授权联保网点烟台阜瑞智能装备有限公司|以山东为枢纽，辐射京津冀、晋蒙及东三省。阜瑞智能作为深耕工业机器人研发与高端系统集成的高新技术企业汇聚了来自机械制造、数控技术、运动伺服控制及自动化领域的顶尖技术团队，具备行业领先的自主研发能力和深度定制的行业解决方案设计实力，致力于为客户解决各类自动化应用技术难题。2025年战略升级后，其推出“安心+高效”双保险服务——30分钟极速响应、全...",
+    pic: "/images/news/n1.png",
+    date: "2025-12-06"
+  },
+  {
+    id: 2,
+    title: " 阜瑞快讯 | 埃斯顿授权阜瑞智能为华北区域指定联保网点",
+    name:
+      "华北区域唯一授权联保网点烟台阜瑞智能装备有限公司|以山东为枢纽，辐射京津冀、晋蒙及东三省。阜瑞智能作为深耕工业机器人研发与高端系统集成的高新技术企业汇聚了来自机械制造、数控技术、运动伺服控制及自动化领域的顶尖技术团队，具备行业领先的自主研发能力和深度定制的行业解决方案设计实力，致力于为客户解决各类自动化应用技术难题。2025年战略升级后，其推出“安心+高效”双保险服务——30分钟极速响应、全...",
+    pic: "/images/news/n1.png",
+    date: "2025-12-06"
+  },
+  {
+    id: 3,
+    title: " 方案速递|储能柜门板打磨解决方案",
+    name:
+      "针对储能柜门板的打磨方案，通过“机器人+智能感知+工艺集成”的模式，解决了传统人工打磨效率低、质量不稳定的痛点，同时兼顾了灵活性与可靠性，是新能源储能装备制造领域升级的关键赋能技术。未来，随着储能柜向大型化、轻量化发展，该方案还可进一步融合AI自主学习，实现更智能的“无人化”打磨。一、打磨前VS打磨后二、打磨工艺要求01精度控制力控精度：实时感知并精准调节打磨压力，确保不过切或欠切。平面度要...",
+    pic: "/images/news/n1.png",
+    date: "2025-12-06"
+  },
+]);
+
 
 // 回到顶部按钮
 const isShowBackTop = ref(false);
@@ -136,37 +279,33 @@ onUnmounted(() => {
     height: 75vh;
     width: 100%;
     // border: 1px solid red;
-    margin-top: 2vh;
-  }
-
-  .main-business {
-    width: 65%;
-    margin: 2vh 0;
+    box-sizing: border-box;
   }
 
   .main-product {
-    width: 65%;
-    margin: 2vh 0;
-  }
-
-  .main-demo {
-    width: 70%;
-    margin: 2vh 0;
-  }
-
-  .about {
     width: 100%;
-    margin: 2vh 0;
+    height: 85vh;
+  }
+
+  .main-select {
+    width: 100%;
+    height: 70vh;
+  }
+
+
+
+  .main-top {
+    width: 100%;
+    height: 65vh;
+    // background-color: red;
   }
 
   .news {
-    width: 70%;
-    margin: 2vh 0;
+    width: 100%;
   }
 
   .footer-one {
     width: 100%;
-    margin-top: 6vh;
   }
 
   .footer-two {
@@ -191,7 +330,7 @@ onUnmounted(() => {
   right: 0;
   width: 100%;
   height: 100%;
-  background: #3498db;
+  background: #2E9DA4;
   color: white;
   // border-radius: 50%;
   border-radius: 12px;
@@ -218,7 +357,7 @@ onUnmounted(() => {
 
 .back-to-top:hover {
   // transform: translateY(0) scale(1.1) !important;
-  background: #0d63a0;
+  background: #0e777f;
   // box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
 }

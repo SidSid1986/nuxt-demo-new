@@ -1,30 +1,10 @@
 <template>
   <div class="swiper-main">
-    <swiper
-      class="home-swiper"
-      :modules="modules"
-      direction="horizontal"
-      :slides-per-view="1"
-      :slides-per-group="1"
-      :initial-slide="0"
-      :loop="true"
-      :autoplay="autoplayOptions"
-      :speed="800"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-      :init="treatData.length > 0"
-    >
-      <swiper-slide
-        class="page-slide"
-        v-for="(pageData, pageIndex) in treatData"
-        :key="`page-${pageIndex}`"
-      >
-        <img
-          :src="pageData.url"
-          alt="轮播图"
-          loading="lazy"
-          @error="handleImgError(pageData)"
-        />
+    <swiper class="home-swiper" :modules="modules" direction="horizontal" :slides-per-view="1" :slides-per-group="1"
+      :initial-slide="0" :loop="true" :autoplay="autoplayOptions" :speed="800" @swiper="onSwiper"
+      @slideChange="onSlideChange" :init="treatData.length > 0">
+      <swiper-slide class="page-slide" v-for="(pageData, pageIndex) in treatData" :key="`page-${pageIndex}`">
+        <img :src="pageData.url" alt="轮播图" loading="lazy" @error="handleImgError(pageData)" />
       </swiper-slide>
     </swiper>
     <div class="swiper-button-container">
@@ -166,8 +146,9 @@ defineExpose({
 .page-slide {
   width: 100%;
   height: 100%;
+
   img {
-    width: auto;
+    width: 100%;
     height: 100%;
     // object-fit: cover;
   }
@@ -195,12 +176,14 @@ defineExpose({
     display: flex;
     justify-content: center;
     align-items: center;
+
     img {
       display: inline-block;
       width: 3vh;
       height: 3vh;
     }
   }
+
   .custom-swiper-button-next {
     z-index: 99;
     width: 7vh;
@@ -210,6 +193,7 @@ defineExpose({
     justify-content: center;
     align-items: center;
     border-top: 1px solid transparent;
+
     img {
       display: inline-block;
       width: 3vh;

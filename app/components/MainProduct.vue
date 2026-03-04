@@ -2,58 +2,57 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-02 16:25:34
- * @FilePath: \nuxt-free\app\components\MainProduct.vue
+ * @LastEditTime: 2026-03-04 15:41:26
+ * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
 <template>
   <div class="product-container">
-    <div class="product-title">
-      <span class="title-zh">产品中心</span>
-      <span class="title-en">FEATURED PRODUCTS</span>
-    </div>
-
-    <div class="product-content">
-      <img class="product-content-left-img" src="/images/p.png" alt="" />
-      <div class="product-content-right">
-        <span class="product-title-zh">TRIO系列产品</span>
-        <span class="product-desc">
-          <span class="product-desc-title">13年</span>
-          <span class="product-desc-text">TRIO销售及应用经验，可为您提供远程支持</span>
-        </span>
-
-        <div class="product-desc-content">
-          <div class="product-desc-item" v-for="item in productList" :key="item.id">
-            <img :src="item.url" alt="" />
-            <span>{{ item.name }}</span>
-          </div>
+    <div class="product-item-border">
+      <div class="product-item" v-for="item in productArr" :key="item.id">
+        <div class="product-info">
+          <div class="product-type">{{ item.type }}</div>
+          <div class="product-name">{{ item.name }}</div>
+          <div class="product-more">了解更多</div>
+        </div>
+        <div class="product-img">
+          <img :src="item.img" alt="">
         </div>
       </div>
-      <div class="more-btn">MORE+</div>
     </div>
+
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
-const productList = ref([
-  {
-    id: 1,
-    name: "MC405",
-    url: "/images/p1.png",
+const productArr = ref([]);
+
+
+const props = defineProps({
+  productData: {
+    type: Array,
+    default: () => [],
   },
-  {
-    id: 2,
-    name: "NANO",
-    url: "/images/p2.png",
+});
+
+
+watch(
+  () => props.productData,
+  (newVal) => {
+    if (!newVal.length) return;
+    productArr.value = newVal;
   },
-  {
-    id: 3,
-    name: "MC6N",
-    url: "/images/p3.png",
-  },
-]);
+  { immediate: true, deep: true }
+);
+
+
+
+
+
+
 
 onMounted(() => {
   console.log("组件挂载了");
@@ -62,129 +61,95 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .product-container {
+  width: 100%;
+  height: 100%;
+  border: 2px solid blue;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 
-  width: 100%;
-  height: 100%;
-  // border: 2px solid blue;
-  box-sizing: border-box;
-  .product-title {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 6vh 0 6vh 0;
 
-    width: 100%;
-    height: 10vh;
-    // border: 2px solid red;
+  .product-item-border {
+    width: 80%;
+    height: 100%;
+    border: 2px solid yellow;
     box-sizing: border-box;
-    .title-zh {
-      font-size: 30px;
-      font-weight: bold;
-    }
-    .title-en {
-      font-size: 16px;
-      color: #999999;
-    }
-  }
-  .product-content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-end;
-    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
 
-    box-sizing: border-box;
-
-    height: 45vh;
-
-    .product-content-left-img {
-      width: 44%;
-      height: 100%;
-      // border: 3px solid green;
-      box-sizing: border-box;
-    }
-
-    .product-content-right {
+    .product-item {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      align-items: start;
-      padding-left: 20px;
-      width: 50%;
-      height: 100%;
-      // border: 2px solid green;
+      align-items: center;
+      width: 33%;
+      height: 49%;
+      border: 2px solid red;
       box-sizing: border-box;
-      padding-top: 3vh;
-
-      .product-title-zh {
-        font-size: 30px;
-        font-weight: bold;
-        color: #1262ad;
-        height: 8vh;
-        line-height: 8vh;
-        // border: 1px solid red;
-      }
-      .product-desc {
-        padding: 0 0 4vh 0;
-        .product-desc-title {
-          font-size: 22px;
-          font-weight: bold;
-          font-style: italic;
-          color: #da1b43;
-          margin-right: 5px;
-        }
-        .product-desc-text {
-          font-size: 18px;
-          color: #666666;
-        }
-      }
-      .product-desc-content {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        // border: 2px solid red;
-        box-sizing: border-box;
-        .product-desc-item {
-          // border: 1px solid red;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 33%;
-          height: 100%;
-          box-sizing: border-box;
-          // img {
-          //   border:1px solid red;
-          // }
-          span {
-            font-size: 16px;
-          }
-        }
-      }
-    }
-    .more-btn {
-      width: 6%;
-      font-size: 18px;
-      color: #1262ad;
-      height: 3vh;
-      line-height: 3vh;
-      border: 1px solid #1262ad;
+      background-color: #F6F6F8;
       cursor: pointer;
-      padding: 0 10px;
-      box-sizing: border-box;
-    }
 
-    .more-btn:hover {
-      background-color: #1262ad;
-      color: #ffffff;
+      .product-info {
+        width: 100%;
+        height: 20%;
+        border: 2px solid green;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 10vh;
+
+        .product-type {
+         
+          font-weight: bold;
+          font-size: 16px;
+        }
+
+        .product-name {
+        
+          font-weight: bold;
+          font-size: 16px;
+        }
+
+        .product-more {
+          
+          font-size: 14px;
+          width: 80px;
+          text-align: center;
+          border-radius: 12px;
+          background-color: #16418A;
+          color: #fff;
+          margin-top: 1vh;
+        }
+      }
+
+      .product-img {
+        width: 50%;
+        height: 30vh;
+        background-color: pink;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+
+        }
+      }
     }
   }
+
+
 }
 </style>
