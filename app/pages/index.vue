@@ -15,27 +15,21 @@
       <MainSelect :selectContentItems="selectContentItems" />
     </div>
 
-
-
     <div class="main-top">
       <MainTop :topData="topData" />
     </div>
-
 
     <div class="news">
       <News :newsContentItems="newsContentItems" />
     </div>
 
-
-
-
     <div class="footer-one">
       <FooterOne />
     </div>
 
-    <!-- <div class="footer-two">
-         <FooterTwo />
-       </div> -->
+    <div class="footer-two">
+      <FooterTwo />
+    </div>
 
     <!-- 回到顶部按钮：保留原有结构，仅改样式 -->
     <div :class="{ show: isShowBackTop }" class="horizon-container">
@@ -54,11 +48,8 @@ import MainProduct from "@/components/MainProduct.vue";
 import MainSelect from "@/components/MainSelect.vue";
 import MainTop from "@/components/MainTop.vue";
 import News from "@/components/News.vue";
-
-
-
 import FooterOne from "@/components/FooterOne.vue";
-// import FooterTwo from "@/components/FooterTwo.vue";
+import FooterTwo from "@/components/FooterTwo.vue";
 
 
 
