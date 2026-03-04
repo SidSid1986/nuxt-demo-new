@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-04 17:08:17
+ * @LastEditTime: 2026-03-04 17:26:38
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -125,9 +125,30 @@ onMounted(() => {
     height: 100%;
     border: 4px solid green;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    color: #fff;
+
+    .footer-two-left {
+      width: 40%;
+      height: 100%;
+      border: 4px solid blue;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-two-right {
+      width: 60%;
+      height: 100%;
+      border: 4px solid yellow;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
 
   }
 }
