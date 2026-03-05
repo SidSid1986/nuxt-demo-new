@@ -28,7 +28,9 @@
     </div>
 
     <div class="footer-two">
-      <FooterTwo />
+      <client-only>
+        <FooterTwo />
+      </client-only>
     </div>
 
     <!-- 回到顶部按钮：保留原有结构，仅改样式 -->

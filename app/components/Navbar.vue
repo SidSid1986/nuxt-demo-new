@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-03 16:16:04
+ * @LastEditTime: 2026-03-05 13:40:23
  * @FilePath: \nuxt-free-new\app\components\Navbar.vue
  * @Description: 
 -->
@@ -75,7 +75,7 @@ const handleClick = (index, item) => {
   .nav-logo {
     width: 33%;
     height: 100%;
-    border: 2px solid green;
+    // border: 2px solid green;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -84,14 +84,14 @@ const handleClick = (index, item) => {
     .nav-logo-img {
       width: 100px;
       height: 35px;
-      border: 1px solid red;
+      // border: 1px solid red;
     }
   }
 
   .link-text-content {
     height: 100%;
     width: 33%;
-    border: 2px solid red;
+    // border: 2px solid red;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -106,7 +106,7 @@ const handleClick = (index, item) => {
   .nav-empty {
     width: 33%;
     height: 100%;
-    border: 2px solid blue;
+    // border: 2px solid blue;
   }
 }
 

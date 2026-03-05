@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-04 15:58:42
+ * @LastEditTime: 2026-03-05 13:45:41
  * @FilePath: \nuxt-free-new\app\components\MainTop.vue
  * @Description: 
 -->
@@ -99,10 +99,10 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  border: 2px solid blue;
+  // border: 2px solid blue;
 
   .top-title {
-    border: 3px solid yellow;
+    // border: 3px solid yellow;
 
     font-weight: bold;
     font-size: 30px;
@@ -113,7 +113,7 @@ onMounted(() => {
 
   .top-title-content {
     height: 15vh;
-    border: 1px solid red;
+    // border: 1px solid red;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -123,7 +123,7 @@ onMounted(() => {
     .top-title-content-border {
       width: 80%;
       height: 100%;
-      border: 1px solid red;
+      // border: 1px solid red;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -132,7 +132,7 @@ onMounted(() => {
       .top-title-item {
         height: 100%;
         width: 20%;
-        border: 1px solid red;
+        // border: 1px solid red;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -140,7 +140,7 @@ onMounted(() => {
 
         .top-title-num {
 
-          border: 1px solid red;
+          // border: 1px solid red;
 
           font-weight: bold;
           font-size: 30px;
@@ -150,7 +150,7 @@ onMounted(() => {
 
         .top-title-text {
 
-          border: 1px solid red;
+          // border: 1px solid red;
 
           font-weight: bold;
           font-size: 20px;
@@ -161,37 +161,39 @@ onMounted(() => {
   }
 
   .top-mark-content {
-    height: 40vh;
-    border: 1px solid red;
+    height: 45vh;
+    // border: 1px solid red;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     padding-top: 3vh;
+    
 
     .top-mark-content-border {
       width: 80%;
       height: 100%;
-      border: 1px solid red;
+      // border: 1px solid red;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
 
       .top-img-item-line {
-        height: 11vh;
+        height: 10vh;
         width: 100%;
-        border: 1px solid blue;
+        // border: 1px solid blue;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 1vh;
 
         .top-img-item {
           height: 100%;
           width: 12%;
-          border: 1px solid red;
+          border: 1px solid #D9D9D9;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -206,7 +208,7 @@ onMounted(() => {
         .top-img-item-large {
           height: 100%;
           width: 24.5%;
-          border: 1px solid red;
+          border: 1px solid #D9D9D9;
           display: flex;
           flex-direction: column;
           justify-content: center;

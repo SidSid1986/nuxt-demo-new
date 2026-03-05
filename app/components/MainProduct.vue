@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-04 15:41:26
+ * @LastEditTime: 2026-03-05 13:42:41
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
@@ -63,7 +63,7 @@ onMounted(() => {
 .product-container {
   width: 100%;
   height: 100%;
-  border: 2px solid blue;
+  // border: 2px solid blue;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -74,7 +74,7 @@ onMounted(() => {
   .product-item-border {
     width: 80%;
     height: 100%;
-    border: 2px solid yellow;
+    // border: 2px solid yellow;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -89,7 +89,7 @@ onMounted(() => {
       align-items: center;
       width: 33%;
       height: 49%;
-      border: 2px solid red;
+      // border: 2px solid red;
       box-sizing: border-box;
       background-color: #F6F6F8;
       cursor: pointer;
@@ -97,7 +97,7 @@ onMounted(() => {
       .product-info {
         width: 100%;
         height: 20%;
-        border: 2px solid green;
+        // border: 2px solid green;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -132,7 +132,7 @@ onMounted(() => {
       .product-img {
         width: 50%;
         height: 30vh;
-        background-color: pink;
+        // background-color: pink;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;

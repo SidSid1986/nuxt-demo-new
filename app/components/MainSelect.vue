@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-04 15:59:52
+ * @LastEditTime: 2026-03-05 13:43:07
  * @FilePath: \nuxt-free-new\app\components\MainSelect.vue
  * @Description: 
 -->
@@ -57,7 +57,7 @@ onMounted(() => {
 .select-container {
   width: 100%;
   height: 100%;
-  border: 2px solid blue;
+  // border: 2px solid blue;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -67,7 +67,7 @@ onMounted(() => {
   .select-content-container {
     width: 100%;
     height: 15vh;
-    border: 2px solid green;
+    // border: 2px solid green;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,7 +78,7 @@ onMounted(() => {
     .select-title {
 
 
-      border: 1px solid red;
+      // border: 1px solid red;
 
       font-weight: bold;
       font-size: 30px;
@@ -87,7 +87,7 @@ onMounted(() => {
 
     .select-text {
 
-      border: 1px solid red;
+      // border: 1px solid red;
       font-size: 16px;
     }
   }
@@ -105,21 +105,21 @@ onMounted(() => {
     .select-img-item {
       width: 26.5%;
       height: 100%;
-      border: 1px solid red;
+      // border: 1px solid red;
 
     }
 
     .select-img-item-center {
       width: 45%;
       height: 100%;
-      border: 1px solid red;
+      // border: 1px solid red;
 
     }
 
     .select-img-item-content {
       height: 100%;
 
-      border: 3px solid green;
+      // border: 3px solid green;
 
       img {
         width: 100%;

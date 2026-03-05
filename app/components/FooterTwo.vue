@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 10:50:13
+ * @LastEditTime: 2026-03-05 13:35:51
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -120,7 +120,7 @@ onMounted(() => {
 .footer-two-container {
   width: 100%;
   height: 50vh;
-  border: 4px solid red;
+  // border: 4px solid red;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -130,7 +130,7 @@ onMounted(() => {
   .footer-two-border {
     width: 60%;
     height: 100%;
-    border: 4px solid green;
+    // border: 4px solid green;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -140,7 +140,7 @@ onMounted(() => {
     .footer-two-left {
       width: 40%;
       height: 100%;
-      border: 4px solid blue;
+      // border: 4px solid blue;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -150,7 +150,7 @@ onMounted(() => {
       .left-line {
         width: 100%;
 
-        border: 4px solid pink;
+        // border: 4px solid pink;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -185,7 +185,7 @@ onMounted(() => {
 
       .left-line-follow {
         width: 100%;
-        border: 4px solid pink;
+        // border: 4px solid pink;
 
         .left-line-follow-border {
           width: 200px;
@@ -220,7 +220,7 @@ onMounted(() => {
     .footer-two-right {
       width: 60%;
       height: 100%;
-      border: 4px solid yellow;
+      // border: 4px solid yellow;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -229,7 +229,7 @@ onMounted(() => {
       .right-line {
         width: 20%;
         height: 100%;
-        border: 4px solid pink;
+        // border: 4px solid pink;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
