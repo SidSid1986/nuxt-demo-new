@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 13:43:07
+ * @LastEditTime: 2026-03-05 14:23:28
  * @FilePath: \nuxt-free-new\app\components\MainSelect.vue
  * @Description: 
 -->
@@ -17,6 +17,10 @@
         :key="item.id">
         <div class="select-img-item-content">
           <img alt="选择图片" :src="item.pic" />
+          <div class="select-img-item-text-container">
+            <div class="select-img-item-name">{{ item.name }}</div>
+            <div class="select-img-item-text">{{ item.text }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -77,16 +81,13 @@ onMounted(() => {
 
     .select-title {
 
-
       // border: 1px solid red;
-
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 5px;
     }
 
     .select-text {
-
       // border: 1px solid red;
       font-size: 16px;
     }
@@ -106,25 +107,48 @@ onMounted(() => {
       width: 26.5%;
       height: 100%;
       // border: 1px solid red;
-
     }
 
     .select-img-item-center {
       width: 45%;
       height: 100%;
       // border: 1px solid red;
-
     }
 
     .select-img-item-content {
       height: 100%;
+      position: relative;
 
       // border: 3px solid green;
-
       img {
         width: 100%;
         height: 100%;
+      }
 
+      .select-img-item-text-container {
+        width: 100%;
+        height: 100%;
+        // border: 2px solid yellow;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        padding-top: 2vh;
+        background: linear-gradient(to bottom, rgba(46, 157, 164, 0.4) 0%, rgba(46, 157, 164, 0) 100%);
+
+        .select-img-item-name {
+          font-weight: bold;
+          font-size: 20px;
+          color: #ffffff;
+        }
+
+        .select-img-item-text {
+          font-size: 14px;
+          color: #ffffff;
+        }
       }
     }
   }

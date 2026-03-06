@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 13:40:23
+ * @LastEditTime: 2026-03-05 15:23:15
  * @FilePath: \nuxt-free-new\app\components\Navbar.vue
  * @Description: 
 -->
@@ -31,27 +31,27 @@ const tabList = [
   },
   {
     name: "产品中心",
-    link: "/",
+    link: "/product",
   },
   {
     name: "新闻中心",
-    link: "/",
+    link: "/news",
   },
   {
     name: "服务支持",
-    link: "/",
+    link: "/service",
   },
   {
     name: "解决方案",
-    link: "/",
+    link: "/solution",
   },
   {
     name: "联系我们",
-    link: "/",
+    link: "/contact",
   },
   {
     name: "资料下载",
-    link: "/",
+    link: "/download",
   },
 ];
 
@@ -61,6 +61,15 @@ const handleClick = (index, item) => {
   activeIndex.value = index;
   console.log(item.name);
 };
+
+onMounted(() => {
+  const currentPath = window.location.pathname;
+  tabList.forEach((item, index) => {
+    if (item.link === currentPath) {
+      activeIndex.value = index;
+    }
+  });
+});
 </script>
 
 <style lang="scss" scoped>

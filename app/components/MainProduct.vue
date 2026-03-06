@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 13:42:41
+ * @LastEditTime: 2026-03-05 13:56:37
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
@@ -61,6 +61,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .product-container {
+  margin-top: 2vh;
   width: 100%;
   height: 100%;
   // border: 2px solid blue;
@@ -106,19 +107,19 @@ onMounted(() => {
         height: 10vh;
 
         .product-type {
-         
+
           font-weight: bold;
           font-size: 16px;
         }
 
         .product-name {
-        
+
           font-weight: bold;
           font-size: 16px;
         }
 
         .product-more {
-          
+
           font-size: 14px;
           width: 80px;
           text-align: center;

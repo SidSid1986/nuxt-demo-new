@@ -2,31 +2,30 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 13:35:51
+ * @LastEditTime: 2026-03-05 14:38:26
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
 <template>
   <div class="footer-two-container">
-
     <div class="footer-two-border">
       <div class="footer-two-left">
         <div class="left-line">
-          <img src="/images/tel.png" alt="">
+          <img src="/images/tel.png" alt="" />
           <div class="left-line-text">
             <span>服务热线</span>
             <span>0535-6666657</span>
           </div>
         </div>
         <div class="left-line">
-          <img src="/images/location.png" alt="">
+          <img src="/images/location.png" alt="" />
           <div class="left-line-text">
             <span>企业地址</span>
             <span>山东烟台市高新区航天路77号</span>
           </div>
         </div>
         <div class="left-line">
-          <img src="/images/mail.png" alt="">
+          <img src="/images/mail.png" alt="" />
           <div class="left-line-text">
             <span>企业邮箱</span>
             <span>YTFREEIE@126.com</span>
@@ -34,15 +33,23 @@
         </div>
         <div class="left-line-follow">
           <!-- <el-popover placement="right" :width="200" trigger="click"> -->
-          <el-popover placement="right" :width="200">
+          <!-- <el-popover placement="right" :width="200">
             <template #reference>
               <div class="left-line-follow-border">
                 <span>关注我们</span>
                 <span>扫码关注我们不迷路~</span>
               </div>
             </template>
-            <img src="/images/code.jpg" alt="">
-          </el-popover>
+<img src="/images/code.jpg" alt="">
+</el-popover> -->
+
+          <div class="left-line-follow-border-code">
+            <div class="code-left">
+              <span>关注我们</span>
+              <span>扫码关注我们不迷路~</span>
+            </div>
+            <img src="/images/code.jpg" alt="" />
+          </div>
         </div>
       </div>
       <div class="footer-two-right">
@@ -101,15 +108,11 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-
-
 
 onMounted(() => {
   console.log("组件挂载了");
@@ -160,7 +163,6 @@ onMounted(() => {
         img {
           width: 25px;
           height: 25px;
-
         }
 
         .left-line-text {
@@ -178,7 +180,6 @@ onMounted(() => {
           :last-child {
             font-size: 16px;
             font-weight: bold;
-
           }
         }
       }
@@ -190,7 +191,7 @@ onMounted(() => {
         .left-line-follow-border {
           width: 200px;
           height: 80px;
-          background-color: #16418A;
+          background-color: #16418a;
           border-radius: 10px;
           display: flex;
           flex-direction: column;
@@ -206,12 +207,51 @@ onMounted(() => {
 
           :last-child {
             font-size: 12px;
-
           }
         }
 
         .left-line-follow-border:hover {
           background-color: #2e64c2;
+        }
+
+        .left-line-follow-border-code {
+          width: 260px;
+          height: 120px;
+          background-color: #16418a;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          transition: all 0.3s ease-in-out;
+          cursor: pointer;
+          padding: 0 20px;
+
+          .code-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            :first-child {
+              font-weight: bold;
+              font-size: 16px;
+            }
+
+            :last-child {
+              font-size: 12px;
+            }
+          }
+
+          img {
+            width: 100px;
+            height: 100px;
+          }
+        }
+
+        .left-line-follow-border-code:hover {
+          background-color: #2e64c2;
+          scale: 1.3;
         }
 
       }
@@ -253,7 +293,6 @@ onMounted(() => {
         }
       }
     }
-
   }
 }
 </style>
