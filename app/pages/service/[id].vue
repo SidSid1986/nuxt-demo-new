@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "~/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 

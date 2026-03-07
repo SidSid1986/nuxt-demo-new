@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-07 08:57:14
+ * @LastEditTime: 2026-03-07 15:01:32
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 
 -->
@@ -14,29 +14,30 @@
 
     <div @click="handleClick" class="product-container">
       产品页面
+      <Step />
     </div>
 
 
 
     <div class="footer-two">
-      
-        <FooterTwo />
-       
+      <FooterTwo />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, } from "vue";
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "~/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
+
+import Step from "/components/normal/Step.vue"
 
 
 const router = useRouter();
 
 const handleClick = () => {
-  router.push("/product/1");
+  // router.push("/product/1");
 };
 
 
@@ -58,6 +59,12 @@ onMounted(() => {
   min-height: 100vh;
   height: auto;
   background-color: #F2F1F1;
+
+  .product-container {
+    width:80%;
+    height:80vh;
+    border:2px solid red;
+  }
 
 
 

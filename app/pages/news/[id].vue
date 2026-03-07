@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted, } from "vue";
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import { useRouter } from 'vue-router';
 const router = useRouter();

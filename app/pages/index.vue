@@ -44,7 +44,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "~/components/normal/Navbar.vue";
 import IndexSwiper from "@/components/IndexSwiper.vue";
 import MainProduct from "@/components/MainProduct.vue";
 import MainSelect from "@/components/MainSelect.vue";
