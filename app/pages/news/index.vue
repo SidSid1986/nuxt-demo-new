@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-07 13:40:43
+ * @LastEditTime: 2026-03-07 16:52:43
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -239,8 +239,10 @@ onMounted(() => {
 
   .news-title-bg {
     width: 100%;
-    height: 20vh;
-    background: url("/images/news/news-title.png") no-repeat center / cover;
+    height: 30vh;
+    background: url("/images/news/news-title.png") no-repeat center center;
+    background-size: 100% auto;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -313,7 +315,7 @@ onMounted(() => {
     }
   }
 
-  // 新闻列表容器：移除固定高度，自适应内容
+  // 新闻列表容器 
   .news-list-container {
     margin-top: 4vh;
     width: 100%;
@@ -342,7 +344,7 @@ onMounted(() => {
         width: 24%;
         margin-bottom: 2vh;
         background-color: #fff;
-        border-radius: 8px; // 圆角优化
+        border-radius: 8px;  
         overflow: hidden;
         // padding: 10px;
         height: 34vh;

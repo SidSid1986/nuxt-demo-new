@@ -2,8 +2,8 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-06 14:45:30
- * @FilePath: \nuxt-free-new\app\components\Navbar.vue
+ * @LastEditTime: 2026-03-07 16:10:54
+ * @FilePath: \nuxt-free-new\app\components\normal\Navbar.vue
  * @Description: 
 -->
 <!-- app/components/Navbar.vue -->
@@ -52,6 +52,10 @@ const tabList = [
   {
     name: "资料下载",
     link: "/download",
+  },
+  {
+    name: "关于我们",
+    link: "/about",
   },
 ];
 
