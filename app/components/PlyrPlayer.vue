@@ -1,6 +1,5 @@
 <template>
   <client-only>
-    <!-- 新增：宽高比容器（关键！保证视频比例不变） -->
     <div class="plyr-aspect-ratio-wrap" :style="{ paddingBottom: aspectRatio }">
       <div class="plyr-player-wrap" ref="playerWrap">
         <video controls :poster="posterUrl" class="plyr-video" playsinline>

@@ -28,9 +28,9 @@
     </div>
 
     <div class="footer-two">
-      <client-only>
-        <FooterTwo />
-      </client-only>
+
+      <FooterTwo />
+
     </div>
 
     <!-- 回到顶部按钮：保留原有结构，仅改样式 -->
@@ -341,6 +341,11 @@ onUnmounted(() => {
   opacity: 0;
 
   transition: transform 0.8s ease-out, opacity 0.6s ease-out;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .horizon-container.show .back-to-top {
@@ -405,10 +410,10 @@ ol {
   list-style: none;
 }
 
-img {
+/* img {
   display: block;
   max-width: 100%;
-}
+} */
 
 a {
   text-decoration: none;

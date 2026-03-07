@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-06 14:03:02
+ * @LastEditTime: 2026-03-07 13:40:43
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -16,65 +16,67 @@
       <span>新闻中心</span>
     </div>
 
-    <div class="news-top">
-      <div class="news-top-border">
-        <div class="news-top-left">
-          <img :src="topNews.pic" alt="" v-if="topNews.pic">
-        </div>
-        <div class="news-top-right">
-          <span class="news-top-right-title">{{ topNews.title }}</span>
-          <span class="news-top-right-name">{{ topNews.name }}</span>
-          <span class="news-top-right-date"><span>发布时间：</span>{{ topNews.date }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 新闻列表容器：移除固定高度，适配8条/页布局 -->
-    <div class="news-list-container">
-      <div class="news-item-card">
-        <!-- 遍历当前页的8条数据 -->
-        <div class="news-item-border" v-for="item in currentPageData" :key="item.id">
-          <div class="news-item">
-            <img :src="item.pic" alt="" class="news-item-img">
-            <span class="news-item-title">{{ item.title }}</span>
-            <span class="news-item-name">{{ item.name }}</span>
-            <span class="news-item-date"><span>了解更多></span>{{ item.date }}</span>
+    <div class="news-isLoad">
+      <div v-if="isLoaded" class="news-top">
+        <div class="news-top-border" @click="toDetail(topNews.id)">
+          <div class="news-top-left">
+            <img :src="topNews.pic" alt="" v-if="topNews.pic">
+          </div>
+          <div class="news-top-right">
+            <span class="news-top-right-title">{{ topNews.title }}</span>
+            <span class="news-top-right-name">{{ topNews.name }}</span>
+            <span class="news-top-right-date"><span>发布时间：</span>{{ topNews.date }}</span>
           </div>
         </div>
       </div>
 
-      <!-- 分页控件：切换二维数组索引 -->
-      <div class="pagination" v-if="totalPages > 1">
-        <button class="page-btn" @click="changePage(1)" :disabled="currentPage === 1">
-          首页
-        </button>
-        <button class="page-btn" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
-          上一页
-        </button>
 
-        <span class="page-info">
-          <!-- {{ currentPage }} / {{ totalPages }} -->
-          <span class="page-number" v-for="page in totalPages" :key="page" @click="changePage(page)"
-            :class="{ 'active': page === currentPage }">
-            {{ page }}
+      <div v-if="isLoaded" class="news-list-container">
+        <div class="news-item-card">
+
+          <div class="news-item-border" v-for="item in currentPageData" :key="item.id">
+            <div class="news-item" @click="toDetail(item.id)">
+              <img :src="item.pic" alt="" class="news-item-img">
+              <span class="news-item-title">{{ item.title }}</span>
+              <span class="news-item-name">{{ item.name }}</span>
+              <span class="news-item-date"><span>了解更多></span>{{ item.date }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分页控件  -->
+        <div class="pagination" v-if="totalPages > 1">
+          <button class="page-btn" @click="changePage(1)" :disabled="currentPage === 1">
+            首页
+          </button>
+          <button class="page-btn" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+            上一页
+          </button>
+
+          <span class="page-info">
+            <!-- {{ currentPage }} / {{ totalPages }} -->
+            <span class="page-number" v-for="page in totalPages" :key="page" @click="changePage(page)"
+              :class="{ 'active': page === currentPage }">
+              {{ page }}
+            </span>
           </span>
-        </span>
 
-        <button class="page-btn" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
-          下一页
-        </button>
-        <button class="page-btn" @click="changePage(totalPages)" :disabled="currentPage === totalPages">
-          尾页
-        </button>
+          <button class="page-btn" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
+            下一页
+          </button>
+          <button class="page-btn" @click="changePage(totalPages)" :disabled="currentPage === totalPages">
+            尾页
+          </button>
+        </div>
       </div>
     </div>
 
 
 
     <div class="footer-two">
-      <client-only>
-        <FooterTwo />
-      </client-only>
+
+      <FooterTwo />
+
     </div>
   </div>
 </template>
@@ -82,9 +84,13 @@
 <script setup>
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
 import Navbar from "@/components/Navbar.vue";
-
-import FooterOne from "@/components/FooterOne.vue";
+import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
+
+
+const router = useRouter();
+
+const isLoaded = ref(false);
 
 const newsContentItems = ref([
   {
@@ -175,6 +181,10 @@ const pageSize = 8;            // 每页8条
 // 头条新闻 
 const topNews = ref({});
 
+const toDetail = (id) => {
+  router.push(`/news/${id}`);
+}
+
 //  当前页展示的数据 
 const currentPageData = computed(() => {
   // 页码从1开始，数组索引从0开始，减1
@@ -207,6 +217,8 @@ onMounted(() => {
     const group = listWithoutTop.slice(i, i + pageSize);
     newsContentArr.value.push(group);
   }
+
+  isLoaded.value = true;
 });
 
 
@@ -223,6 +235,8 @@ onMounted(() => {
   height: auto;
   background-color: #F2F1F1;
 
+
+
   .news-title-bg {
     width: 100%;
     height: 20vh;
@@ -235,6 +249,10 @@ onMounted(() => {
       font-size: 40px;
       font-weight: bold;
     }
+  }
+
+  .news-isLoad {
+    min-height: 80vh;
   }
 
   .news-top {
@@ -337,6 +355,7 @@ onMounted(() => {
           display: flex;
           flex-direction: column;
           box-sizing: border-box;
+          cursor: pointer;
 
 
           .news-item-img {

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 15:23:15
+ * @LastEditTime: 2026-03-06 14:45:30
  * @FilePath: \nuxt-free-new\app\components\Navbar.vue
  * @Description: 
 -->
@@ -55,7 +55,7 @@ const tabList = [
   },
 ];
 
-const activeIndex = ref(0);
+const activeIndex = ref(-1);
 
 const handleClick = (index, item) => {
   activeIndex.value = index;
@@ -64,6 +64,7 @@ const handleClick = (index, item) => {
 
 onMounted(() => {
   const currentPath = window.location.pathname;
+  console.log(currentPath);
   tabList.forEach((item, index) => {
     if (item.link === currentPath) {
       activeIndex.value = index;
