@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:01:51
+ * @LastEditTime: 2026-03-10 17:23:04
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -222,7 +222,7 @@ const changePage = (pageNum) => {
   currentPage.value = pageNum;
   nextTick(() => {
     setTimeout(() => {
-      const contentArea = document.querySelector('.tab-content-area');
+      const contentArea = document.querySelector('.product-list-container');
       if (contentArea) {
         // 使用 scrollIntoView 滚动到该区域顶部
         contentArea.scrollIntoView({
@@ -311,7 +311,7 @@ onBeforeUnmount(() => {
     }
 
     .product-list-container {
-      border: 2px solid red;
+      border: 4px solid red;
       width: 60%;
       height: auto;
       display: flex;
