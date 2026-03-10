@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-07 16:10:54
+ * @LastEditTime: 2026-03-10 09:05:13
  * @FilePath: \nuxt-free-new\app\components\normal\Navbar.vue
  * @Description: 
 -->
@@ -10,7 +10,7 @@
 <template>
   <div class="nav-container">
     <div class="nav-logo">
-      <img src="/logo.png" alt="logo" class="nav-logo-img">
+      <img @click="backToHome" src="/logo.png" alt="logo" class="nav-logo-img">
     </div>
 
     <div class="link-text-content">
@@ -24,6 +24,11 @@
   </div>
 </template>
 <script setup>
+
+import { ref, onMounted, } from "vue";
+
+import { useRouter } from "vue-router";
+const router = useRouter();
 const tabList = [
   {
     name: "首页",
@@ -60,6 +65,14 @@ const tabList = [
 ];
 
 const activeIndex = ref(-1);
+
+
+
+const backToHome = () => {
+  router.push("/");
+};
+
+
 
 const handleClick = (index, item) => {
   activeIndex.value = index;
@@ -98,6 +111,7 @@ onMounted(() => {
     .nav-logo-img {
       width: 100px;
       height: 35px;
+      cursor: pointer;
       // border: 1px solid red;
     }
   }

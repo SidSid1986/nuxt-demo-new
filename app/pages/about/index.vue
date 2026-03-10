@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-09 15:29:07
+ * @LastEditTime: 2026-03-09 15:35:24
  * @FilePath: \nuxt-free-new\app\pages\about\index.vue
  * @Description: 
 -->
@@ -298,13 +298,13 @@ onMounted(() => {
 
   .logo-honor {
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     // border: 1px solid green;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    padding: 8vh 0;
+    margin-top: 10vh;
 
     span {
       height: 5vh;
@@ -330,6 +330,8 @@ onMounted(() => {
     flex-direction: column;
     align-items: center;
     justify-self: center;
+    margin-top: 10vh;
+
 
     span {
       height: 5vh;

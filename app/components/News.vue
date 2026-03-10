@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-04 16:28:36
+ * @LastEditTime: 2026-03-10 09:01:53
  * @FilePath: \nuxt-free-new\app\components\News.vue
  * @Description: 
 -->
@@ -14,7 +14,7 @@
         <span class="title-en">阜瑞的最新动态</span>
       </div>
       <div class="news-content">
-        <div class="news-content-item" v-for="item in newsArr" :key="item.id">
+        <div @click="handleClick(item)" class="news-content-item" v-for="item in newsArr" :key="item.id">
           <img :src="item.pic" alt="" />
           <div class="news-content-item-text">
             <div class="news-title-zh">{{ item.title }}</div>
@@ -33,6 +33,10 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+
 
 const newsArr = ref([]);
 
@@ -54,6 +58,10 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+const handleClick = (item) => {
+  router.push(`/news/${item.id}`);
+};
 
 
 
