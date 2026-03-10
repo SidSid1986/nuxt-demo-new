@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-09 15:35:24
+ * @LastEditTime: 2026-03-10 17:19:35
  * @FilePath: \nuxt-free-new\app\pages\about\index.vue
  * @Description: 
 -->
@@ -181,7 +181,7 @@ onMounted(() => {
 
     span {
       font-size: 40px;
-      font-weight: bold;
+      font-family: "SourceHanSansCN-Bold";
     }
   }
 
@@ -229,7 +229,7 @@ onMounted(() => {
 
         .about-top-right-title {
           font-size: 25px;
-          font-weight: bold;
+          font-family: "SourceHanSansCN-Bold";
           color: #0B44B4;
           margin-bottom: 2vh;
         }
@@ -258,7 +258,7 @@ onMounted(() => {
       line-height: 5vh;
       ;
       font-size: 30px;
-      font-weight: bold;
+      font-family: "SourceHanSansCN-Bold";
     }
 
 
@@ -311,8 +311,9 @@ onMounted(() => {
       // border: 1px solid yellow;
       line-height: 5vh;
       font-size: 30px;
-      font-weight: bold;
+
       margin-bottom: 2vh;
+      font-family: "SourceHanSansCN-Bold";
     }
 
     img {
@@ -338,8 +339,9 @@ onMounted(() => {
       // border: 1px solid yellow;
       line-height: 5vh;
       font-size: 30px;
-      font-weight: bold;
+
       margin-bottom: 2vh;
+      font-family: "SourceHanSansCN-Bold";
     }
   }
 

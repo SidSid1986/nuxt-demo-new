@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 09:05:13
+ * @LastEditTime: 2026-03-10 17:08:52
  * @FilePath: \nuxt-free-new\app\components\normal\Navbar.vue
  * @Description: 
 -->
@@ -97,7 +97,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  height: 5vh;
+  height: 6vh;
 
   .nav-logo {
     width: 33%;
@@ -127,7 +127,8 @@ onMounted(() => {
 
     .link-text {
       color: #FFFFFF;
-      font-size: 14px;
+      font-size: 16px;
+      font-family: "SourceHanSansCN-Bold";
     }
   }
 

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 15:37:57
+ * @LastEditTime: 2026-03-10 17:01:51
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -220,10 +220,18 @@ const makeProductList = (type) => {
 const changePage = (pageNum) => {
   if (pageNum < 1 || pageNum > totalPages.value) return;
   currentPage.value = pageNum;
-
-  //  翻页后滚动到列表顶部 
-  const contentArea = document.querySelector('.tab-content-area');
-  if (contentArea) contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  nextTick(() => {
+    setTimeout(() => {
+      const contentArea = document.querySelector('.tab-content-area');
+      if (contentArea) {
+        // 使用 scrollIntoView 滚动到该区域顶部
+        contentArea.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 500);
+  });
 };
 
 onMounted(() => {
@@ -297,6 +305,8 @@ onBeforeUnmount(() => {
         font-size: 40px;
         color: #fff;
         font-weight: bold;
+        font-family: "SourceHanSansCN-Bold";
+
       }
     }
 
@@ -352,6 +362,9 @@ onBeforeUnmount(() => {
           position: relative;
           z-index: 1;
           flex-shrink: 0;
+          font-family: "SourceHanSansCN-Regular";
+
+
 
           &.active {
             color: #16418A;
@@ -428,12 +441,14 @@ onBeforeUnmount(() => {
                 border: 1px solid red;
                 font-size: 16px;
                 margin-bottom: 1vh;
+                font-family: "SourceHanSansCN-Bold";
               }
 
               .product-item-type {
                 text-align: center;
                 border: 1px solid red;
                 font-size: 16px;
+                font-family: "SourceHanSansCN-Bold";
               }
 
               .more {
@@ -446,6 +461,7 @@ onBeforeUnmount(() => {
                 border-radius: 20px;
                 margin-bottom: 1vh;
                 font-size: 12px;
+                font-family: "SourceHanSansCN-Regular";
               }
             }
 

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:38:18
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-03 17:09:13
+ * @LastEditTime: 2026-03-10 16:54:38
  * @FilePath: \nuxt-free-new\nuxt.config.ts
  * @Description: 
  */
@@ -22,7 +22,8 @@ export default defineNuxtConfig({
   // 1. 全局样式
   css: [
     'element-plus/dist/index.css',
-    'element-plus/theme-chalk/display.css'
+    'element-plus/theme-chalk/display.css',
+    '~/assets/css/main.css'
   ],
 
   // 2. 插件配置

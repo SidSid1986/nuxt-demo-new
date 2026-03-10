@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 14:38:26
+ * @LastEditTime: 2026-03-10 17:06:58
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -175,11 +175,14 @@ onMounted(() => {
 
           :first-child {
             font-size: 12px;
+            font-family: "SourceHanSansCN-Regular";
+
           }
 
           :last-child {
             font-size: 16px;
             font-weight: bold;
+            font-family: "SourceHanSansCN-Bold";
           }
         }
       }
@@ -280,12 +283,15 @@ onMounted(() => {
           font-size: 16px;
           font-weight: bold;
           margin-bottom: 3vh;
+          font-family: "SourceHanSansCN-Bold";
         }
 
         .right-line-item {
           font-size: 12px;
           margin-bottom: 1vh;
           cursor: pointer;
+          font-family: "SourceHanSansCN-Medium";
+
         }
 
         .right-line-item:hover {

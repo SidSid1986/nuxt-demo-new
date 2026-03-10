@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 14:23:28
+ * @LastEditTime: 2026-03-10 17:12:16
  * @FilePath: \nuxt-free-new\app\components\MainSelect.vue
  * @Description: 
 -->
@@ -85,11 +85,13 @@ onMounted(() => {
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 5px;
+      font-family: "SourceHanSansCN-Bold";
     }
 
     .select-text {
       // border: 1px solid red;
       font-size: 16px;
+      font-family: "SourceHanSansCN-Regular";
     }
   }
 

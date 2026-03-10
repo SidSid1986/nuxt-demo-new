@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:37:26
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-07 11:15:21
+ * @LastEditTime: 2026-03-10 17:17:27
  * @FilePath: \nuxt-free-new\app\pages\news\[id].vue
  * @Description: 
 -->
@@ -120,7 +120,7 @@ onMounted(() => {
         justify-content: flex-start;
         font-size: 14px;
         color: #3C4045;
-        font-weight: bold;
+        font-family: "SourceHanSansCN-Bold";
 
 
         span {
@@ -175,6 +175,7 @@ onMounted(() => {
         color: #666565;
         margin-bottom: 5vh;
         padding: 0 80px;
+        font-family: "SourceHanSansCN-Regular";
       }
 
       .detail-content-text-content {

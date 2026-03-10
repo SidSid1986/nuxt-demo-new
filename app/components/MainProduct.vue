@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 13:56:37
+ * @LastEditTime: 2026-03-10 17:11:31
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
@@ -110,12 +110,14 @@ onMounted(() => {
 
           font-weight: bold;
           font-size: 16px;
+          font-family: "SourceHanSansCN-Bold";
         }
 
         .product-name {
 
           font-weight: bold;
           font-size: 16px;
+          font-family: "SourceHanSansCN-Bold";
         }
 
         .product-more {
@@ -127,6 +129,7 @@ onMounted(() => {
           background-color: #16418A;
           color: #fff;
           margin-top: 1vh;
+          font-family: "SourceHanSansCN-Regular";
         }
       }
 

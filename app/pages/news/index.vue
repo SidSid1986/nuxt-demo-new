@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-07 16:52:43
+ * @LastEditTime: 2026-03-10 17:16:50
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -249,7 +249,8 @@ onMounted(() => {
 
     span {
       font-size: 40px;
-      font-weight: bold;
+
+      font-family: "SourceHanSansCN-Bold";
     }
   }
 
@@ -293,9 +294,10 @@ onMounted(() => {
 
         .news-top-right-title {
           font-size: 25px;
-          font-weight: bold;
+
           color: #0B44B4;
           margin-bottom: 2vh;
+          font-family: "SourceHanSansCN-Bold";
         }
 
         .news-top-right-name {
@@ -303,13 +305,14 @@ onMounted(() => {
           color: #0B44B4;
           margin-bottom: 2vh;
           line-height: 1.5; // 增加行高提升可读性
+          font-family: "SourceHanSansCN-Regular";
         }
 
         .news-top-right-date {
           font-size: 16px;
           // color: #0B44B4;
           color: #666;
-
+          font-family: "SourceHanSansCN-Regular";
         }
       }
     }
@@ -344,7 +347,7 @@ onMounted(() => {
         width: 24%;
         margin-bottom: 2vh;
         background-color: #fff;
-        border-radius: 8px;  
+        border-radius: 8px;
         overflow: hidden;
         // padding: 10px;
         height: 34vh;
@@ -370,7 +373,7 @@ onMounted(() => {
 
           .news-item-title {
             font-size: 16px;
-            font-weight: bold;
+            font-family: "SourceHanSansCN-Bold";
             color: #0B44B4;
             height: 5vh;
             // border: 1px solid red;
@@ -392,6 +395,7 @@ onMounted(() => {
             // border: 1px solid red;
             margin-top: 8px;
             padding: 0 10px;
+            font-family: "SourceHanSansCN-Regular";
 
           }
 
@@ -405,6 +409,7 @@ onMounted(() => {
             // border: 1px solid red;
             padding: 0 10px;
             margin-top: 15px;
+            font-family: "SourceHanSansCN-Regular";
 
           }
         }

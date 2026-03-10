@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-05 13:45:41
+ * @LastEditTime: 2026-03-10 17:12:41
  * @FilePath: \nuxt-free-new\app\components\MainTop.vue
  * @Description: 
 -->
@@ -104,10 +104,11 @@ onMounted(() => {
   .top-title {
     // border: 3px solid yellow;
 
-    font-weight: bold;
+
     font-size: 30px;
     margin: 6vh 0 3vh 0;
     text-align: center;
+    font-family: "SourceHanSansCN-Bold";
 
   }
 
@@ -150,10 +151,9 @@ onMounted(() => {
 
         .top-title-text {
 
-          // border: 1px solid red;
 
-          font-weight: bold;
           font-size: 20px;
+          font-family: "SourceHanSansCN-Bold";
 
         }
       }
@@ -169,7 +169,7 @@ onMounted(() => {
     align-items: center;
     width: 100%;
     padding-top: 3vh;
-    
+
 
     .top-mark-content-border {
       width: 80%;

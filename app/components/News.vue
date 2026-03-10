@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 09:01:53
+ * @LastEditTime: 2026-03-10 17:13:40
  * @FilePath: \nuxt-free-new\app\components\News.vue
  * @Description: 
 -->
@@ -103,12 +103,14 @@ onMounted(() => {
 
       .title-zh {
         font-size: 30px;
-        font-weight: bold;
+
+        font-family: "SourceHanSansCN-Bold";
       }
 
       .title-en {
         font-size: 16px;
         // color: #999999;
+        font-family: "SourceHanSansCN-Regular";
       }
     }
 
@@ -162,6 +164,7 @@ onMounted(() => {
             width: 100%;
             margin: 10px 0 10px 0;
             font-size: 18px;
+            font-family: "SourceHanSansCN-Regular";
           }
 
           .news-name-zh {
@@ -172,6 +175,8 @@ onMounted(() => {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            font-family: "SourceHanSansCN-Regular";
+
           }
         }
 
@@ -184,6 +189,8 @@ onMounted(() => {
 
           box-sizing: border-box;
           padding: 10px;
+          font-family: "SourceHanSansCN-Regular";
+
 
           div {
             font-size: 12px;
