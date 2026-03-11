@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:19:35
+ * @LastEditTime: 2026-03-11 15:01:45
  * @FilePath: \nuxt-free-new\app\pages\about\index.vue
  * @Description: 
 -->
@@ -55,7 +55,8 @@
     </div>
 
     <div class="map-container">
-      <Map />
+      <!-- <Map /> -->
+      <MapNew />
     </div>
 
 
@@ -73,7 +74,8 @@ import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 
 import Step from "/components/normal/Step.vue"
-import Map from "/components/normal/Map.vue"
+// import Map from "/components/normal/Map.vue"
+import MapNew from "/components/normal/MapNew.vue"
 
 import aboutTop from '/images/about/aboutTop.png'
 

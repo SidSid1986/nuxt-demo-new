@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:23:04
+ * @LastEditTime: 2026-03-11 09:07:06
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -311,7 +311,8 @@ onBeforeUnmount(() => {
     }
 
     .product-list-container {
-      border: 4px solid red;
+      margin-top: 2vh;
+      // border: 4px solid red;
       width: 60%;
       height: auto;
       display: flex;
@@ -384,6 +385,7 @@ onBeforeUnmount(() => {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           z-index: 0;
           opacity: 0;
+
         }
       }
 
@@ -395,24 +397,43 @@ onBeforeUnmount(() => {
         justify-content: flex-start;
         align-items: center;
         font-size: 16px;
-        border: 2px solid yellow;
+        // border: 2px solid yellow;
         min-height: 60vh;
-
-        padding-bottom: 20px;
+        margin-top: 2vh;
 
         .content-item-container {
           animation: fadeIn 0.3s ease;
-          border: 2px solid red;
           height: 100%;
           width: 100%;
-          display: flex;
-          flex-direction: row;
+
+          display: grid;
+
+          //  定义列：3 列，每列自动平分 (1fr)
+          grid-template-columns: repeat(3, 1fr);
+
+
+          gap: 1.3vh;
+
           align-items: center;
-          justify-content: space-between;
+          justify-content: center;
           box-sizing: border-box;
-          flex-wrap: wrap;
+
+          // 平板：2 列
+          @media (max-width: 1024px) {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          // 手机：1 列
+          @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+
+            .product-item {
+              height: 40vh;
+            }
+          }
 
           .empty-state {
+            grid-column: 1 / -1;
             width: 100%;
             text-align: center;
             padding: 50px 0;
@@ -420,15 +441,16 @@ onBeforeUnmount(() => {
           }
 
           .product-item {
-            border: 2px solid green;
-            width: 33%;
+            // border: 2px solid green;
+            width: 100%;
             height: 30vh;
-            margin-bottom: 0.5vh;
+
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             background-color: #F6F6F8;
+            cursor: pointer;
 
             .product-item-info {
               display: flex;
@@ -438,7 +460,7 @@ onBeforeUnmount(() => {
 
               .product-item-name {
                 text-align: center;
-                border: 1px solid red;
+                // border: 1px solid red;
                 font-size: 16px;
                 margin-bottom: 1vh;
                 font-family: "SourceHanSansCN-Bold";
@@ -446,7 +468,7 @@ onBeforeUnmount(() => {
 
               .product-item-type {
                 text-align: center;
-                border: 1px solid red;
+                // border: 1px solid red;
                 font-size: 16px;
                 font-family: "SourceHanSansCN-Bold";
               }
@@ -468,7 +490,7 @@ onBeforeUnmount(() => {
             .product-item-img {
               width: 200px;
               height: 18vh;
-              border: 1px solid red;
+              // border: 1px solid red;
 
               img {
                 width: 100%;
@@ -479,12 +501,12 @@ onBeforeUnmount(() => {
           }
         }
 
-        /* 【新增】分页控件样式 */
+        //  分页
         .pagination {
           display: flex;
           align-items: center;
-          margin-top: 20px;
-          margin-bottom: 10px;
+          margin-top: 4vh;
+          margin-bottom: 4vh;
 
           .page-btn {
             width: 60px;
@@ -519,7 +541,7 @@ onBeforeUnmount(() => {
               height: 30px;
               text-align: center;
               line-height: 30px;
-              border: 1px solid #0B44B4;
+              // border: 1px solid #0B44B4;
               background-color: #fff;
               color: #0B44B4;
               border-radius: 4px;

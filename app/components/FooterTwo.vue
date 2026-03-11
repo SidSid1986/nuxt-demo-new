@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:06:58
+ * @LastEditTime: 2026-03-11 15:40:31
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -55,7 +55,7 @@
       <div class="footer-two-right">
         <div class="right-line">
           <span class="right-line-title">产品中心</span>
-          <span class="right-line-item">运动控制器</span>
+          <span class="right-line-item" @click="goSportProduct()">运动控制器</span>
           <span class="right-line-item">伺服驱动器</span>
           <span class="right-line-item">机器人</span>
         </div>
@@ -113,6 +113,17 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+
+
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const goSportProduct = () => {
+  router.push('/sportProduct');
+};
+
+
 
 onMounted(() => {
   console.log("组件挂载了");

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:16:50
+ * @LastEditTime: 2026-03-11 09:46:57
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -326,49 +326,43 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 80vh;
-    // border: 2px solid red;
+
+    min-height: 60vh;
     margin-bottom: 5vh;
     box-sizing: border-box;
 
     .news-item-card {
+
       width: 70%;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      // border: 2px solid green;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2vh;
       box-sizing: border-box;
 
-
       .news-item-border {
-        width: 24%;
-        margin-bottom: 2vh;
+        width: 100%;
         background-color: #fff;
         border-radius: 8px;
         overflow: hidden;
-        // padding: 10px;
         height: 34vh;
-        // border: 1px solid green;
         cursor: pointer;
         box-sizing: border-box;
-
+        display: flex;
+        flex-direction: column;
 
         .news-item {
           display: flex;
           flex-direction: column;
           box-sizing: border-box;
           cursor: pointer;
-
+          height: 100%;
 
           .news-item-img {
             width: 100%;
             height: 18vh;
             border-radius: 4px;
             margin-bottom: 8px;
-            // border: 1px solid red;
+            object-fit: cover;
           }
 
           .news-item-title {
@@ -376,7 +370,6 @@ onMounted(() => {
             font-family: "SourceHanSansCN-Bold";
             color: #0B44B4;
             height: 5vh;
-            // border: 1px solid red;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -387,30 +380,26 @@ onMounted(() => {
           .news-item-name {
             font-size: 14px;
             color: #666;
-
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            // border: 1px solid red;
             margin-top: 8px;
             padding: 0 10px;
             font-family: "SourceHanSansCN-Regular";
-
+            flex: 1;
           }
 
           .news-item-date {
             font-size: 14px;
-            margin-top: 8px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            // border: 1px solid red;
             padding: 0 10px;
             margin-top: 15px;
+            margin-bottom: 10px;
             font-family: "SourceHanSansCN-Regular";
-
           }
         }
       }

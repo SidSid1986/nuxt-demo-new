@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-07 11:13:26
+ * @LastEditTime: 2026-03-11 14:33:18
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -12,40 +12,171 @@
       <Navbar />
     </div>
 
-    <div @click="handleClick" class="solution-container">
-      解决方案
+    <div class="solution-title-bg">
+      <span> 解决方案</span>
     </div>
 
+    <div class="solution-title">行业解决方案</div>
 
+    <div class="solution-group">
+      <div v-for="(item, index) in groupData" :key="item.id" class="solution-item" @click="selectItem(item, index)"
+        :class="{ 'active-item': index == solutionIndex }">
+        <img :src="index == solutionIndex ? item.icon1 : item.icon2" alt="" />
+        <span :class="{ 'active-text': index == solutionIndex }">{{ item.name }}</span>
+      </div>
+    </div>
+
+    <div class="solution-title">工艺应用解决方案</div>
+    <div class="solution-img-group">
+      <div v-for="(item, index) in groupImgData" :key="item.id" class="solution-img-item"
+        @click="selectImg(item, index)">
+        <div class="solution-img">
+          <img :src="index == imgIndex ? item.img2 : item.img1" alt="" />
+          <span class="img-text">
+            {{ item.name }}
+          </span>
+          <div class="name-line"></div>
+        </div>
+      </div>
+    </div>
 
     <div class="footer-two">
-
       <FooterTwo />
-
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, } from "vue";
+import { ref, onMounted } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 
-
 const router = useRouter();
 
-const handleClick = () => {
-  router.push("/solution/1");
+const solutionIndex = ref(0);
+
+const imgIndex = ref(0);
+
+const groupData = [
+  {
+    id: 1,
+    name: "汽车行业",
+    icon1: "/images/solution/car1.png",
+    icon2: "/images/solution/car2.png",
+  },
+  {
+    id: 2,
+    name: "电子行业",
+    icon1: "/images/solution/ele1.png",
+    icon2: "/images/solution/ele2.png",
+  },
+  {
+    id: 3,
+    name: "锂电行业",
+    icon1: "/images/solution/battery1.png",
+    icon2: "/images/solution/battery2.png",
+  },
+  {
+    id: 4,
+    name: "光伏行业",
+    icon1: "/images/solution/sun1.png",
+    icon2: "/images/solution/sun2.png",
+  },
+  {
+    id: 5,
+    name: "金属加工",
+    icon1: "/images/solution/metal1.png",
+    icon2: "/images/solution/metal2.png",
+  },
+  {
+    id: 6,
+    name: "建材加工",
+    icon1: "/images/solution/build1.png",
+    icon2: "/images/solution/build2.png",
+  },
+  {
+    id: 7,
+    name: "包装物流",
+    icon1: "/images/solution/box1.png",
+    icon2: "/images/solution/box2.png",
+  },
+  {
+    id: 8,
+    name: "一般工业",
+    icon1: "/images/solution/nor1.png",
+    icon2: "/images/solution/nor2.png",
+  },
+  {
+    id: 9,
+    name: "钢铁行业",
+    icon1: "/images/solution/st1.png",
+    icon2: "/images/solution/st2.png",
+  },
+  {
+    id: 10,
+    name: "家电行业",
+    icon1: "/images/solution/app1.png",
+    icon2: "/images/solution/app2.png",
+  },
+  {
+    id: 11,
+    name: "食品烟酒",
+    icon1: "/images/solution/smoke1.png",
+    icon2: "/images/solution/smoke2.png",
+  },
+];
+
+const groupImgData = [
+  {
+    id: 1,
+    name: "折弯解决方案",
+    img1: "/images/solution/zhewan1.png",
+    img2: "/images/solution/zhewan2.png",
+  },
+  {
+    id: 2,
+    name: "张力控制解决方案",
+    img1: "/images/solution/zhangli1.png",
+    img2: "/images/solution/zhangli2.png",
+  },
+  {
+    id: 3,
+    name: "压铸解决方案",
+    img1: "/images/solution/yazhu1.png",
+    img2: "/images/solution/yazhu2.png",
+  },
+  {
+    id: 4,
+    name: "码垛解决方案",
+    img1: "/images/solution/maduo1.png",
+    img2: "/images/solution/maduo2.png",
+  },
+  {
+    id: 5,
+    name: "焊接解决方案",
+    img1: "/images/solution/hanjie1.png",
+    img2: "/images/solution/hanjie2.png",
+  },
+  {
+    id: 6,
+    name: "打磨解决方案",
+    img1: "/images/solution/damo1.png",
+    img2: "/images/solution/damo2.png",
+  },
+];
+
+const selectItem = (item, index) => {
+  solutionIndex.value = index;
+};
+
+const selectImg = (item, index) => {
+  imgIndex.value = index;
 };
 
 
 
-onMounted(() => {
-
-});
-
-
+onMounted(() => { });
 </script>
 
 <style lang="scss" scoped>
@@ -57,9 +188,134 @@ onMounted(() => {
   width: 100%;
   min-height: 100vh;
   height: auto;
-  background-color: #F2F1F1;
 
+  .solution-title-bg {
+    width: 100%;
+    height: 30vh;
+    background: url("/images/solution/solutionBg.png") no-repeat center center;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
+    span {
+      font-size: 40px;
+      color: #16418a;
+      font-family: "SourceHanSansCN-Bold";
+      margin-left: 20%;
+    }
+  }
+
+  .solution-title {
+    // border: 1px solid red;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    font-family: "SourceHanSansCN-Regular";
+    margin: 6vh 0 1vh 0;
+  }
+
+  .solution-group {
+    width: 70%;
+    height: 30vh;
+    // border: 2px solid yellow;
+    padding: 2vh 0;
+
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+
+    .solution-item {
+      cursor: pointer;
+      height: 12vh;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: #f6f6f8;
+
+      img {
+        width: auto;
+        height: 35px;
+        margin-right: 10px;
+      }
+
+      span {
+        font-size: 22px;
+        font-family: "SourceHanSansCN-Medium";
+      }
+
+      .active-text {
+        color: #16418a;
+      }
+    }
+
+    .active-item {
+      border: 2px solid #16418a;
+    }
+  }
+
+  .solution-img-group {
+    margin-bottom: 6vh;
+    width: 70%;
+    height: 100%;
+    // border: 2px solid green;
+    padding: 2vh 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+
+    .solution-img-item {
+      cursor: pointer;
+      height: 40vh;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: #f6f6f8;
+
+      .solution-img {
+        position: relative;
+        // border: 3px solid red;
+
+        img {
+          width: 100%;
+          height: 40vh;
+        }
+
+        .img-text {
+          position: absolute;
+          width: 200px;
+          box-sizing: border-box;
+          text-align: center;
+          top: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 24px;
+          font-family: "SourceHanSansCN-Bold";
+          color: #FFFFFF;
+        }
+
+        .name-line {
+          position: absolute;
+          top: 70px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 70px;
+          height: 15px;
+          background-color: #FFFFFF;
+          border-radius: 30px;
+
+        }
+      }
+    }
+  }
 
   .nav-container,
   .footer-one,

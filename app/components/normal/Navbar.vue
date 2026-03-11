@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:08:52
+ * @LastEditTime: 2026-03-11 14:39:55
  * @FilePath: \nuxt-free-new\app\components\normal\Navbar.vue
  * @Description: 
 -->
@@ -50,10 +50,10 @@ const tabList = [
     name: "解决方案",
     link: "/solution",
   },
-  {
-    name: "联系我们",
-    link: "/contact",
-  },
+  // {
+  //   name: "联系我们",
+  //   link: "/contact",
+  // },
   {
     name: "资料下载",
     link: "/download",
@@ -100,7 +100,7 @@ onMounted(() => {
   height: 6vh;
 
   .nav-logo {
-    width: 33%;
+    width: 30%;
     height: 100%;
     // border: 2px solid green;
     display: flex;
@@ -118,7 +118,7 @@ onMounted(() => {
 
   .link-text-content {
     height: 100%;
-    width: 33%;
+    width: 40%;
     // border: 2px solid red;
     display: flex;
     flex-direction: row;
@@ -133,7 +133,7 @@ onMounted(() => {
   }
 
   .nav-empty {
-    width: 33%;
+    width: 30%;
     height: 100%;
     // border: 2px solid blue;
   }
