@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 16:29:59
+ * @LastEditTime: 2026-03-11 17:24:31
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\index.vue
  * @Description: 运动控制器页面  
 -->
@@ -104,30 +104,30 @@ import { ref, onMounted, nextTick, computed } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 
-// --- 数据与分页相关变量 ---
+//  数据与分页 
 const sportImgData = ref([]);       // 原始所有数据
 const groupedProductData = ref([]); // 处理后的二维数组：[ [第1页9条], [第2页...] ]
 const currentPage = ref(1);         // 当前页码
 const pageSize = 9;                 // 【修改】每页显示 9 个
 
-// 获取当前页展示的数据
+//  数据
 const currentPageData = computed(() => {
   return groupedProductData.value[currentPage.value - 1] || [];
 });
 
-// 获取总页数
+//  总页数
 const totalPages = computed(() => {
   return groupedProductData.value.length;
 });
 
-// 获取布局类名
+//  布局类名
 const getItemLayoutClass = (type) => {
   return type === 1 ? 'layout-type-1' : 'layout-type-2';
 };
 
-// --- 数据处理函数 ---
+//  数据处理函数 
 const makeProductList = () => {
-  const filteredList = sportImgData.value; // 这里不再过滤类型，展示所有，或者你可以按需过滤
+  const filteredList = sportImgData.value;
 
   // 分组 (每页 pageSize 条)
   const groups = [];
@@ -138,7 +138,7 @@ const makeProductList = () => {
   groupedProductData.value = groups;
 };
 
-// --- 分页切换函数 ---
+// 分页切换函数  
 const changePage = (pageNum) => {
   if (pageNum < 1 || pageNum > totalPages.value) return;
   currentPage.value = pageNum;
@@ -160,7 +160,7 @@ const changePage = (pageNum) => {
 onMounted(() => {
   // 初始化数据
   sportImgData.value = [
-    // --- 高性能系列 (itemType: 1) - 将使用左右布局 ---
+    //  itemType: 1  左右布局 
     {
       id: 1,
       type: 'ETHERCAT',
@@ -189,7 +189,7 @@ onMounted(() => {
       icon: "/images/sportProduct/4.png",
       itemType: 1,
     },
-    // --- 常规系列 (itemType: 2) - 将使用上下布局 ---
+    //  itemType: 2  上下布局 
     {
       id: 5,
       type: '常规',
@@ -225,7 +225,7 @@ onMounted(() => {
       icon: "/images/sportProduct/9.png",
       itemType: 2,
     },
-    // --- 第二页数据示例 (超过 9 个的部分) ---
+    //  第二页数据示例 (超过 9 个的部分) 
     {
       id: 10,
       type: '常规',
@@ -314,7 +314,7 @@ onMounted(() => {
 
           //  一行 3 个 
           grid-template-columns: repeat(3, 1fr);
-          gap: 3vh;
+          gap: 1.5vh;
           align-items: center;
           justify-content: center;
           box-sizing: border-box;
@@ -337,7 +337,7 @@ onMounted(() => {
             color: #999;
           }
 
-          // --- 通用 Item 样式 ---
+          //   Item    
           .product-item {
             width: 100%;
             min-height: 25vh;
@@ -353,12 +353,13 @@ onMounted(() => {
               box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             }
 
-            // --- 布局类型 1: 左右排列 (高性能系列) ---
+            //  布局类型 1: 左右排列  
             &.layout-type-1 {
               flex-direction: row;
               padding: 1.5vh;
               align-items: center;
-              height: 28vh; // 固定高度确保整齐
+              height: 28vh;
+              // border: 2px solid red;
 
               .left-img {
                 width: 45%;
@@ -409,13 +410,15 @@ onMounted(() => {
               }
             }
 
-            // --- 布局类型 2: 上下排列 (常规系列) ---
+            // --- 布局类型 2: 上下排列   
             &.layout-type-2 {
               flex-direction: column;
               padding: 2vh 1vh;
               align-items: center;
               justify-content: flex-end;
-              height: 32vh;
+              height: 28vh;
+              // border: 2px solid green;
+
 
               .top-img {
                 width: 80%;

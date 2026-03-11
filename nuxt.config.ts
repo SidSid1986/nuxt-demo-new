@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:38:18
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 13:58:55
+ * @LastEditTime: 2026-03-11 17:16:19
  * @FilePath: \nuxt-free-new\nuxt.config.ts
  * @Description: 
  */
@@ -81,7 +81,7 @@ export default defineNuxtConfig({
     }
   },
 
-  // 4. Vite 插件配置 (自动导入)
+  // 4. Vite 插件配置 自动导入
   vite: {
     plugins: [
       AutoImport({
@@ -112,7 +112,7 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       'postcss-pxtorem': {
-        rootValue: 10, // 必须与 JS 中的 baseFontSize 逻辑匹配
+        rootValue: 10, // 与 JS 中的 baseFontSize 逻辑匹配
         propList: ['*', '!border'],
         selectorBlackList: ['norem'],
         unitPrecision: 5,
@@ -124,7 +124,7 @@ export default defineNuxtConfig({
     }
   },
 
-  // 7. 其他推荐配置 (可选)
+
   compatibilityDate: '2024-11-01', // 建议添加兼容性日期
   devtools: { enabled: true }
 })
