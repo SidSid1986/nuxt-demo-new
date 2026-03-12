@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 17:24:31
+ * @LastEditTime: 2026-03-12 08:37:29
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\index.vue
  * @Description: 运动控制器页面  
 -->
@@ -47,13 +47,13 @@
 
                 <!-- 类型 2: 上下排列 (图片上，文字下 - 默认) -->
                 <template v-else>
-                  <div class="product-item-img top-img">
-                    <img :src="item.icon" :alt="item.name">
-                  </div>
                   <div class="product-item-info bottom-info">
                     <div class="product-item-type">{{ item.type }}</div>
                     <div class="product-item-name">{{ item.name }}</div>
                     <div class="more">了解更多</div>
+                  </div>
+                  <div class="product-item-img top-img">
+                    <img :src="item.icon" :alt="item.name">
                   </div>
                 </template>
 
@@ -66,29 +66,7 @@
             </div>
           </transition>
 
-          <!-- 分页控件   -->
-          <div class="pagination">
-            <button class="page-btn" @click="changePage(1)" :disabled="currentPage === 1">
-              首页
-            </button>
-            <button class="page-btn" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
-              上一页
-            </button>
-
-            <span class="page-numbers">
-              <span class="page-number" v-for="page in totalPages" :key="page" @click="changePage(page)"
-                :class="{ 'active': page === currentPage }">
-                {{ page }}
-              </span>
-            </span>
-
-            <button class="page-btn" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
-              下一页
-            </button>
-            <button class="page-btn" @click="changePage(totalPages)" :disabled="currentPage === totalPages">
-              尾页
-            </button>
-          </div>
+          <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
         </div>
       </div>
     </div>
@@ -103,6 +81,7 @@
 import { ref, onMounted, nextTick, computed } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
+import Pagination from "@/components/normal/Pagination.vue";
 
 //  数据与分页 
 const sportImgData = ref([]);       // 原始所有数据
@@ -222,7 +201,7 @@ onMounted(() => {
       id: 9,
       type: '常规',
       name: 'MC402',
-      icon: "/images/sportProduct/9.png",
+      icon: "/images/sportProduct/8.png",
       itemType: 2,
     },
     //  第二页数据示例 (超过 9 个的部分) 
@@ -230,7 +209,7 @@ onMounted(() => {
       id: 10,
       type: '常规',
       name: 'MC401',
-      icon: "/images/sportProduct/10.png",
+      icon: "/images/sportProduct/8.png",
       itemType: 2,
     },
     {
@@ -465,66 +444,6 @@ onMounted(() => {
                   border-radius: 20px;
                   font-size: 12px;
                 }
-              }
-            }
-          }
-        }
-
-        // 分页样式
-        .pagination {
-          display: flex;
-          align-items: center;
-          margin-top: 4vh;
-          margin-bottom: 4vh;
-
-          .page-btn {
-            width: 60px;
-            height: 30px;
-            border: 1px solid #0B44B4;
-            background-color: #fff;
-            color: #0B44B4;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin: 0 5px;
-            font-size: 14px;
-
-            &:hover:not(:disabled) {
-              background-color: #0B44B4;
-              color: #fff;
-            }
-
-            &:disabled {
-              color: #ccc;
-              border-color: #ccc;
-              cursor: not-allowed;
-            }
-          }
-
-          .page-numbers {
-            display: flex;
-            align-items: center;
-
-            .page-number {
-              width: 30px;
-              height: 30px;
-              text-align: center;
-              line-height: 30px;
-              background-color: #fff;
-              color: #0B44B4;
-              border-radius: 4px;
-              cursor: pointer;
-              transition: all 0.2s;
-              margin: 0 5px;
-              font-size: 14px;
-
-              &:hover {
-                background-color: #eef4ff;
-              }
-
-              &.active {
-                background-color: #0B44B4;
-                color: #fff;
               }
             }
           }
