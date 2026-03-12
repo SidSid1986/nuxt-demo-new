@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 15:40:31
+ * @LastEditTime: 2026-03-12 14:53:49
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -133,13 +133,15 @@ onMounted(() => {
 <style scoped lang="scss">
 .footer-two-container {
   width: 100%;
-  height: 50vh;
+  min-height: 50vh;
   // border: 4px solid red;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #181818;
+
+
 
   .footer-two-border {
     width: 60%;
@@ -151,8 +153,23 @@ onMounted(() => {
     align-items: center;
     color: #fff;
 
+    @media screen and (max-width: 1200px) {
+      width: 100%;
+    }
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      width: 100%;
+
+    }
+
+    @media screen and (max-width: 480px) {
+      flex-direction: column;
+      width: 100%;
+    }
+
     .footer-two-left {
-      width: 40%;
+      width: 25%;
       height: 100%;
       // border: 4px solid blue;
       display: flex;
@@ -160,6 +177,11 @@ onMounted(() => {
       justify-content: flex-start;
       align-items: center;
       padding-top: 5vh;
+
+      @media screen and (max-width: 480px) {
+        width: 100%;
+      }
+
 
       .left-line {
         width: 100%;
@@ -275,13 +297,28 @@ onMounted(() => {
       width: 60%;
       height: 100%;
       // border: 4px solid yellow;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      justify-items: center;
+      align-items: flex-start;
+
+
+
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media screen and (max-width: 480px) {
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+
 
       .right-line {
-        width: 20%;
+        width: 100%;
         height: 100%;
         // border: 4px solid pink;
         display: flex;
@@ -289,6 +326,8 @@ onMounted(() => {
         justify-content: flex-start;
         align-items: flex-start;
         padding-top: 5vh;
+
+
 
         .right-line-title {
           font-size: 16px;

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 09:46:57
+ * @LastEditTime: 2026-03-12 09:52:06
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -45,29 +45,7 @@
         </div>
 
         <!-- 分页控件  -->
-        <div class="pagination" v-if="totalPages > 1">
-          <button class="page-btn" @click="changePage(1)" :disabled="currentPage === 1">
-            首页
-          </button>
-          <button class="page-btn" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
-            上一页
-          </button>
-
-          <span class="page-info">
-            <!-- {{ currentPage }} / {{ totalPages }} -->
-            <span class="page-number" v-for="page in totalPages" :key="page" @click="changePage(page)"
-              :class="{ 'active': page === currentPage }">
-              {{ page }}
-            </span>
-          </span>
-
-          <button class="page-btn" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
-            下一页
-          </button>
-          <button class="page-btn" @click="changePage(totalPages)" :disabled="currentPage === totalPages">
-            尾页
-          </button>
-        </div>
+        <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
       </div>
     </div>
 
@@ -86,6 +64,7 @@ import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
+import Pagination from "@/components/normal/Pagination.vue";
 
 
 const router = useRouter();
@@ -201,6 +180,17 @@ const changePage = (pageNum) => {
   //  页码不能小于1，不能大于总页数
   if (pageNum < 1 || pageNum > totalPages.value) return;
   currentPage.value = pageNum;
+  nextTick(() => {
+    setTimeout(() => {
+      const contentArea = document.querySelector('.news-list-container');
+      if (contentArea) {
+        contentArea.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 100);
+  });
 };
 
 onMounted(() => {
@@ -320,15 +310,17 @@ onMounted(() => {
 
   // 新闻列表容器 
   .news-list-container {
-    margin-top: 4vh;
+    // border: 2px solid red;
+    margin: 3vh 0 6vh 0;
+    padding-top: 1vh;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     min-height: 60vh;
-    margin-bottom: 5vh;
+
     box-sizing: border-box;
 
     .news-item-card {
@@ -405,68 +397,8 @@ onMounted(() => {
       }
     }
 
-    // 分页控件样式
-    .pagination {
-      display: flex;
-      align-items: center;
-      margin-top: 2vh;
-      // border: 2px solid green;
 
-      .page-btn {
-        width: 60px;
-        height: 30px;
-        border: 1px solid #0B44B4;
-        background-color: #fff;
-        color: #0B44B4;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.2s;
-        margin: 0 5px;
 
-        &:hover:not(:disabled) {
-          background-color: #0B44B4;
-          color: #fff;
-        }
-
-        &:disabled {
-          color: #ccc;
-          border-color: #ccc;
-          cursor: not-allowed;
-        }
-      }
-
-      .page-info {
-
-        color: #333;
-        display: flex;
-        align-items: center;
-
-        .page-number {
-          width: 30px;
-          height: 30px;
-          text-align: center;
-          line-height: 30px;
-          border: 1px solid #0B44B4;
-          background-color: #fff;
-          color: #0B44B4;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: all 0.2s;
-          margin: 0 5px;
-          font-size: 14px;
-
-          &:hover {
-            background-color: #618de5;
-            color: #fff;
-          }
-
-          &.active {
-            background-color: #0B44B4;
-            color: #fff;
-          }
-        }
-      }
-    }
   }
 
   .nav-container,

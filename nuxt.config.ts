@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:38:18
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 17:16:19
+ * @LastEditTime: 2026-03-12 14:34:51
  * @FilePath: \nuxt-free-new\nuxt.config.ts
  * @Description: 
  */
@@ -117,7 +117,7 @@ export default defineNuxtConfig({
         selectorBlackList: ['norem'],
         unitPrecision: 5,
         replace: true,
-        mediaQuery: true,
+        mediaQuery: false,// 不处理媒体查询中的 px
         minPixelValue: 2
       },
       autoprefixer: {}

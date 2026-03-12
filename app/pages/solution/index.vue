@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 14:33:18
+ * @LastEditTime: 2026-03-12 14:39:31
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -176,7 +176,19 @@ const selectImg = (item, index) => {
 
 
 
-onMounted(() => { });
+onMounted(() => {
+  console.log('window.innerWidth:', window.innerWidth);
+
+  const checkMQ = () => {
+    console.log('1200px MQ:', window.matchMedia('(max-width: 1200px)').matches);
+    console.log('768px MQ:', window.matchMedia('(max-width: 768px)').matches);
+    console.log('480px MQ:', window.matchMedia('(max-width: 480px)').matches);
+  };
+
+  checkMQ();
+
+  window.addEventListener('resize', checkMQ);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -217,15 +229,27 @@ onMounted(() => { });
 
   .solution-group {
     width: 70%;
-    height: 30vh;
+    height: 100%;
     // border: 2px solid yellow;
     padding: 2vh 0;
-
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     justify-items: center;
-    align-items: center;
+    align-items: flex-start;
+
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 480px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
 
     .solution-item {
       cursor: pointer;
@@ -259,16 +283,26 @@ onMounted(() => { });
   }
 
   .solution-img-group {
-    margin-bottom: 6vh;
     width: 70%;
     height: 100%;
-    // border: 2px solid green;
-    padding: 2vh 0;
+
+    // border: 2px solid yellow;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     justify-items: center;
     align-items: center;
+    margin-bottom: 6vh;
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+
 
     .solution-img-item {
       cursor: pointer;
@@ -281,46 +315,62 @@ onMounted(() => { });
       background-color: #f6f6f8;
 
       .solution-img {
+        // border: 2px solid yellow;
+        height: 100%;
+        width: 100%;
         position: relative;
-        // border: 3px solid red;
 
         img {
           width: 100%;
-          height: 40vh;
+          height: 100%;
+          margin-right: 10px;
         }
 
         .img-text {
+          width: 100%;
           position: absolute;
-          width: 200px;
-          box-sizing: border-box;
-          text-align: center;
-          top: 30px;
+          top: 40px;
           left: 50%;
           transform: translateX(-50%);
-          font-size: 24px;
+          height: 20px;
+          color: #fff;
+          font-size: 22px;
           font-family: "SourceHanSansCN-Bold";
-          color: #FFFFFF;
+          text-align: center;
+          line-height: 20px;
         }
 
         .name-line {
           position: absolute;
+          width: 60px;
+          height: 15px;
+          border-radius: 20px;
+          background-color: #fff;
           top: 70px;
           left: 50%;
           transform: translateX(-50%);
-          width: 70px;
-          height: 15px;
-          background-color: #FFFFFF;
-          border-radius: 30px;
-
         }
+
+
       }
+
+
+
+    }
+
+    .active-item {
+      border: 2px solid #16418a;
     }
   }
+
+
 
   .nav-container,
   .footer-one,
   .footer-two {
     width: 100%;
   }
+
+
 }
 </style>
