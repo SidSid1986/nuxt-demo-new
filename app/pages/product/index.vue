@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 09:44:38
+ * @LastEditTime: 2026-03-12 16:38:53
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -37,7 +37,8 @@
             <div :key="`${tabActiveIndex}-${currentPage}`" class="content-item-container">
 
               <!-- 遍历当前页的数据 currentPageData  -->
-              <div v-for="(item, index) in currentPageData" :key="item.id" class="product-item">
+              <div @click="handleClick(item)" v-for="(item, index) in currentPageData" :key="item.id"
+                class="product-item">
                 <div class="product-item-info">
                   <div class="product-item-type">{{ item.typeName }}</div>
                   <div class="product-item-name">{{ item.name }}</div>
@@ -73,6 +74,8 @@ import { ref, onMounted, nextTick, reactive, onBeforeUnmount, computed } from "v
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 
 const tabActiveIndex = ref(0);
@@ -214,6 +217,13 @@ const changePage = (pageNum) => {
     }, 500);
   });
 };
+
+const handleClick = (item) => {
+  console.log(item);
+  router.push(`/product/${item.id}`);
+};
+
+
 
 onMounted(() => {
   // 初始化模拟数据
@@ -432,6 +442,11 @@ onBeforeUnmount(() => {
             align-items: center;
             background-color: #F6F6F8;
             cursor: pointer;
+
+            &:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+            }
 
             .product-item-info {
               display: flex;

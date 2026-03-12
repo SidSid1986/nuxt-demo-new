@@ -2,14 +2,14 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:11:31
+ * @LastEditTime: 2026-03-12 16:35:06
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
 <template>
   <div class="product-container">
     <div class="product-item-border">
-      <div class="product-item" v-for="item in productArr" :key="item.id">
+      <div @click="handleClick(item)" class="product-item" v-for="item in productArr" :key="item.id">
         <div class="product-info">
           <div class="product-type">{{ item.type }}</div>
           <div class="product-name">{{ item.name }}</div>
@@ -27,6 +27,9 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const productArr = ref([]);
 
@@ -47,6 +50,11 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+const handleClick = (item) => {
+  console.log(item);
+  router.push(`/product/${item.id}`);
+};
 
 
 
@@ -77,23 +85,25 @@ onMounted(() => {
     height: 100%;
     // border: 2px solid yellow;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1vh;
 
     .product-item {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      width: 33%;
-      height: 49%;
+
       // border: 2px solid red;
       box-sizing: border-box;
       background-color: #F6F6F8;
       cursor: pointer;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+      }
 
       .product-info {
         width: 100%;

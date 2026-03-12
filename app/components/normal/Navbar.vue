@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2025-10-24 10:04:15
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-11 14:39:55
+ * @LastEditTime: 2026-03-12 15:25:57
  * @FilePath: \nuxt-free-new\app\components\normal\Navbar.vue
  * @Description: 
 -->
@@ -97,7 +97,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  height: 6vh;
+  min-height: 6vh;
 
   .nav-logo {
     width: 30%;
@@ -136,6 +136,59 @@ onMounted(() => {
     width: 30%;
     height: 100%;
     // border: 2px solid blue;
+
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+
+    .nav-logo {
+      width: 20%;
+    }
+
+    .link-text-content {
+      width: 80%;
+    }
+
+    .nav-empty {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+
+    .nav-logo {
+      width: 20%;
+    }
+
+    .link-text-content {
+      width: 80%;
+    }
+
+    .nav-empty {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 408px) {
+    width: 100%;
+
+    // border: 1px solid red;
+
+    .nav-logo {
+      display: none;
+    }
+
+    .link-text-content {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .nav-empty {
+      display: none;
+    }
   }
 }
 

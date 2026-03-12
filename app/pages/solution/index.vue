@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 14:39:31
+ * @LastEditTime: 2026-03-12 16:40:15
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -177,17 +177,9 @@ const selectImg = (item, index) => {
 
 
 onMounted(() => {
-  console.log('window.innerWidth:', window.innerWidth);
 
-  const checkMQ = () => {
-    console.log('1200px MQ:', window.matchMedia('(max-width: 1200px)').matches);
-    console.log('768px MQ:', window.matchMedia('(max-width: 768px)').matches);
-    console.log('480px MQ:', window.matchMedia('(max-width: 480px)').matches);
-  };
 
-  checkMQ();
 
-  window.addEventListener('resize', checkMQ);
 });
 </script>
 
@@ -313,6 +305,11 @@ onMounted(() => {
       justify-content: center;
       align-items: center;
       background-color: #f6f6f8;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+      }
 
       .solution-img {
         // border: 2px solid yellow;
