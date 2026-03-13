@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 16:33:34
+ * @LastEditTime: 2026-03-12 16:44:54
  * @FilePath: \nuxt-free-new\app\components\News.vue
  * @Description: 
 -->
@@ -142,6 +142,7 @@ onMounted(() => {
         &:hover {
           transform: translateY(-5px);
           box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         img {

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 08:37:29
+ * @LastEditTime: 2026-03-13 13:39:15
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\index.vue
  * @Description: 运动控制器页面  
 -->
@@ -21,7 +21,6 @@
         <div class="product-intro">
           TRIO 运动控制器支持多达 128 轴带数字 I/O 的伺服或步进及扩展模块，如单个主站控制的 HMI。控制器可与独立程序搭配使用，或从外部计算机发送指令。
         </div>
-
         <!-- 内容区域 -->
         <div class="tab-content-area">
           <transition name="fade" mode="out-in">
@@ -330,6 +329,7 @@ onMounted(() => {
             &:hover {
               transform: translateY(-5px);
               box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
 
             //  布局类型 1: 左右排列  

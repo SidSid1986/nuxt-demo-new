@@ -103,6 +103,7 @@ onMounted(() => {
       &:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
 
       .product-info {
