@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-14 13:35:01
+ * @LastEditTime: 2026-03-14 15:16:41
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -57,19 +57,19 @@
           <span class="right-line-title">产品中心</span>
           <span class="right-line-item" @click="goSportProduct()">运动控制器</span>
           <span class="right-line-item">伺服驱动器</span>
-          <span class="right-line-item">机器人</span>
+          <span class="right-line-item " @click="goRobotProduct()">机器人</span>
         </div>
 
         <div class="right-line">
           <span class="right-line-title">新闻中心</span>
-          <span class="right-line-item">企业行业新闻</span>
+          <span class="right-line-item" @click="goNews()">企业行业新闻</span>
           <!-- <span class="right-line-item">企业新闻</span>
           <span class="right-line-item">行业新闻</span> -->
         </div>
 
         <div class="right-line">
           <span class="right-line-title">服务支持</span>
-          <span class="right-line-item">资料下载</span>
+          <span class="right-line-item" @click="goDownload()">资料下载</span>
           <!-- <span class="right-line-item">运动控制器</span>
           <span class="right-line-item">IPC控制器</span>
           <span class="right-line-item">运动控制PLC</span>
@@ -84,7 +84,7 @@
 
         <div class="right-line">
           <span class="right-line-title">解决方案</span>
-          <span class="right-line-item">行业解决方案</span>
+          <span class="right-line-item" @click="goIndustrySolution()">行业解决方案</span>
           <!-- <span class="right-line-item">运动控制器</span>
           <span class="right-line-item">IPC控制器</span>
           <span class="right-line-item">运动控制PLC</span>
@@ -124,6 +124,22 @@ const router = useRouter();
 
 const goSportProduct = () => {
   router.push('/sportProduct');
+};
+
+const goRobotProduct = () => {
+  router.push('/product');
+};
+
+const goNews = () => {
+  router.push('/news');
+};
+
+const goDownload = () => {
+  router.push('/download');
+};
+
+const goIndustrySolution = () => {
+  router.push('/solution');
 };
 
 
