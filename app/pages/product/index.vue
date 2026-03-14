@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 16:44:11
+ * @LastEditTime: 2026-03-14 10:51:23
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -57,7 +57,6 @@
           </transition>
 
           <!--   分页控件 总页数 > 1   -->
-
           <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
         </div>
       </div>
