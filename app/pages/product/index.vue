@@ -289,14 +289,15 @@ onBeforeUnmount(() => {
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      padding-left: 350px;
+
 
       span {
+        // border: 1px solid red;
         font-size: 40px;
         color: #fff;
         font-weight: bold;
         font-family: "SourceHanSansCN-Bold";
-
+        margin-left: 350px;
       }
     }
 
