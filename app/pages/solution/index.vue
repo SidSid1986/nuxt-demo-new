@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 16:40:15
+ * @LastEditTime: 2026-03-13 16:51:29
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -28,8 +28,8 @@
 
     <div class="solution-title">工艺应用解决方案</div>
     <div class="solution-img-group">
-      <div v-for="(item, index) in groupImgData" :key="item.id" class="solution-img-item"
-        @click="selectImg(item, index)">
+      <div v-for="(item, index) in groupImgData" @click="selectPic(item, index)" :key="item.id"
+        class="solution-img-item" :class="{ 'active-img': index == imgIndex }">
         <div class="solution-img">
           <img :src="index == imgIndex ? item.img2 : item.img1" alt="" />
           <span class="img-text">
@@ -133,36 +133,42 @@ const groupImgData = [
     name: "折弯解决方案",
     img1: "/images/solution/zhewan1.png",
     img2: "/images/solution/zhewan2.png",
+    fid: 11,
   },
   {
     id: 2,
     name: "张力控制解决方案",
     img1: "/images/solution/zhangli1.png",
     img2: "/images/solution/zhangli2.png",
+    fid: 11,
   },
   {
     id: 3,
     name: "压铸解决方案",
     img1: "/images/solution/yazhu1.png",
     img2: "/images/solution/yazhu2.png",
+    fid: 11,
   },
   {
     id: 4,
     name: "码垛解决方案",
     img1: "/images/solution/maduo1.png",
     img2: "/images/solution/maduo2.png",
+    fid: 11,
   },
   {
     id: 5,
     name: "焊接解决方案",
     img1: "/images/solution/hanjie1.png",
     img2: "/images/solution/hanjie2.png",
+    fid: 11,
   },
   {
     id: 6,
     name: "打磨解决方案",
     img1: "/images/solution/damo1.png",
     img2: "/images/solution/damo2.png",
+    fid: 11,
   },
 ];
 
@@ -170,8 +176,10 @@ const selectItem = (item, index) => {
   solutionIndex.value = index;
 };
 
-const selectImg = (item, index) => {
+const selectPic = (item, index) => {
   imgIndex.value = index;
+  console.log(item);
+  router.push(`/solution/solutionDetail?fid=${item.fid}&id=${item.id}`);
 };
 
 
