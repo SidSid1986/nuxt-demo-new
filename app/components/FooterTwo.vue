@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-14 15:16:41
+ * @LastEditTime: 2026-03-16 13:32:19
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -188,7 +188,7 @@ onMounted(() => {
     }
 
     .footer-two-left {
-      width: 25%;
+      width: 35%;
       height: 100%;
       // border: 4px solid blue;
       display: flex;

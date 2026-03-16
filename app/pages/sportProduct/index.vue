@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-13 13:39:15
+ * @LastEditTime: 2026-03-16 09:33:29
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\index.vue
  * @Description: 运动控制器页面  
 -->
@@ -29,7 +29,7 @@
 
               <!-- 遍历当前页的数据 (每组 9 个) -->
               <div v-for="(item, index) in currentPageData" :key="item.id" class="product-item"
-                :class="getItemLayoutClass(item.itemType)">
+                :class="getItemLayoutClass(item.itemType)" @click="toSportProductDetail(item.id)">
                 <!-- 布局内容根据 itemType 动态变化 -->
 
                 <!-- 类型 1: 左右排列 (图片左，文字右) -->
@@ -81,6 +81,8 @@ import { ref, onMounted, nextTick, computed } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 //  数据与分页 
 const sportImgData = ref([]);       // 原始所有数据
@@ -102,6 +104,10 @@ const totalPages = computed(() => {
 const getItemLayoutClass = (type) => {
   return type === 1 ? 'layout-type-1' : 'layout-type-2';
 };
+
+const toSportProductDetail = (id) => {
+  router.push(`/sportProduct/${id}`);
+}
 
 //  数据处理函数 
 const makeProductList = () => {
