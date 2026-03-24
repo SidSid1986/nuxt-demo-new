@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-13 16:51:29
+ * @LastEditTime: 2026-03-18 16:16:09
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -129,46 +129,46 @@ const groupData = [
 
 const groupImgData = [
   {
-    id: 1,
+    id: 11,
     name: "折弯解决方案",
     img1: "/images/solution/zhewan1.png",
     img2: "/images/solution/zhewan2.png",
-    fid: 11,
+    fid: 1,
   },
   {
-    id: 2,
+    id: 22,
     name: "张力控制解决方案",
     img1: "/images/solution/zhangli1.png",
     img2: "/images/solution/zhangli2.png",
-    fid: 11,
+    fid: 1,
   },
   {
-    id: 3,
+    id: 33,
     name: "压铸解决方案",
     img1: "/images/solution/yazhu1.png",
     img2: "/images/solution/yazhu2.png",
-    fid: 11,
+    fid: 1,
   },
   {
-    id: 4,
+    id: 44,
     name: "码垛解决方案",
     img1: "/images/solution/maduo1.png",
     img2: "/images/solution/maduo2.png",
-    fid: 11,
+    fid: 1,
   },
   {
-    id: 5,
+    id: 55,
     name: "焊接解决方案",
     img1: "/images/solution/hanjie1.png",
     img2: "/images/solution/hanjie2.png",
-    fid: 11,
+    fid: 1,
   },
   {
-    id: 6,
+    id: 66,
     name: "打磨解决方案",
     img1: "/images/solution/damo1.png",
     img2: "/images/solution/damo2.png",
-    fid: 11,
+    fid: 1,
   },
 ];
 
@@ -260,6 +260,7 @@ onMounted(() => {
       justify-content: center;
       align-items: center;
       background-color: #f6f6f8;
+      box-sizing: border-box;
 
       img {
         width: auto;

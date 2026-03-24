@@ -4,7 +4,7 @@
       :initial-slide="0" :loop="true" :autoplay="autoplayOptions" :speed="800" @swiper="onSwiper"
       @slideChange="onSlideChange" :init="treatData.length > 0">
       <swiper-slide class="page-slide" v-for="(pageData, pageIndex) in treatData" :key="`page-${pageIndex}`">
-        <img :src="pageData.url" alt="轮播图" loading="lazy" @error="handleImgError(pageData)" />
+        <img :src="pageData.img_url" alt="轮播图" loading="lazy" @error="handleImgError(pageData)" />
       </swiper-slide>
     </swiper>
     <div class="swiper-button-container">
@@ -52,6 +52,8 @@ watch(
   async (newVal) => {
     // await nextTick();
     treatData.value = newVal || [];
+
+    console.log(treatData.value);
 
     if (swiperInstance.value) {
       swiperInstance.value.autoplay.stop();

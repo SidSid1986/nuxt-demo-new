@@ -53,14 +53,16 @@ import News from "@/components/News.vue";
 import FooterOne from "@/components/FooterOne.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 
+import { homeImage } from "@/server/common";
+
 
 
 // 轮播数据
 
 const swiperData = ref([
-  { id: 3, url: "/images/swiper/v3.png" },
-  { id: 1, url: "/images/swiper/v1.png" },
-  { id: 2, url: "/images/swiper/v2.png" },
+  // { id: 3, url: "/images/swiper/v3.png" },
+  // { id: 1, url: "/images/swiper/v1.png" },
+  // { id: 2, url: "/images/swiper/v2.png" },
 ]);
 const testIndex = ref(-1);
 
@@ -226,7 +228,20 @@ const scrollToTop = () => {
   isShowBackTop.value = false;
 };
 
+
+
+
+//获取首页图片
+const getHomeImage = async () => {
+  const res = await homeImage();
+  if (res.code === 200) {
+    swiperData.value = res.data.banners;
+    console.log(swiperData.value);
+  }
+};
+
 onMounted(async () => {
+  await getHomeImage();
   scrollHandler = handleScroll;
   window.addEventListener("scroll", scrollHandler, {
     capture: true,

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-16 13:52:42
+ * @LastEditTime: 2026-03-18 14:37:09
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\[id].vue
  * @Description: 
 -->
@@ -63,8 +63,6 @@
     <div class="footer-two">
       <FooterTwo />
     </div>
-
-
   </div>
 </template>
 

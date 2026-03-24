@@ -1,47 +1,58 @@
-/*
- * @Author: Sid Li
- * @Date: 2026-03-03 14:38:18
- * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 14:34:51
- * @FilePath: \nuxt-free-new\nuxt.config.ts
- * @Description: 
- */
 // nuxt.config.ts
+import { defineNuxtConfig } from 'nuxt/config';
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+
+
 export default defineNuxtConfig({
 
-  // 开发服务器配置
+  // 1. 开发服务器基础配置 (只留 host/port)
   devServer: {
-    host: '0.0.0.0', // 监听所有网络接口 
-    port: 3000 // 端口可自定义，如 8080
+    host: '0.0.0.0',
+    port: 3000
   },
 
-  // 1. 全局样式
+
+  // nitro: {
+  //   devProxy: {
+  //     "/api": {
+  //       target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
+  //       changeOrigin: true,
+  //       prependPath: false, //true就是target加上api，也就是api/api/ false就是不加
+
+
+  //     },
+  //     "/static": {
+  //       target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
+  //       changeOrigin: true,
+  //       prependPath: false, //true就是target加上api，也就是api/api/ false就是不加
+
+  //     },
+  //   },
+  // },
+
+
   css: [
     'element-plus/dist/index.css',
     'element-plus/theme-chalk/display.css',
   ],
 
-  // 2. 插件配置
+  // (此处省略中间未变动的代码，保持你原有的即可)
   plugins: [
     '~/plugins/element-plus.ts',
     '~/plugins/rem-adaptation.client.js'
   ],
-
-  // 3. App 配置  
   app: {
     head: {
       script: [
         {
-          src: '/rem-init.js', // 指向 public/rem-init.js
-          tagPosition: 'head', // 放在 head 中，阻塞渲染直到执行完毕
-          tagPriority: 'high'  // 高优先级加载
+          src: '/rem-init.js',
+          tagPosition: 'head',
+          tagPriority: 'high'
         }
       ],
-
       style: [
         {
           textContent: `
@@ -74,15 +85,25 @@ export default defineNuxtConfig({
               font-display: block;
             }  
           `,
-
         }
       ],
-
     }
   },
-
-  // 4. Vite 插件配置 自动导入
   vite: {
+     server: {
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:8000',
+          changeOrigin: true,
+          ws: false,
+        },
+        '/static': {
+          target: 'http://127.0.0.1:8000',
+          changeOrigin: true,
+          ws: false,
+        }
+      }
+    },
     plugins: [
       AutoImport({
         resolvers: [ElementPlusResolver()]
@@ -90,41 +111,35 @@ export default defineNuxtConfig({
       Components({
         resolvers: [
           ElementPlusResolver({
-            importStyle: false // 样式已由 css 数组全局引入
+            importStyle: false
           })
         ]
       })
     ]
   },
-
-  // 5. 运行时配置
   runtimeConfig: {
     private: {
       backendUrl: '',
       internalKey: ''
     },
     public: {
-      apiBase: ''
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000'
     }
   },
-
-  // 6. PostCSS 配置 (PX 转 REM)
   postcss: {
     plugins: {
       'postcss-pxtorem': {
-        rootValue: 10, // 与 JS 中的 baseFontSize 逻辑匹配
+        rootValue: 10,
         propList: ['*', '!border'],
         selectorBlackList: ['norem'],
         unitPrecision: 5,
         replace: true,
-        mediaQuery: false,// 不处理媒体查询中的 px
+        mediaQuery: false,
         minPixelValue: 2
       },
       autoprefixer: {}
     }
   },
-
-
-  compatibilityDate: '2024-11-01', // 建议添加兼容性日期
+  compatibilityDate: '2024-11-01',
   devtools: { enabled: true }
 })
