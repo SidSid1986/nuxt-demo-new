@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-12 16:35:06
+ * @LastEditTime: 2026-03-24 18:34:53
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
@@ -11,12 +11,12 @@
     <div class="product-item-border">
       <div @click="handleClick(item)" class="product-item" v-for="item in productArr" :key="item.id">
         <div class="product-info">
-          <div class="product-type">{{ item.type }}</div>
-          <div class="product-name">{{ item.name }}</div>
+          <div class="product-type">{{ item.productType }}</div>
+          <div class="product-name">{{ item.productName }}</div>
           <div class="product-more">了解更多</div>
         </div>
         <div class="product-img">
-          <img :src="item.img" alt="">
+          <img :src="item.mainImageUrl" alt="">
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@ onMounted(() => {
 
   .product-item-border {
     width: 80%;
-    height: 100%;
+    height: auto;
     // border: 2px solid yellow;
     box-sizing: border-box;
     display: grid;
@@ -94,6 +94,7 @@ onMounted(() => {
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
+      height:100%;
 
       // border: 2px solid red;
       box-sizing: border-box;

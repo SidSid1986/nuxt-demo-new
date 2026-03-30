@@ -15,25 +15,6 @@ export default defineNuxtConfig({
   },
 
 
-  // nitro: {
-  //   devProxy: {
-  //     "/api": {
-  //       target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
-  //       changeOrigin: true,
-  //       prependPath: false, //true就是target加上api，也就是api/api/ false就是不加
-
-
-  //     },
-  //     "/static": {
-  //       target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
-  //       changeOrigin: true,
-  //       prependPath: false, //true就是target加上api，也就是api/api/ false就是不加
-
-  //     },
-  //   },
-  // },
-
-
   css: [
     'element-plus/dist/index.css',
     'element-plus/theme-chalk/display.css',
@@ -90,15 +71,15 @@ export default defineNuxtConfig({
     }
   },
   vite: {
-     server: {
+    server: {
       proxy: {
         '/api': {
-          target: 'http://127.0.0.1:8000',
+          target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
           changeOrigin: true,
           ws: false,
         },
         '/static': {
-          target: 'http://127.0.0.1:8000',
+          target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
           changeOrigin: true,
           ws: false,
         }

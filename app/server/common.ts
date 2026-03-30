@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-24 10:34:06
+ * @LastEditTime: 2026-03-30 15:10:11
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -25,6 +25,20 @@ export function uploadImageCommon(data: FormData) {
 
 export function homeImage() {
   return request('api/home/index_images', {
+    method: 'get',
+  });
+}
+
+//product list
+export function productList() {
+  return request('api/product/list', {
+    method: 'get',
+  });
+}
+
+//news list
+export function newsList() {
+  return request('api/news/list', {
     method: 'get',
   });
 }

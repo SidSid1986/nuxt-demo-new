@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-10 17:12:16
+ * @LastEditTime: 2026-03-30 14:21:17
  * @FilePath: \nuxt-free-new\app\components\MainSelect.vue
  * @Description: 
 -->
@@ -16,7 +16,7 @@
       <div :class="index == 1 ? 'select-img-item-center' : 'select-img-item'" v-for="(item, index) in selectArr"
         :key="item.id">
         <div class="select-img-item-content">
-          <img alt="选择图片" :src="item.pic" />
+          <img alt="选择图片" :src="item.img_url" />
           <div class="select-img-item-text-container">
             <div class="select-img-item-name">{{ item.name }}</div>
             <div class="select-img-item-text">{{ item.text }}</div>

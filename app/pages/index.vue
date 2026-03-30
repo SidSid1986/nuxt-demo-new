@@ -24,7 +24,7 @@
     </div>
 
     <div class="footer-one">
-      <FooterOne />
+      <FooterOne :footerOneData="footerOneData" />
     </div>
 
     <div class="footer-two">
@@ -53,7 +53,7 @@ import News from "@/components/News.vue";
 import FooterOne from "@/components/FooterOne.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 
-import { homeImage } from "@/server/common";
+import { homeImage, productList, newsList } from "@/server/common";
 
 
 
@@ -69,36 +69,34 @@ const testIndex = ref(-1);
 
 // 产品中心
 const productData = ref([
-  { id: 1, type: 'SCARA系列', name: "IER50-1200-SR", img: '/images/product/1.png' },
-  { id: 2, type: 'SCARA系列', name: "iER20-1000-SR-UNO", img: '/images/product/1.png' },
-  { id: 3, type: 'SCARA系列', name: "iER20-1000-SR-HI", img: '/images/product/2.png' },
-  { id: 4, type: '中小负载系列', name: "iER70-2100", img: '/images/product/3.png' },
-  { id: 5, type: '中小负载系列', name: "iER50-2700", img: '/images/product/3.png' },
-  { id: 6, type: '中小负载系列', name: "iER50-2100", img: '/images/product/3.png' },
+  // { id: 1, type: 'SCARA系列', name: "IER50-1200-SR", img: '/images/product/1.png' },
+  // { id: 2, type: 'SCARA系列', name: "iER20-1000-SR-UNO", img: '/images/product/1.png' },
+  // { id: 3, type: 'SCARA系列', name: "iER20-1000-SR-HI", img: '/images/product/2.png' },
+  // { id: 4, type: '中小负载系列', name: "iER70-2100", img: '/images/product/3.png' },
+  // { id: 5, type: '中小负载系列', name: "iER50-2700", img: '/images/product/3.png' },
+  // { id: 6, type: '中小负载系列', name: "iER50-2100", img: '/images/product/3.png' },
 ]);
 
 //共同选择
 const selectContentItems = ref([
-  {
-    id: 1,
-    name: "",
-    text: "",
-    pic: "/images/select/s1.png",
-  },
-  {
-    id: 2,
-    name: "光伏行业",
-    text: "锂电行业",
-    pic: "/images/select/s2.png",
-  },
-  {
-    id: 3,
-    name: "",
-    text: "",
-    pic: "/images/select/s3.png",
-  },
-
-
+  // {
+  //   id: 1,
+  //   name: "",
+  //   text: "",
+  //   img_url: "/images/select/s1.png",
+  // },
+  // {
+  //   id: 2,
+  //   name: "光伏行业",
+  //   text: "锂电行业",
+  //   img_url: "/images/select/s2.png",
+  // },
+  // {
+  //   id: 3,
+  //   name: "",
+  //   text: "",
+  //   img_url: "/images/select/s3.png",
+  // },
 ]);
 
 //行业top
@@ -178,32 +176,34 @@ const topData = ref([
   }]
 ])
 
+const footerOneData = ref({});
+
 //新闻
 const newsContentItems = ref([
-  {
-    id: 1,
-    title: " 阜瑞快讯|埃斯顿机器人全国联保网络正式启动，华北授权网点高效服务保驾护航！",
-    name:
-      "华北区域唯一授权联保网点烟台阜瑞智能装备有限公司|以山东为枢纽，辐射京津冀、晋蒙及东三省。阜瑞智能作为深耕工业机器人研发与高端系统集成的高新技术企业汇聚了来自机械制造、数控技术、运动伺服控制及自动化领域的顶尖技术团队，具备行业领先的自主研发能力和深度定制的行业解决方案设计实力，致力于为客户解决各类自动化应用技术难题。2025年战略升级后，其推出“安心+高效”双保险服务——30分钟极速响应、全...",
-    pic: "/images/news/n1.png",
-    date: "2025-12-06"
-  },
-  {
-    id: 2,
-    title: " 阜瑞快讯 | 埃斯顿授权阜瑞智能为华北区域指定联保网点",
-    name:
-      "华北区域唯一授权联保网点烟台阜瑞智能装备有限公司|以山东为枢纽，辐射京津冀、晋蒙及东三省。阜瑞智能作为深耕工业机器人研发与高端系统集成的高新技术企业汇聚了来自机械制造、数控技术、运动伺服控制及自动化领域的顶尖技术团队，具备行业领先的自主研发能力和深度定制的行业解决方案设计实力，致力于为客户解决各类自动化应用技术难题。2025年战略升级后，其推出“安心+高效”双保险服务——30分钟极速响应、全...",
-    pic: "/images/news/n1.png",
-    date: "2025-12-06"
-  },
-  {
-    id: 3,
-    title: " 方案速递|储能柜门板打磨解决方案",
-    name:
-      "针对储能柜门板的打磨方案，通过“机器人+智能感知+工艺集成”的模式，解决了传统人工打磨效率低、质量不稳定的痛点，同时兼顾了灵活性与可靠性，是新能源储能装备制造领域升级的关键赋能技术。未来，随着储能柜向大型化、轻量化发展，该方案还可进一步融合AI自主学习，实现更智能的“无人化”打磨。一、打磨前VS打磨后二、打磨工艺要求01精度控制力控精度：实时感知并精准调节打磨压力，确保不过切或欠切。平面度要...",
-    pic: "/images/news/n1.png",
-    date: "2025-12-06"
-  },
+  // {
+  //   id: 1,
+  //   title: " 阜瑞快讯|埃斯顿机器人全国联保网络正式启动，华北授权网点高效服务保驾护航！",
+  //   name:
+  //     "华北区域唯一授权联保网点烟台阜瑞智能装备有限公司|以山东为枢纽，辐射京津冀、晋蒙及东三省。阜瑞智能作为深耕工业机器人研发与高端系统集成的高新技术企业汇聚了来自机械制造、数控技术、运动伺服控制及自动化领域的顶尖技术团队，具备行业领先的自主研发能力和深度定制的行业解决方案设计实力，致力于为客户解决各类自动化应用技术难题。2025年战略升级后，其推出“安心+高效”双保险服务——30分钟极速响应、全...",
+  //   pic: "/images/news/n1.png",
+  //   date: "2025-12-06"
+  // },
+  // {
+  //   id: 2,
+  //   title: " 阜瑞快讯 | 埃斯顿授权阜瑞智能为华北区域指定联保网点",
+  //   name:
+  //     "华北区域唯一授权联保网点烟台阜瑞智能装备有限公司|以山东为枢纽，辐射京津冀、晋蒙及东三省。阜瑞智能作为深耕工业机器人研发与高端系统集成的高新技术企业汇聚了来自机械制造、数控技术、运动伺服控制及自动化领域的顶尖技术团队，具备行业领先的自主研发能力和深度定制的行业解决方案设计实力，致力于为客户解决各类自动化应用技术难题。2025年战略升级后，其推出“安心+高效”双保险服务——30分钟极速响应、全...",
+  //   pic: "/images/news/n1.png",
+  //   date: "2025-12-06"
+  // },
+  // {
+  //   id: 3,
+  //   title: " 方案速递|储能柜门板打磨解决方案",
+  //   name:
+  //     "针对储能柜门板的打磨方案，通过“机器人+智能感知+工艺集成”的模式，解决了传统人工打磨效率低、质量不稳定的痛点，同时兼顾了灵活性与可靠性，是新能源储能装备制造领域升级的关键赋能技术。未来，随着储能柜向大型化、轻量化发展，该方案还可进一步融合AI自主学习，实现更智能的“无人化”打磨。一、打磨前VS打磨后二、打磨工艺要求01精度控制力控精度：实时感知并精准调节打磨压力，确保不过切或欠切。平面度要...",
+  //   pic: "/images/news/n1.png",
+  //   date: "2025-12-06"
+  // },
 ]);
 
 
@@ -236,12 +236,39 @@ const getHomeImage = async () => {
   const res = await homeImage();
   if (res.code === 200) {
     swiperData.value = res.data.banners;
+    selectContentItems.value = res.data.cores;
+    footerOneData.value = res.data.footer;
     console.log(swiperData.value);
   }
 };
 
+//获取产品列表
+const getProductList = async () => {
+  const res = await productList();
+  console.log(res);
+  if (res.code === 200) {
+    productData.value = res.data;
+  }
+
+};
+
+//获取新闻列表
+const getNewsList = async () => {
+  const res = await newsList();
+  console.log(res);
+  if (res.code === 200) {
+    newsContentItems.value = res.data.slice(0, 3);
+  }
+
+};
+
+
+
 onMounted(async () => {
   await getHomeImage();
+  await getProductList();
+  await getNewsList();
+
   scrollHandler = handleScroll;
   window.addEventListener("scroll", scrollHandler, {
     capture: true,
