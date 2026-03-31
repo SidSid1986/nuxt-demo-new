@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-14 10:51:23
+ * @LastEditTime: 2026-03-31 17:06:01
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -24,7 +24,7 @@
 
           <div v-for="(item, index) in tabList" :key="item.id" ref="tabItemRefs" class="product-tab"
             :class="{ 'active': tabActiveIndex === index }" @click="tabClick(index, item)">
-            {{ item.name }}
+            {{ item.label }}
           </div>
 
           <div class="tab-indicator" :style="indicatorStyle"></div>
@@ -40,12 +40,12 @@
               <div @click="handleClick(item)" v-for="(item, index) in currentPageData" :key="item.id"
                 class="product-item">
                 <div class="product-item-info">
-                  <div class="product-item-type">{{ item.typeName }}</div>
-                  <div class="product-item-name">{{ item.name }}</div>
+                  <div class="product-item-type">{{ item.robotType }}</div>
+                  <div class="product-item-name">{{ item.productName }}</div>
                   <div class="more">了解更多</div>
                 </div>
                 <div class="product-item-img">
-                  <img :src="item.img" alt="">
+                  <img :src="item.mainImageUrl" alt="">
                 </div>
               </div>
 
@@ -73,6 +73,9 @@ import { ref, onMounted, nextTick, reactive, onBeforeUnmount, computed } from "v
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
+
+import { productCategoryTree, productList } from "@/server/common";
+
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -87,13 +90,17 @@ const indicatorStyle = reactive({
   opacity: 0
 });
 
-const tabList = [
-  { id: 1, name: "SCARA系列", type: 1 },
-  { id: 2, name: "MINI系列", type: 2 },
-  { id: 3, name: "中小负载系列", type: 3 },
-  { id: 4, name: "大负载系列", type: 4 },
-  { id: 5, name: "超大负载系列", type: 5 },
-];
+
+
+const tabList = ref([
+  // { id: 1, name: "SCARA系列", type: 1 },
+  // { id: 2, name: "MINI系列", type: 2 },
+  // { id: 3, name: "中小负载系列", type: 3 },
+  // { id: 4, name: "大负载系列", type: 4 },
+  // { id: 5, name: "超大负载系列", type: 5 },
+]);
+
+const tabListFid = ref(-1)
 
 //  拖拽相关变量 
 let isDragging = false;
@@ -104,18 +111,18 @@ let scrollLeft = 0;
 const productContentListMock = ref([]); // 原始所有数据
 const groupedProductData = ref([]);     //  处理后的二维数组：[ [第1页12条], [第2页4条]  ]
 const currentPage = ref(1);             // 当前页码
-const pageSize = 12;                    // 每页 12 条
+const pageSize = ref(12);
+const total = ref(0);
+const tabSelectedId = ref(-1);              // 每页 12 条
 
 
 
 // 获取当前页展示的数据
-const currentPageData = computed(() => {
-  return groupedProductData.value[currentPage.value - 1] || [];
-});
+const currentPageData = ref([]);
 
 // 获取当前类型的总页数
 const totalPages = computed(() => {
-  return groupedProductData.value.length;
+  return Math.ceil(total.value / pageSize.value);
 });
 
 //  与拖拽逻辑  
@@ -143,8 +150,8 @@ const handleDragEnd = () => {
   tabContainerRef.value.style.cursor = 'grab';
 };
 
-const updateIndicator = () => {
-  nextTick(() => {
+const updateIndicator = async () => {
+  await nextTick(() => {
     const currentTab = tabItemRefs.value[tabActiveIndex.value];
     if (currentTab && tabContainerRef.value) {
       const { offsetWidth, offsetLeft } = currentTab;
@@ -176,33 +183,36 @@ const scrollToActiveTab = (tabElement) => {
 
 const tabClick = (index, item) => {
   tabActiveIndex.value = index;
+  tabSelectedId.value = item.id;
+  getProductList();
 
   //  切换 Tab 时，重置页码为 1，并重新处理数据
   currentPage.value = 1;
-  makeProductList(item.type);
+  // makeProductList(item.type);
 
   updateIndicator();
 };
 
-//  据处理函数  
-const makeProductList = (type) => {
-  //  先过滤出当前类型的所有数据 
-  const filteredList = productContentListMock.value.filter(item => item.type === type);
+// //  据处理函数  
+// const makeProductList = (type) => {
+//   //  先过滤出当前类型的所有数据 
+//   const filteredList = productContentListMock.value.filter(item => item.type === type);
 
-  //  二维数组 (每页 pageSize 条)
-  const groups = [];
-  for (let i = 0; i < filteredList.length; i += pageSize) {
-    groups.push(filteredList.slice(i, i + pageSize));
-  }
+//   //  二维数组 (每页 pageSize 条)
+//   const groups = [];
+//   for (let i = 0; i < filteredList.length; i += pageSize) {
+//     groups.push(filteredList.slice(i, i + pageSize));
+//   }
 
 
-  groupedProductData.value = groups;
-};
+//   groupedProductData.value = groups;
+// };
 
 //  分页切换函数  
 const changePage = (pageNum) => {
   if (pageNum < 1 || pageNum > totalPages.value) return;
   currentPage.value = pageNum;
+  getProductList();
   nextTick(() => {
     setTimeout(() => {
       const contentArea = document.querySelector('.product-list-container');
@@ -222,38 +232,65 @@ const handleClick = (item) => {
   router.push(`/product/${item.id}`);
 };
 
+const getTabList = async () => {
+  const res = await productCategoryTree();
+
+  const robotTabs = res.data.filter(item => item.category_type === 'ROBOT');
+  console.log(robotTabs);
+
+  tabList.value = robotTabs[0].children;
+  tabListFid.value = robotTabs[0].id;
+  tabSelectedId.value = robotTabs[0].children[0].id;
+
+  getProductList();
+};
+
+const getProductList = async () => {
+  const params = {
+    page: currentPage.value,
+    page_size: pageSize.value,
+    keyword: undefined,
+    model_number: undefined,
+    category_id: tabSelectedId.value,
+    parent_category_id: tabListFid.value
+  };
+  const res = await productList(params);
+  total.value = res.total;
+  currentPageData.value = res.data;
+};
 
 
-onMounted(() => {
+onMounted(async () => {
   // 初始化模拟数据
-  productContentListMock.value = [
-    { id: 1, type: 1, typeName: "SCARA 系列", name: "IER50-1200-SR", img: "/images/product/11.png" },
-    { id: 2, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-UNO", img: "/images/product/12.png" },
-    { id: 3, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-HI", img: "/images/product/13.png" },
-    { id: 4, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-HI", img: "/images/product/13.png" },
-    { id: 5, type: 1, typeName: "SCARA 系列", name: "IER10-800-SR", img: "/images/product/15.png" },
-    { id: 6, type: 1, typeName: "SCARA 系列", name: "IER10-700-SR ", img: "/images/product/16.png" },
-    { id: 7, type: 1, typeName: "SCARA 系列", name: "IER10-500-SR ", img: "/images/product/16.png" },
-    { id: 8, type: 1, typeName: "SCARA 系列", name: "IER6-700-SR ", img: "/images/product/16.png" },
-    { id: 9, type: 1, typeName: "SCARA 系列", name: "IER6-600-SR", img: "/images/product/16.png" },
-    { id: 10, type: 1, typeName: "SCARA 系列", name: "IER6-500-SR ", img: "/images/product/16.png" },
-    { id: 11, type: 1, typeName: "SCARA 系列", name: "IER4-650-SR-U", img: "/images/product/17.png" },
-    { id: 12, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 13, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 14, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 15, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 16, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 17, type: 2, typeName: "MINI 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 18, type: 3, typeName: "中小负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 19, type: 4, typeName: "大负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-    { id: 20, type: 5, typeName: "超大负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" }
-  ];
+  // productContentListMock.value = [
+  //   { id: 1, type: 1, typeName: "SCARA 系列", name: "IER50-1200-SR", img: "/images/product/11.png" },
+  //   { id: 2, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-UNO", img: "/images/product/12.png" },
+  //   { id: 3, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-HI", img: "/images/product/13.png" },
+  //   { id: 4, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-HI", img: "/images/product/13.png" },
+  //   { id: 5, type: 1, typeName: "SCARA 系列", name: "IER10-800-SR", img: "/images/product/15.png" },
+  //   { id: 6, type: 1, typeName: "SCARA 系列", name: "IER10-700-SR ", img: "/images/product/16.png" },
+  //   { id: 7, type: 1, typeName: "SCARA 系列", name: "IER10-500-SR ", img: "/images/product/16.png" },
+  //   { id: 8, type: 1, typeName: "SCARA 系列", name: "IER6-700-SR ", img: "/images/product/16.png" },
+  //   { id: 9, type: 1, typeName: "SCARA 系列", name: "IER6-600-SR", img: "/images/product/16.png" },
+  //   { id: 10, type: 1, typeName: "SCARA 系列", name: "IER6-500-SR ", img: "/images/product/16.png" },
+  //   { id: 11, type: 1, typeName: "SCARA 系列", name: "IER4-650-SR-U", img: "/images/product/17.png" },
+  //   { id: 12, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 13, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 14, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 15, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 16, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 17, type: 2, typeName: "MINI 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 18, type: 3, typeName: "中小负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 19, type: 4, typeName: "大负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
+  //   { id: 20, type: 5, typeName: "超大负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" }
+  // ];
 
   // 默认加载 SCARA 系列 (type 1)
   //   currentPage 默认为 1
-  makeProductList(1);
+  // makeProductList(1);
+  await getTabList();
 
-  updateIndicator();
+  await updateIndicator();
 
   if (tabContainerRef.value) {
     tabContainerRef.value.style.cursor = 'grab';

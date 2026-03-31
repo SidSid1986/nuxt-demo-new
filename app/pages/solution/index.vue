@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 15:21:01
+ * @LastEditTime: 2026-03-31 15:24:41
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -28,7 +28,7 @@
     </div>
 
     <div class="solution-title">工艺应用解决方案</div>
-    <div class="solution-img-group">
+    <div v-if="groupImgData.length > 0" class="solution-img-group">
       <div v-for="(item, index) in groupImgData" @click="selectPic(item, index)" :key="item.id"
         class="solution-img-item" :class="{ 'active-img': index == imgIndex }">
         <div class="solution-img">
@@ -40,7 +40,8 @@
         </div>
       </div>
     </div>
-    <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
+    <div v-else class="empty-state">相关解决方案编辑中</div>
+    <Pagination v-if="total > 0" :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
 
     <div class="footer-two">
       <FooterTwo />
@@ -428,6 +429,14 @@ onMounted(async () => {
     .active-item {
       border: 2px solid #16418a;
     }
+  }
+
+  .empty-state {
+    width: 100%;
+    height: 40vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
 

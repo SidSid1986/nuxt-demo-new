@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 14:57:34
+ * @LastEditTime: 2026-03-31 16:10:39
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -29,12 +29,7 @@ export function homeImage() {
   });
 }
 
-//product list
-export function productList() {
-  return request('/api/product/list', {
-    method: 'get',
-  });
-}
+ 
 
  
  
@@ -83,6 +78,21 @@ export function industriesList() {
 //solution list
 export function solutionList(params: any) {
   return request('/api/solution/list', {
+    method: 'get',
+    params,
+  });
+}
+
+// pruduct category list
+export function productCategoryTree() {
+  return request('/api/category/tree', {
+    method: 'get',
+  });
+}
+
+// product list 
+export function productList(params: any) {
+  return request('/api/product/list', {
     method: 'get',
     params,
   });
