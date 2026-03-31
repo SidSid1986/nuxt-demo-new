@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-16 08:33:01
+ * @LastEditTime: 2026-03-31 09:02:28
  * @FilePath: \nuxt-free-new\app\pages\download\index.vue
  * @Description: 增加列表分页功能 (每组 15 个) + 搜索过滤
 -->
@@ -29,17 +29,17 @@
           <!-- 文件列表区域 -->
           <div class="file-border" ref="fileListRef">
 
-            <div v-for="item in displayData" :key="item.id" class="file-item" @click="handleDownload(item)">
+            <!-- 现在直接遍历 fileData -->
+            <div v-for="item in fileData" :key="item.id" class="file-item" @click="handleDownload(item)">
               <div class="file-item-content">
                 <img :src="item.url" alt="file" class="file-item-img" />
-                <div class="file-item-name">{{ item.name }}</div>
+                <div class="file-item-name">{{ item.original_name }}</div>
               </div>
             </div>
 
             <!-- 空状态  -->
-            <div v-if="displayData.length === 0" class="empty-state">暂无相关文件</div>
+            <div v-if="fileData.length === 0" class="empty-state">暂无相关文件</div>
           </div>
-
 
           <div class="pagination-wrapper">
             <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
@@ -50,137 +50,78 @@
 
     <div class="footer-two">
       <FooterTwo />
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue"; // 1. 引入 computed
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
-import Pagination from "@/components/normal/Pagination.vue"; // 确保路径正确
+import Pagination from "@/components/normal/Pagination.vue";
 import { Search } from "@element-plus/icons-vue";
-import { useRouter } from "vue-router";
-
-
-
+import { fileListApi } from "@/server/common";
+import fileIcon from "/images/down/file.png";
 
 const searchText = ref("");
-const fileData = ref([]); // 原始所有数据
-const groupedFileData = ref([]); // 处理后的二维数组：[ [第 1 页 15 条], [第 2 页...] ]
-const currentPage = ref(1); // 当前页码
-const pageSize = 15; // 每页 15 条
+const fileData = ref([]);
+const currentPage = ref(1);
+const pageSize = 10;
+const total = ref(0); // 存储后端返回的总记录数
 
-// 获取过滤后的原始数据 
-const filteredData = computed(() => {
-  if (!searchText.value) {
-    return fileData.value;
-  }
-  return fileData.value.filter((item) =>
-    item.name.toLowerCase().includes(searchText.value.toLowerCase())
-  );
-});
-
-//  根据搜索后的数据重新分组
-const processGroups = () => {
-  const list = filteredData.value;
-  const groups = [];
-  for (let i = 0; i < list.length; i += pageSize) {
-    groups.push(list.slice(i, i + pageSize));
-  }
-  groupedFileData.value = groups;
-
-  // 如果切换搜索导致页数变少，且当前页码超出范围，则重置为第 1 页
-  if (currentPage.value > groups.length && groups.length > 0) {
-    currentPage.value = 1;
-  } else if (groups.length === 0) {
-    currentPage.value = 1;
-  }
-};
-
-// 获取当前页展示的数据
-const displayData = computed(() => {
-  return groupedFileData.value[currentPage.value - 1] || [];
-});
-
-// 获取总页数
+// 2. 计算总页数
 const totalPages = computed(() => {
-  return groupedFileData.value.length;
+  return Math.ceil(total.value / pageSize);
 });
 
-// 监听搜索框变化，自动重置分组和页码
+// 监听搜索框变化
 watch(searchText, () => {
-  currentPage.value = 1; // 搜索时重置到第一页
-  processGroups();
+  currentPage.value = 1;
+  fetchFileData();
 });
 
-// 分页切换函数
-const changePage = (pageNum) => {
-  if (pageNum < 1 || pageNum > totalPages.value) return;
-  currentPage.value = pageNum;
-
-  // 翻页后平滑滚动到列表顶部
-  nextTick(() => {
-    setTimeout(() => {
-      const fileListRef = document.querySelector('.down-file-content-border');
-      if (fileListRef) {
-        fileListRef.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 100);
-  });
-};
-
-const handleDownload = (item) => {
-  console.log("Download:", item);
-
-  if (item.urlFile) {
-    window.open(item.urlFile, "_blank");
-  } else {
-    alert(`正在下载：${item.name}`);
+// 分页切换
+const changePage = (newPageNum) => {
+  // 增加边界检查，防止越界
+  if (newPageNum >= 1 && newPageNum <= totalPages.value) {
+    currentPage.value = newPageNum;
+    fetchFileData();
   }
 };
 
-onMounted(() => {
-  // 初始化模拟数据
-  fileData.value = [
-    { id: 1, name: "Free 1.0.0", url: "/images/down/file.png", urlFile: "" },
-    { id: 2, name: "Free 1.0.1", url: "/images/down/file.png", urlFile: "" },
-    { id: 3, name: "Free 1.0.2", url: "/images/down/file.png", urlFile: "" },
-    { id: 4, name: "Free 1.0.3", url: "/images/down/file.png", urlFile: "" },
-    { id: 5, name: "Free 1.0.4", url: "/images/down/file.png", urlFile: "" },
-    { id: 6, name: "Free 1.0.5", url: "/images/down/file.png", urlFile: "" },
-    { id: 7, name: "Free 1.0.6", url: "/images/down/file.png", urlFile: "" },
-    { id: 8, name: "Free 1.0.7", url: "/images/down/file.png", urlFile: "" },
-    { id: 9, name: "Free 1.0.8", url: "/images/down/file.png", urlFile: "" },
-    { id: 10, name: "Free 1.0.9", url: "/images/down/file.png", urlFile: "" },
-    { id: 11, name: "Free 1.0.10", url: "/images/down/file.png", urlFile: "" },
-    { id: 12, name: "Free 1.0.11", url: "/images/down/file.png", urlFile: "" },
-    { id: 13, name: "Free 1.0.12", url: "/images/down/file.png", urlFile: "" },
-    { id: 14, name: "Free 1.0.13", url: "/images/down/file.png", urlFile: "" },
-    { id: 15, name: "Free 1.0.14", url: "/images/down/file.png", urlFile: "" },
-    { id: 16, name: "Free 1.0.15", url: "/images/down/file.png", urlFile: "" },
-    { id: 17, name: "Free 1.0.16", url: "/images/down/file.png", urlFile: "" },
-    { id: 18, name: "Free 1.0.17", url: "/images/down/file.png", urlFile: "" },
-    { id: 19, name: "Free 1.0.18", url: "/images/down/file.png", urlFile: "" },
-    { id: 20, name: "Free 1.0.19", url: "/images/down/file.png", urlFile: "" },
-    { id: 21, name: "Free 1.0.20", url: "/images/down/file.png", urlFile: "" },
-    { id: 22, name: "Free 1.0.21", url: "/images/down/file.png", urlFile: "" },
-    { id: 23, name: "Free 1.0.22", url: "/images/down/file.png", urlFile: "" },
-    { id: 24, name: "Free 1.0.23", url: "/images/down/file.png", urlFile: "" },
-    { id: 25, name: "Free 1.0.24", url: "/images/down/file.png", urlFile: "" },
-    { id: 26, name: "Free 1.0.25", url: "/images/down/file.png", urlFile: "" },
-    { id: 27, name: "Free 1.0.26", url: "/images/down/file.png", urlFile: "" },
-    { id: 28, name: "Free 1.0.27", url: "/images/down/file.png", urlFile: "" },
-    { id: 29, name: "Free 1.0.28", url: "/images/down/file.png", urlFile: "" },
-    { id: 30, name: "Free 1.0.29", url: "/images/down/file.png", urlFile: "" },
-    { id: 31, name: "Free 1.0.30", url: "/images/down/file.png", urlFile: "" },
-  ];
+// 获取数据
+const fetchFileData = async () => {
 
+  const res = await fileListApi(currentPage.value, pageSize);
 
-  processGroups();
+  if (res.code === 200) {
+
+    // 处理文件图标
+    res.data.forEach(item => {
+      item.url = item.url || fileIcon;
+    });
+    fileData.value = res.data;
+    total.value = res.total || 0;
+
+    console.log("当前页数据:", fileData.value);
+    console.log("总条数:", total.value, "总页数:", totalPages.value);
+  };
+};
+
+const handleDownload = (fileItem) => {
+  const link = document.createElement('a');
+  link.href = fileItem.file_path;
+  link.download = fileItem.original_name || 'downloaded_file';
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+onMounted(async () => {
+  await fetchFileData();
 });
 </script>
 

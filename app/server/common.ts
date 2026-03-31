@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-30 15:10:11
+ * @LastEditTime: 2026-03-31 08:56:21
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -42,5 +42,16 @@ export function newsList() {
     method: 'get',
   });
 }
+//about
+export function aboutInfo() {
+  return request('api/about/info', {
+    method: 'get',
+  });
+}
 
-
+//download files
+export function fileListApi(page: any, pageSize: any) {
+  return request(`api/files/list?page=${page}&page_size=${pageSize}`, {
+    method: 'get',
+  });
+}
