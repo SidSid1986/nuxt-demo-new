@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 09:02:28
+ * @LastEditTime: 2026-03-31 09:19:07
  * @FilePath: \nuxt-free-new\app\pages\download\index.vue
  * @Description: 增加列表分页功能 (每组 15 个) + 搜索过滤
 -->
@@ -29,7 +29,6 @@
           <!-- 文件列表区域 -->
           <div class="file-border" ref="fileListRef">
 
-            <!-- 现在直接遍历 fileData -->
             <div v-for="item in fileData" :key="item.id" class="file-item" @click="handleDownload(item)">
               <div class="file-item-content">
                 <img :src="item.url" alt="file" class="file-item-img" />
@@ -68,9 +67,9 @@ const searchText = ref("");
 const fileData = ref([]);
 const currentPage = ref(1);
 const pageSize = 10;
-const total = ref(0); // 存储后端返回的总记录数
+const total = ref(0);
 
-// 2. 计算总页数
+//  计算总页数
 const totalPages = computed(() => {
   return Math.ceil(total.value / pageSize);
 });
@@ -93,7 +92,7 @@ const changePage = (newPageNum) => {
 // 获取数据
 const fetchFileData = async () => {
 
-  const res = await fileListApi(currentPage.value, pageSize);
+  const res = await fileListApi(currentPage.value, pageSize, searchText.value);
 
   if (res.code === 200) {
 

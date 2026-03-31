@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-18 16:16:09
+ * @LastEditTime: 2026-03-31 15:21:01
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -19,9 +19,10 @@
     <div class="solution-title">行业解决方案</div>
 
     <div class="solution-group">
+
       <div v-for="(item, index) in groupData" :key="item.id" class="solution-item" @click="selectItem(item, index)"
         :class="{ 'active-item': index == solutionIndex }">
-        <img :src="index == solutionIndex ? item.icon1 : item.icon2" alt="" />
+        <img :src="index == solutionIndex ? item.icon2 : item.icon1" alt="" />
         <span :class="{ 'active-text': index == solutionIndex }">{{ item.name }}</span>
       </div>
     </div>
@@ -31,14 +32,15 @@
       <div v-for="(item, index) in groupImgData" @click="selectPic(item, index)" :key="item.id"
         class="solution-img-item" :class="{ 'active-img': index == imgIndex }">
         <div class="solution-img">
-          <img :src="index == imgIndex ? item.img2 : item.img1" alt="" />
+          <img :src="index == imgIndex ? item.cover1 : item.cover2" alt="" />
           <span class="img-text">
-            {{ item.name }}
+            {{ item.industry_name }}
           </span>
           <div class="name-line"></div>
         </div>
       </div>
     </div>
+    <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
 
     <div class="footer-two">
       <FooterTwo />
@@ -47,10 +49,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch, } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
+import { industriesList, solutionList } from "@/server/common";
+import Pagination from "@/components/normal/Pagination.vue";
 
 const router = useRouter();
 
@@ -58,122 +62,136 @@ const solutionIndex = ref(0);
 
 const imgIndex = ref(0);
 
-const groupData = [
-  {
-    id: 1,
-    name: "汽车行业",
-    icon1: "/images/solution/car1.png",
-    icon2: "/images/solution/car2.png",
-  },
-  {
-    id: 2,
-    name: "电子行业",
-    icon1: "/images/solution/ele1.png",
-    icon2: "/images/solution/ele2.png",
-  },
-  {
-    id: 3,
-    name: "锂电行业",
-    icon1: "/images/solution/battery1.png",
-    icon2: "/images/solution/battery2.png",
-  },
-  {
-    id: 4,
-    name: "光伏行业",
-    icon1: "/images/solution/sun1.png",
-    icon2: "/images/solution/sun2.png",
-  },
-  {
-    id: 5,
-    name: "金属加工",
-    icon1: "/images/solution/metal1.png",
-    icon2: "/images/solution/metal2.png",
-  },
-  {
-    id: 6,
-    name: "建材加工",
-    icon1: "/images/solution/build1.png",
-    icon2: "/images/solution/build2.png",
-  },
-  {
-    id: 7,
-    name: "包装物流",
-    icon1: "/images/solution/box1.png",
-    icon2: "/images/solution/box2.png",
-  },
-  {
-    id: 8,
-    name: "一般工业",
-    icon1: "/images/solution/nor1.png",
-    icon2: "/images/solution/nor2.png",
-  },
-  {
-    id: 9,
-    name: "钢铁行业",
-    icon1: "/images/solution/st1.png",
-    icon2: "/images/solution/st2.png",
-  },
-  {
-    id: 10,
-    name: "家电行业",
-    icon1: "/images/solution/app1.png",
-    icon2: "/images/solution/app2.png",
-  },
-  {
-    id: 11,
-    name: "食品烟酒",
-    icon1: "/images/solution/smoke1.png",
-    icon2: "/images/solution/smoke2.png",
-  },
-];
 
-const groupImgData = [
-  {
-    id: 11,
-    name: "折弯解决方案",
-    img1: "/images/solution/zhewan1.png",
-    img2: "/images/solution/zhewan2.png",
-    fid: 1,
-  },
-  {
-    id: 22,
-    name: "张力控制解决方案",
-    img1: "/images/solution/zhangli1.png",
-    img2: "/images/solution/zhangli2.png",
-    fid: 1,
-  },
-  {
-    id: 33,
-    name: "压铸解决方案",
-    img1: "/images/solution/yazhu1.png",
-    img2: "/images/solution/yazhu2.png",
-    fid: 1,
-  },
-  {
-    id: 44,
-    name: "码垛解决方案",
-    img1: "/images/solution/maduo1.png",
-    img2: "/images/solution/maduo2.png",
-    fid: 1,
-  },
-  {
-    id: 55,
-    name: "焊接解决方案",
-    img1: "/images/solution/hanjie1.png",
-    img2: "/images/solution/hanjie2.png",
-    fid: 1,
-  },
-  {
-    id: 66,
-    name: "打磨解决方案",
-    img1: "/images/solution/damo1.png",
-    img2: "/images/solution/damo2.png",
-    fid: 1,
-  },
-];
+const currentPage = ref(1);
+const pageSize = ref(6);
+const total = ref(0);
+ 
+
+const fid = ref(0);
+const totalPages = computed(() => {
+  return Math.ceil(total.value / pageSize.value);
+});
+
+const groupData = ref([
+  // {
+  //   id: 1,
+  //   name: "汽车行业",
+  //   icon1: "/images/solution/car1.png",
+  //   icon2: "/images/solution/car2.png",
+  // },
+  // {
+  //   id: 2,
+  //   name: "电子行业",
+  //   icon1: "/images/solution/ele1.png",
+  //   icon2: "/images/solution/ele2.png",
+  // },
+  // {
+  //   id: 3,
+  //   name: "锂电行业",
+  //   icon1: "/images/solution/battery1.png",
+  //   icon2: "/images/solution/battery2.png",
+  // },
+  // {
+  //   id: 4,
+  //   name: "光伏行业",
+  //   icon1: "/images/solution/sun1.png",
+  //   icon2: "/images/solution/sun2.png",
+  // },
+  // {
+  //   id: 5,
+  //   name: "金属加工",
+  //   icon1: "/images/solution/metal1.png",
+  //   icon2: "/images/solution/metal2.png",
+  // },
+  // {
+  //   id: 6,
+  //   name: "建材加工",
+  //   icon1: "/images/solution/build1.png",
+  //   icon2: "/images/solution/build2.png",
+  // },
+  // {
+  //   id: 7,
+  //   name: "包装物流",
+  //   icon1: "/images/solution/box1.png",
+  //   icon2: "/images/solution/box2.png",
+  // },
+  // {
+  //   id: 8,
+  //   name: "一般工业",
+  //   icon1: "/images/solution/nor1.png",
+  //   icon2: "/images/solution/nor2.png",
+  // },
+  // {
+  //   id: 9,
+  //   name: "钢铁行业",
+  //   icon1: "/images/solution/st1.png",
+  //   icon2: "/images/solution/st2.png",
+  // },
+  // {
+  //   id: 10,
+  //   name: "家电行业",
+  //   icon1: "/images/solution/app1.png",
+  //   icon2: "/images/solution/app2.png",
+  // },
+  // {
+  //   id: 11,
+  //   name: "食品烟酒",
+  //   icon1: "/images/solution/smoke1.png",
+  //   icon2: "/images/solution/smoke2.png",
+  // },
+]);
+
+const groupImgData = ref([
+  // {
+  //   id: 11,
+  //   name: "折弯解决方案",
+  //   img1: "/images/solution/zhewan1.png",
+  //   img2: "/images/solution/zhewan2.png",
+  //   fid: 1,
+  // },
+  // {
+  //   id: 22,
+  //   name: "张力控制解决方案",
+  //   img1: "/images/solution/zhangli1.png",
+  //   img2: "/images/solution/zhangli2.png",
+  //   fid: 1,
+  // },
+  // {
+  //   id: 33,
+  //   name: "压铸解决方案",
+  //   img1: "/images/solution/yazhu1.png",
+  //   img2: "/images/solution/yazhu2.png",
+  //   fid: 1,
+  // },
+  // {
+  //   id: 44,
+  //   name: "码垛解决方案",
+  //   img1: "/images/solution/maduo1.png",
+  //   img2: "/images/solution/maduo2.png",
+  //   fid: 1,
+  // },
+  // {
+  //   id: 55,
+  //   name: "焊接解决方案",
+  //   img1: "/images/solution/hanjie1.png",
+  //   img2: "/images/solution/hanjie2.png",
+  //   fid: 1,
+  // },
+  // {
+  //   id: 66,
+  //   name: "打磨解决方案",
+  //   img1: "/images/solution/damo1.png",
+  //   img2: "/images/solution/damo2.png",
+  //   fid: 1,
+  // },
+
+]);
 
 const selectItem = (item, index) => {
   solutionIndex.value = index;
+  fid.value = item.id;
+  getSolutionList();
 };
 
 const selectPic = (item, index) => {
@@ -182,12 +200,47 @@ const selectPic = (item, index) => {
   router.push(`/solution/solutionDetail?fid=${item.fid}&id=${item.id}`);
 };
 
+const getIndustriesList = async () => {
+  const res = await industriesList();
+
+  groupData.value = res.data || [];
+  console.log(groupData.value);
+  fid.value = res.data[0].id;
+
+};
+
+const getSolutionList = async () => {
+  const params = {
+    page: currentPage.value,
+    page_size: pageSize.value,
+    fid: fid.value || undefined,
+    keyword: '',
+    only_active: false // 是否只查启用的，根据需求调整
+  };
+
+  const res = await solutionList(params);
+  total.value = res.total || 0;
+  console.log(totalPages.value);
+
+  groupImgData.value = res.data  || [];
+  console.log(groupImgData.value);
+
+   console.log("总条数:", total.value, "总页数:", totalPages.value);
+};
+
+const changePage = (newPageNum) => {
+  // 增加边界检查，防止越界
+  if (newPageNum >= 1 && newPageNum <= totalPages.value) {
+    currentPage.value = newPageNum;
+    getSolutionList();
+  }
+};
 
 
-onMounted(() => {
 
-
-
+onMounted(async () => {
+  await getIndustriesList();
+  await getSolutionList();
 });
 </script>
 
@@ -238,6 +291,10 @@ onMounted(() => {
     justify-items: center;
     align-items: flex-start;
 
+    @media screen and (max-width: 1440px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
 
     @media screen and (max-width: 1200px) {
       grid-template-columns: repeat(3, 1fr);
@@ -261,6 +318,7 @@ onMounted(() => {
       align-items: center;
       background-color: #f6f6f8;
       box-sizing: border-box;
+      border: 2px solid transparent;
 
       img {
         width: auto;
@@ -269,6 +327,8 @@ onMounted(() => {
       }
 
       span {
+        // border: 1px solid red;
+        display: inline-block;
         font-size: 22px;
         font-family: "SourceHanSansCN-Medium";
       }
@@ -293,7 +353,7 @@ onMounted(() => {
     gap: 10px;
     justify-items: center;
     align-items: center;
-    margin-bottom: 6vh;
+    // margin-bottom: 6vh;
 
     @media screen and (max-width: 1200px) {
       grid-template-columns: repeat(2, 1fr);

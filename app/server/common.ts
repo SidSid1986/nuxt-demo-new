@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 08:56:21
+ * @LastEditTime: 2026-03-31 14:57:34
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -24,34 +24,66 @@ export function uploadImageCommon(data: FormData) {
 }
 
 export function homeImage() {
-  return request('api/home/index_images', {
+  return request('/api/home/index_images', {
     method: 'get',
   });
 }
 
 //product list
 export function productList() {
-  return request('api/product/list', {
+  return request('/api/product/list', {
     method: 'get',
   });
 }
 
-//news list
-export function newsList() {
-  return request('api/news/list', {
-    method: 'get',
-  });
-}
+ 
+ 
 //about
 export function aboutInfo() {
-  return request('api/about/info', {
+  return request('/api/about/info', {
     method: 'get',
   });
 }
 
 //download files
-export function fileListApi(page: any, pageSize: any) {
-  return request(`api/files/list?page=${page}&page_size=${pageSize}`, {
+export function fileListApi(page: any, pageSize: any,keyword:any) {
+  return request(`/api/files/list?page=${page}&page_size=${pageSize}&keyword=${keyword}`, {
     method: 'get',
+  });
+}
+
+//service
+export function serviceContent() {
+  return request('/api/service/content', {
+    method: 'get',
+  });
+}
+
+//news list
+export function newsList(page: any, pageSize: any) {
+  return request(`/api/news/list?page=${page}&page_size=${pageSize}`, {
+    method: 'get',
+  });
+}
+
+//news detail
+export function newsDetail(id: any) {
+  return request(`/api/news/${id}`, {
+    method: 'get',
+  });
+}
+
+//solution tab industries list
+export function industriesList() {
+  return request('/api/industries/list', {
+    method: 'get',
+  });
+}
+
+//solution list
+export function solutionList(params: any) {
+  return request('/api/solution/list', {
+    method: 'get',
+    params,
   });
 }

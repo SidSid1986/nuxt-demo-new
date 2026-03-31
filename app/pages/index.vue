@@ -253,11 +253,10 @@ const getProductList = async () => {
 
 //获取新闻列表
 const getNewsList = async () => {
-  const res = await newsList();
+  const res = await newsList(1, 3);
   console.log(res);
-  if (res.code === 200) {
-    newsContentItems.value = res.data.slice(0, 3);
-  }
+  newsContentItems.value = res.data;
+
 };
 
 
