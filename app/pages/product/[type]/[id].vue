@@ -2,8 +2,8 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 09:19:01
- * @FilePath: \nuxt-free-new\app\pages\product\[id].vue
+ * @LastEditTime: 2026-04-01 16:01:24
+ * @FilePath: \nuxt-free-new\app\pages\product\[type]\[id].vue
  * @Description: 
 -->
 <template>
@@ -131,7 +131,9 @@ const toProduct = () => {
 };
 
 const getProductDetail = async () => {
-  const res = await productDetail(router.currentRoute.value.params.id);
+  console.log(router.currentRoute.value.params);
+
+  const res = await productDetail(router.currentRoute.value.params.type, router.currentRoute.value.params.id);
   productData.value = formatProductData(res.data);
 
 }

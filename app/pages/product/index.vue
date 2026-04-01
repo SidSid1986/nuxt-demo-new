@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 09:51:58
+ * @LastEditTime: 2026-04-01 15:25:13
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -47,7 +47,7 @@
           </transition>
 
           <!--   分页控件 总页数 > 1   -->
-          <Pagination v-if="totalPages > 1" class="pagination-wrapper" :totalPages="totalPages"
+          <Pagination v-if="total> 1" class="pagination-wrapper" :totalPages="totalPages"
             :currentPage="currentPage" @changePage="changePage" />
         </div>
       </div>
@@ -157,13 +157,13 @@ const changePage = (pageNum) => {
 
 const handleClick = (item) => {
   console.log(item);
-  router.push(`/product/${item.id}`);
+  router.push(`/product/${item.productType}/${item.id}`);
 };
 
 const getTabList = async () => {
   const res = await productCategoryTree();
 
-  const robotTabs = res.data.filter(item => item.category_type === 'ROBOT');
+  const robotTabs = res.data.filter(item => item.category_type === 'robot');
   console.log(robotTabs);
 
   tabList.value = robotTabs[0].children;

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 10:32:35
+ * @LastEditTime: 2026-04-01 16:07:35
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\index.vue
  * @Description: 运动控制器页面  
 -->
@@ -32,7 +32,7 @@
 
               <!-- 遍历当前页的数据 (每组 9 个) -->
               <div v-for="(item, index) in currentPageData" :key="item.id" class="product-item"
-                :class="getItemLayoutClass(item.itemType)" @click="toSportProductDetail(item.id)">
+                :class="getItemLayoutClass(item.itemType)" @click="toSportProductDetail(item)">
                 <!-- 布局内容根据 itemType 动态变化 -->
 
                 <!-- 类型 1: 左右排列 (图片左，文字右) -->
@@ -63,12 +63,13 @@
 
               <!-- 空  -->
               <div v-if="currentPageData.length === 0" class="empty-state">
-                暂无相关产品
+                相关产品编辑中
               </div>
             </div>
           </transition>
 
-          <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
+          <Pagination v-if="totalPages > 0" :totalPages="totalPages" :currentPage="currentPage"
+            @changePage="changePage" />
         </div>
       </div>
     </div>
@@ -111,7 +112,7 @@ const currentPageData = ref([]);
 
 //  总页数
 const totalPages = computed(() => {
-  return groupedProductData.value.length;
+  return Math.ceil(total.value / pageSize.value);
 });
 
 //  布局类名
@@ -119,8 +120,8 @@ const getItemLayoutClass = (type) => {
   return type === 1 ? 'layout-type-1' : 'layout-type-2';
 };
 
-const toSportProductDetail = (id) => {
-  router.push(`/sportProduct/${id}`);
+const toSportProductDetail = (item) => {
+  router.push(`/sportProduct/${item.productType}/${item.id}`);
 }
 
 //  数据处理函数 
@@ -158,7 +159,7 @@ const changePage = (pageNum) => {
 const getTabList = async () => {
   const res = await productCategoryTree();
 
-  const robotTabs = res.data.filter(item => item.category_type === 'SPORT_CONTROLLER');
+  const robotTabs = res.data.filter(item => item.category_type === 'sport');
   console.log(robotTabs);
 
   tabList.value = robotTabs[0].children;
