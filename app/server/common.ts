@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 16:10:39
+ * @LastEditTime: 2026-04-01 08:46:51
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -95,5 +95,12 @@ export function productList(params: any) {
   return request('/api/product/list', {
     method: 'get',
     params,
+  });
+}
+
+//product detail
+export function productDetail(id: any) {
+  return request(`/api/product/detail/${id}`, {
+    method: 'get',
   });
 }

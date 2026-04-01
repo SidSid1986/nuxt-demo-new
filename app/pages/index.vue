@@ -413,7 +413,7 @@ onUnmounted(() => {
 <style>
 html,
 body {
-  margin: 0;
+  margin: 0 !important;
   padding: 0;
   width: 100%;
   height: auto !important;

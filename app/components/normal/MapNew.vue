@@ -27,8 +27,8 @@ const MAX_RETRY_COUNT = 3;
 const RETRY_DELAY_BASE = 1000;
 
 const TARGET_LOCATION = {
-  lng: 121.544691,
-  lat: 37.436106,
+  lng: 121.544602,
+  lat: 37.435541,
   companyName: '烟台阜瑞智能装备有限公司',
   phone: '0535-6666657'
 };

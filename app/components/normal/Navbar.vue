@@ -15,11 +15,12 @@
           <span :class="{ active: activeIndex === index }">{{ item.name }}</span>
         </div>
 
-        <!--  产品中心" 拉菜单 -->
+        <!--  产品中心 下拉菜单 -->
         <div v-if="item.name === '产品中心'" class="dropdown-menu">
+          <div class="dropdown-item" @click="handleSubClick('/product')">机器人</div>
           <div class="dropdown-item" @click="handleSubClick('/sportProduct')">运动控制器</div>
           <div class="dropdown-item" @click="handleSubClick('/product')">伺服驱动器</div>
-          <div class="dropdown-item" @click="handleSubClick('/product')">机器人</div>
+
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 17:06:01
+ * @LastEditTime: 2026-04-01 09:51:58
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -18,17 +18,7 @@
       <div class="product-list-container">
 
         <!--  Tab   -->
-        <div class="product-tab-container scrollable" ref="tabContainerRef" @mousedown="handleDragStart"
-          @mousemove="handleDragMove" @mouseup="handleDragEnd" @mouseleave="handleDragEnd" @touchstart="handleDragStart"
-          @touchmove="handleDragMove" @touchend="handleDragEnd">
-
-          <div v-for="(item, index) in tabList" :key="item.id" ref="tabItemRefs" class="product-tab"
-            :class="{ 'active': tabActiveIndex === index }" @click="tabClick(index, item)">
-            {{ item.label }}
-          </div>
-
-          <div class="tab-indicator" :style="indicatorStyle"></div>
-        </div>
+        <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
 
         <!--  内容区域  -->
         <div class="tab-content-area">
@@ -57,7 +47,8 @@
           </transition>
 
           <!--   分页控件 总页数 > 1   -->
-          <Pagination :totalPages="totalPages" :currentPage="currentPage" @changePage="changePage" />
+          <Pagination v-if="totalPages > 1" class="pagination-wrapper" :totalPages="totalPages"
+            :currentPage="currentPage" @changePage="changePage" />
         </div>
       </div>
     </div>
@@ -70,27 +61,18 @@
 
 <script setup>
 import { ref, onMounted, nextTick, reactive, onBeforeUnmount, computed } from "vue";
-import Navbar from "~/components/normal/Navbar.vue";
+import Navbar from "@/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
 
 import { productCategoryTree, productList } from "@/server/common";
+import DragTab from "@/components/normal/DragTab.vue";
 
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 
 const tabActiveIndex = ref(0);
-const tabContainerRef = ref(null);
-const tabItemRefs = ref([]);
-
-const indicatorStyle = reactive({
-  width: '0px',
-  left: '0px',
-  opacity: 0
-});
-
-
 
 const tabList = ref([
   // { id: 1, name: "SCARA系列", type: 1 },
@@ -102,10 +84,6 @@ const tabList = ref([
 
 const tabListFid = ref(-1)
 
-//  拖拽相关变量 
-let isDragging = false;
-let startX = 0;
-let scrollLeft = 0;
 
 //  分页与数据相关变量 
 const productContentListMock = ref([]); // 原始所有数据
@@ -125,61 +103,11 @@ const totalPages = computed(() => {
   return Math.ceil(total.value / pageSize.value);
 });
 
-//  与拖拽逻辑  
-const handleDragStart = (e) => {
-  if (!tabContainerRef.value) return;
-  isDragging = true;
-  const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-  startX = clientX - tabContainerRef.value.offsetLeft;
-  scrollLeft = tabContainerRef.value.scrollLeft;
-  tabContainerRef.value.style.cursor = 'grabbing';
-};
 
-const handleDragMove = (e) => {
-  if (!isDragging || !tabContainerRef.value) return;
-  e.preventDefault();
-  const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-  const x = clientX - tabContainerRef.value.offsetLeft;
-  const walk = (x - startX) * 2;
-  tabContainerRef.value.scrollLeft = scrollLeft - walk;
-};
 
-const handleDragEnd = () => {
-  if (!tabContainerRef.value) return;
-  isDragging = false;
-  tabContainerRef.value.style.cursor = 'grab';
-};
 
-const updateIndicator = async () => {
-  await nextTick(() => {
-    const currentTab = tabItemRefs.value[tabActiveIndex.value];
-    if (currentTab && tabContainerRef.value) {
-      const { offsetWidth, offsetLeft } = currentTab;
-      indicatorStyle.width = `${offsetWidth}px`;
-      indicatorStyle.left = `${offsetLeft}px`;
-      indicatorStyle.opacity = 1;
-      scrollToActiveTab(currentTab);
-    }
-  });
-};
 
-const scrollToActiveTab = (tabElement) => {
-  const container = tabContainerRef.value;
-  if (!container) return;
-  const containerWidth = container.offsetWidth;
-  const tabLeft = tabElement.offsetLeft;
-  const tabWidth = tabElement.offsetWidth;
-  const currentScroll = container.scrollLeft;
 
-  if (tabLeft < currentScroll) {
-    container.scrollTo({ left: tabLeft, behavior: 'smooth' });
-  } else if (tabLeft + tabWidth > currentScroll + containerWidth) {
-    container.scrollTo({
-      left: tabLeft + tabWidth - containerWidth,
-      behavior: 'smooth'
-    });
-  }
-};
 
 const tabClick = (index, item) => {
   tabActiveIndex.value = index;
@@ -190,7 +118,7 @@ const tabClick = (index, item) => {
   currentPage.value = 1;
   // makeProductList(item.type);
 
-  updateIndicator();
+
 };
 
 // //  据处理函数  
@@ -290,18 +218,9 @@ onMounted(async () => {
   // makeProductList(1);
   await getTabList();
 
-  await updateIndicator();
-
-  if (tabContainerRef.value) {
-    tabContainerRef.value.style.cursor = 'grab';
-  }
-
-  window.addEventListener('resize', updateIndicator);
 });
 
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateIndicator);
-});
+
 </script>
 
 <style lang="scss" scoped>
@@ -347,75 +266,6 @@ onBeforeUnmount(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-
-      .product-tab-container {
-        width: 100%;
-        height: 5vh;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        box-sizing: border-box;
-        position: relative;
-
-        &.scrollable {
-          overflow-x: auto;
-          overflow-y: hidden;
-          white-space: nowrap;
-          -webkit-overflow-scrolling: touch;
-
-          &::-webkit-scrollbar {
-            display: none;
-            height: 0;
-            width: 0;
-          }
-
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-
-          user-select: none;
-          -webkit-user-select: none;
-        }
-
-        .product-tab {
-          height: 5vh;
-          line-height: 5vh;
-          font-size: 20px;
-          cursor: pointer;
-          min-width: 80px;
-          margin-right: 120px;
-          box-sizing: border-box;
-          font-weight: bold;
-          color: #666;
-          transition: color 0.3s ease;
-          position: relative;
-          z-index: 1;
-          flex-shrink: 0;
-          font-family: "SourceHanSansCN-Regular";
-
-
-
-          &.active {
-            color: #16418A;
-          }
-
-          &:last-child {
-            margin-right: 0;
-          }
-        }
-
-        .tab-indicator {
-          position: absolute;
-          bottom: 0;
-          height: 3px;
-          background-color: #16418A;
-          border-radius: 2px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 0;
-          opacity: 0;
-
-        }
-      }
 
       .tab-content-area {
         width: 100%;

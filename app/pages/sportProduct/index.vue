@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-16 09:33:29
+ * @LastEditTime: 2026-04-01 10:32:35
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\index.vue
  * @Description: 运动控制器页面  
 -->
@@ -21,6 +21,9 @@
         <div class="product-intro">
           TRIO 运动控制器支持多达 128 轴带数字 I/O 的伺服或步进及扩展模块，如单个主站控制的 HMI。控制器可与独立程序搭配使用，或从外部计算机发送指令。
         </div>
+
+        <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
+
         <!-- 内容区域 -->
         <div class="tab-content-area">
           <transition name="fade" mode="out-in">
@@ -35,11 +38,11 @@
                 <!-- 类型 1: 左右排列 (图片左，文字右) -->
                 <template v-if="item.itemType === 1">
                   <div class="product-item-img left-img">
-                    <img :src="item.icon" :alt="item.name">
+                    <img :src="item.mainImageUrl" :alt="item.name">
                   </div>
                   <div class="product-item-info right-info">
-                    <div class="product-item-type">{{ item.type }}</div>
-                    <div class="product-item-name">{{ item.name }}</div>
+                    <div class="product-item-type">{{ item.robotType }}</div>
+                    <div class="product-item-name">{{ item.productName }}</div>
                     <div class="more">了解更多</div>
                   </div>
                 </template>
@@ -47,12 +50,12 @@
                 <!-- 类型 2: 上下排列 (图片上，文字下 - 默认) -->
                 <template v-else>
                   <div class="product-item-info bottom-info">
-                    <div class="product-item-type">{{ item.type }}</div>
-                    <div class="product-item-name">{{ item.name }}</div>
+                    <div class="product-item-type">{{ item.robotType }}</div>
+                    <div class="product-item-name">{{ item.productName }}</div>
                     <div class="more">了解更多</div>
                   </div>
                   <div class="product-item-img top-img">
-                    <img :src="item.icon" :alt="item.name">
+                    <img :src="item.mainImageUrl" :alt="item.name">
                   </div>
                 </template>
 
@@ -81,6 +84,11 @@ import { ref, onMounted, nextTick, computed } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
+import DragTab from "@/components/normal/DragTab.vue";
+
+import { productList, productCategoryTree } from "@/server/common";
+
+
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -88,12 +96,18 @@ const router = useRouter();
 const sportImgData = ref([]);       // 原始所有数据
 const groupedProductData = ref([]); // 处理后的二维数组：[ [第1页9条], [第2页...] ]
 const currentPage = ref(1);         // 当前页码
-const pageSize = 9;                 // 【修改】每页显示 9 个
+const pageSize = ref(9);                 //  每页显示 9 个
+const total = ref(0);
+
+
+const tabActiveIndex = ref(0);
+const tabList = ref([]);
+const tabListFid = ref(-1);
+const tabSelectedId = ref(-1);
+
 
 //  数据
-const currentPageData = computed(() => {
-  return groupedProductData.value[currentPage.value - 1] || [];
-});
+const currentPageData = ref([]);
 
 //  总页数
 const totalPages = computed(() => {
@@ -110,17 +124,17 @@ const toSportProductDetail = (id) => {
 }
 
 //  数据处理函数 
-const makeProductList = () => {
-  const filteredList = sportImgData.value;
+// const makeProductList = () => {
+//   const filteredList = sportImgData.value;
 
-  // 分组 (每页 pageSize 条)
-  const groups = [];
-  for (let i = 0; i < filteredList.length; i += pageSize) {
-    groups.push(filteredList.slice(i, i + pageSize));
-  }
+//   // 分组 (每页 pageSize 条)
+//   const groups = [];
+//   for (let i = 0; i < filteredList.length; i += pageSize.value) {
+//     groups.push(filteredList.slice(i, i + pageSize.value));
+//   }
 
-  groupedProductData.value = groups;
-};
+//   groupedProductData.value = groups;
+// };
 
 // 分页切换函数  
 const changePage = (pageNum) => {
@@ -141,93 +155,135 @@ const changePage = (pageNum) => {
   });
 };
 
-onMounted(() => {
+const getTabList = async () => {
+  const res = await productCategoryTree();
+
+  const robotTabs = res.data.filter(item => item.category_type === 'SPORT_CONTROLLER');
+  console.log(robotTabs);
+
+  tabList.value = robotTabs[0].children;
+  tabListFid.value = robotTabs[0].id;
+  tabSelectedId.value = robotTabs[0].children[0].id;
+
+  getProductList();
+};
+
+const getProductList = async () => {
+  const params = {
+    page: currentPage.value,
+    page_size: pageSize.value,
+    keyword: undefined,
+    model_number: undefined,
+    category_id: tabSelectedId.value,
+    parent_category_id: tabListFid.value
+  };
+  const res = await productList(params);
+  total.value = res.total;
+  currentPageData.value = res.data;
+};
+
+const tabClick = (index, item) => {
+  tabActiveIndex.value = index;
+  tabSelectedId.value = item.id;
+  getProductList();
+
+  //  切换 Tab 时，重置页码为 1，并重新处理数据
+  currentPage.value = 1;
+  // makeProductList(item.type);
+
+
+};
+
+onMounted(async () => {
   // 初始化数据
-  sportImgData.value = [
-    //  itemType: 1  左右布局 
-    {
-      id: 1,
-      type: 'ETHERCAT',
-      name: 'FLEX-6 NANO',
-      icon: "/images/sportProduct/1.png",
-      itemType: 1,
-    },
-    {
-      id: 2,
-      type: 'ETHERCAT',
-      name: 'MC6N-ECAT',
-      icon: "/images/sportProduct/2.png",
-      itemType: 1,
-    },
-    {
-      id: 3,
-      type: 'ETHERCAT,PTEX',
-      name: 'MC664',
-      icon: "/images/sportProduct/3.png",
-      itemType: 1,
-    },
-    {
-      id: 4,
-      type: 'PTEX',
-      name: 'MC4N-RTEX',
-      icon: "/images/sportProduct/4.png",
-      itemType: 1,
-    },
-    //  itemType: 2  上下布局 
-    {
-      id: 5,
-      type: '常规',
-      name: 'MC508',
-      icon: "/images/sportProduct/5.png",
-      itemType: 2,
-    },
-    {
-      id: 6,
-      type: '常规',
-      name: 'MC405',
-      icon: "/images/sportProduct/6.png",
-      itemType: 2,
-    },
-    {
-      id: 7,
-      type: '常规',
-      name: 'MC404-Z',
-      icon: "/images/sportProduct/7.png",
-      itemType: 2,
-    },
-    {
-      id: 8,
-      type: '常规',
-      name: 'MC403',
-      icon: "/images/sportProduct/8.png",
-      itemType: 2,
-    },
-    {
-      id: 9,
-      type: '常规',
-      name: 'MC402',
-      icon: "/images/sportProduct/8.png",
-      itemType: 2,
-    },
-    //  第二页数据示例 (超过 9 个的部分) 
-    {
-      id: 10,
-      type: '常规',
-      name: 'MC401',
-      icon: "/images/sportProduct/8.png",
-      itemType: 2,
-    },
-    {
-      id: 11,
-      type: 'ETHERCAT',
-      name: 'FLEX-6 PLUS',
-      icon: "/images/sportProduct/1.png",
-      itemType: 1,
-    },
-  ];
+  // sportImgData.value = [
+  //   //  itemType: 1  左右布局 
+  //   {
+  //     id: 1,
+  //     type: 'ETHERCAT',
+  //     name: 'FLEX-6 NANO',
+  //     icon: "/images/sportProduct/1.png",
+  //     itemType: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     type: 'ETHERCAT',
+  //     name: 'MC6N-ECAT',
+  //     icon: "/images/sportProduct/2.png",
+  //     itemType: 1,
+  //   },
+  //   {
+  //     id: 3,
+  //     type: 'ETHERCAT,PTEX',
+  //     name: 'MC664',
+  //     icon: "/images/sportProduct/3.png",
+  //     itemType: 1,
+  //   },
+  //   {
+  //     id: 4,
+  //     type: 'PTEX',
+  //     name: 'MC4N-RTEX',
+  //     icon: "/images/sportProduct/4.png",
+  //     itemType: 1,
+  //   },
+  //   //  itemType: 2  上下布局 
+  //   {
+  //     id: 5,
+  //     type: '常规',
+  //     name: 'MC508',
+  //     icon: "/images/sportProduct/5.png",
+  //     itemType: 2,
+  //   },
+  //   {
+  //     id: 6,
+  //     type: '常规',
+  //     name: 'MC405',
+  //     icon: "/images/sportProduct/6.png",
+  //     itemType: 2,
+  //   },
+  //   {
+  //     id: 7,
+  //     type: '常规',
+  //     name: 'MC404-Z',
+  //     icon: "/images/sportProduct/7.png",
+  //     itemType: 2,
+  //   },
+  //   {
+  //     id: 8,
+  //     type: '常规',
+  //     name: 'MC403',
+  //     icon: "/images/sportProduct/8.png",
+  //     itemType: 2,
+  //   },
+  //   {
+  //     id: 9,
+  //     type: '常规',
+  //     name: 'MC402',
+  //     icon: "/images/sportProduct/8.png",
+  //     itemType: 2,
+  //   },
+  //   //  第二页数据示例 (超过 9 个的部分) 
+  //   {
+  //     id: 10,
+  //     type: '常规',
+  //     name: 'MC401',
+  //     icon: "/images/sportProduct/8.png",
+  //     itemType: 2,
+  //   },
+  //   {
+  //     id: 11,
+  //     type: 'ETHERCAT',
+  //     name: 'FLEX-6 PLUS',
+  //     icon: "/images/sportProduct/1.png",
+  //     itemType: 1,
+  //   },
+  // ];
 
   // 初始化列表
-  makeProductList();
+  // makeProductList();
+  await getTabList();
+
+
 });
 </script>
 
@@ -273,7 +329,6 @@ onMounted(() => {
 
       .product-intro {
         width: 100%;
-        text-align: center;
         font-size: 16px;
         color: #666;
         margin-bottom: 3vh;
