@@ -1,9 +1,22 @@
 <template>
   <div class="indus-swiper-main">
-    <swiper v-if="treatData.length > 0" class="home-swiper" :modules="modules" direction="horizontal"
-      :slides-per-view="3"   :loop="true" :autoplay="autoplayOptions" :speed="800" @swiper="onSwiper"
-      @slideChange="onSlideChange">
-      <swiper-slide class="page-slide" v-for="(pageData, pageIndex) in treatData" :key="pageIndex">
+    <swiper
+      v-if="treatData.length > 0"
+      class="home-swiper"
+      :modules="modules"
+      :slides-per-view="3"
+      :space-between="10"
+      :loop="true"
+      :autoplay="autoplayOptions"
+      :speed="800"
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+    >
+      <swiper-slide 
+        class="page-slide" 
+        v-for="(pageData, pageIndex) in treatData" 
+        :key="pageIndex"
+      >
         <img :src="pageData.img_url" alt="" @error="handleImgError(pageData)" />
       </swiper-slide>
     </swiper>
@@ -37,7 +50,6 @@ const autoplayOptions = {
 
 const props = defineProps({
   swiperData: { type: Array, required: true, default: () => [] },
-  activeIndex: { type: Number, default: -1 },
 });
 
 watch(
@@ -47,8 +59,6 @@ watch(
   },
   { immediate: true, deep: true }
 );
-
-const emit = defineEmits(["swiperChange"]);
 
 const handleImgError = (item) => {
   item.img_url = "/images/default.png";
@@ -65,32 +75,25 @@ const onSwiper = (swiper) => {
   swiperInstance.value = swiper;
 };
 
-const onSlideChange = (swiper) => {
-  emit("swiperChange", swiper.activeIndex);
-};
+const onSlideChange = (swiper) => {};
 
 onUnmounted(() => {
   swiperInstance.value?.destroy(true, true);
   swiperInstance.value = null;
 });
-
-defineExpose({ swiperInstance });
 </script>
 
 <style scoped lang="scss">
 .indus-swiper-main {
-  // border: 2px solid green;
   width: 100%;
   height: auto;
   position: relative;
-  // overflow: hidden;
   box-sizing: border-box;
 }
 
-
 .home-swiper {
   width: 100%;
-  height: 300px;
+  height: 400px;
 
   :deep(.swiper-button-prev),
   :deep(.swiper-button-next) {
@@ -99,17 +102,22 @@ defineExpose({ swiperInstance });
 
   :deep(.swiper-wrapper) {
     height: 100%;
-     
+    align-items: center;
   }
 
-
   :deep(.swiper-slide) {
-    width: auto !important;
+    width: calc((100% - 20px) / 3) !important;
     height: 100%;
     flex-shrink: 0;
     overflow: hidden;
-    // border-radius: 8px;
+    transition: transform 0.3s ease;
+    transform: scale(0.8); /* 默认左右缩小 */
+  }
 
+  /* ✅ 中间图片（第2张）最大 */
+  :deep(.swiper-slide-next) {
+    transform: scale(1.2);
+    z-index: 10;
   }
 }
 
@@ -124,12 +132,10 @@ defineExpose({ swiperInstance });
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* 图片不变形、填满 */
     display: block;
   }
 }
 
-/* 右侧按钮 */
 .swiper-button-container {
   position: absolute;
   right: 10px;
