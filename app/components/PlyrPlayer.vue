@@ -112,12 +112,12 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-/* 核心：宽高比容器（保证视频比例不变） */
+ //宽高比容器（保证视频比例不变） 
 .plyr-aspect-ratio-wrap {
   width: 100%;
   position: relative;
   overflow: hidden;
-  // 去掉固定高度，完全靠padding-bottom控制比例
+ 
 }
 
 .plyr-player-wrap {
@@ -132,7 +132,7 @@ defineExpose({
 .plyr-video {
   width: 100% !important;
   height: 100% !important;
-  // 关键：用contain代替cover，保证视频完整显示
+  //用contain代替cover，保证视频完整显示
   object-fit: contain !important;
 }
 

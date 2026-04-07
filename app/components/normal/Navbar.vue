@@ -30,10 +30,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();  
 
 const tabList = [
   { name: "首页", link: "/" },
@@ -47,34 +48,44 @@ const tabList = [
 
 const activeIndex = ref(-1);
 
+// 回首页
 const backToHome = () => {
   router.push("/");
 };
 
+// 点击主菜单
 const handleClick = (index, item) => {
   activeIndex.value = index;
-  console.log(item.name);
   router.push(item.link);
 };
 
+// 点击子菜单
 const handleSubClick = (path) => {
   const productIndex = tabList.findIndex(i => i.name === '产品中心');
-  if (productIndex !== -1) {
-    activeIndex.value = productIndex;
-  }
+  activeIndex.value = productIndex;
   router.push(path);
 };
 
-onMounted(() => {
-  const currentPath = window.location.pathname;
+const setActiveIndex = () => {
+  const path = route.path.toLowerCase()
   tabList.forEach((item, index) => {
-    if (item.link === currentPath) {
-      activeIndex.value = index;
-    } else if (item.name === '产品中心' && currentPath.startsWith('/product')) {
-      activeIndex.value = index;
+    if (path.includes(item.link.toLowerCase())) {
+      activeIndex.value = index
     }
-  });
+  })
+}
+
+onMounted(() => {
+  setActiveIndex();
 });
+
+
+watch(
+  () => route.path,
+  () => {
+    setActiveIndex();
+  }
+);
 </script>
 
 <style lang="scss" scoped>

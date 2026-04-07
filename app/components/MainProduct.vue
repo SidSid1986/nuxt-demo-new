@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 16:13:22
+ * @LastEditTime: 2026-04-02 14:16:21
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
@@ -45,6 +45,7 @@ const props = defineProps({
 watch(
   () => props.productData,
   (newVal) => {
+    console.log(newVal);
     if (!newVal.length) return;
     productArr.value = newVal;
   },

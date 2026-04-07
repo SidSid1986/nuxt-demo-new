@@ -44,9 +44,10 @@
         <DetailTable :detailPram="productData.detailPram" />
       </div>
 
-      <div class="pruduct-detail-img-title">产品图例</div>
+      <div v-if="productData.detailPram.detailImg" class="pruduct-detail-img-title">产品图例</div>
       <div class="pruduct-detail-img-content">
-        <img :src="productData.detailPram.detailImg" alt="">
+        <img v-if="productData.detailPram.detailImg" :src="productData.detailPram.detailImg" alt="">
+
       </div>
 
     </div>
@@ -179,7 +180,7 @@ const formatProductData = (apiData) => {
       maxArmSpan: apiData.max_arm_span || "",
       perprecision: apiData.perprecision || "",
       weight: apiData.weight || "",
-      IP: apiData.ip_level || "IP54", // 接口是null就给默认值
+      IP: apiData.ip_level || "", // 接口是null就给默认值
       insType: apiData.ins_type || "",
       driveType: apiData.drive_type || "",
       insRequire: apiData.ins_require || "",

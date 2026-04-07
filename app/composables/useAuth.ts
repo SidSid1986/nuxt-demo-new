@@ -2,8 +2,8 @@
  * @Author: Sid Li
  * @Date: 2026-02-25 10:43:39
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-02-25 16:55:36
- * @FilePath: \nuxt-demo\app\composables\useAuth.ts
+ * @LastEditTime: 2026-04-07 10:46:59
+ * @FilePath: \nuxt-free-new\app\composables\useAuth.ts
  * @Description: 
  */
 // composables/useAuth.ts
@@ -14,7 +14,7 @@ export const useAuth = () => {
   const token = useCookie('auth_token', {
     maxAge: 60 * 60 * 24 * 7, // 7天过期
     secure: config.public.nodeEnv === 'production', // 生产环境仅 HTTPS 传输
-    httpOnly: true, // 防 XSS 攻击（关键）
+    httpOnly: true, // 防 XSS 攻击 
     sameSite: 'lax' // 防 CSRF 攻击
   })
 

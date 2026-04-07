@@ -4,11 +4,10 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-
-
 export default defineNuxtConfig({
+  ssr: false,// 关闭 ssr
 
-  // 1. 开发服务器基础配置 (只留 host/port)
+  //  开发服务器基础配置
   devServer: {
     host: '0.0.0.0',
     port: 3000
@@ -18,9 +17,10 @@ export default defineNuxtConfig({
   css: [
     'element-plus/dist/index.css',
     'element-plus/theme-chalk/display.css',
+    '@/assets/css/main.css',
   ],
 
-  // (此处省略中间未变动的代码，保持你原有的即可)
+ 
   plugins: [
     '~/plugins/element-plus.ts',
     '~/plugins/rem-adaptation.client.js'
@@ -104,7 +104,7 @@ export default defineNuxtConfig({
       internalKey: ''
     },
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000'
+      apiBase: '/'
     }
   },
   postcss: {

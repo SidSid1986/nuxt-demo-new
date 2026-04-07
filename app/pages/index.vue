@@ -12,7 +12,10 @@
     </div>
 
     <div class="main-select">
-      <MainSelect :selectContentItems="selectContentItems" />
+      <!-- <MainSelect :selectContentItems="selectContentItems" /> -->
+
+      <MainSelectSwiper :selectContentItems="selectContentItems" />
+      <!-- <IndusSwiper :swiperData="selectContentItems" :activeIndex="testIndex" /> -->
     </div>
 
     <div class="main-top">
@@ -28,12 +31,10 @@
     </div>
 
     <div class="footer-two">
-
       <FooterTwo />
-
     </div>
 
-    <!-- 回到顶部按钮：保留原有结构，仅改样式 -->
+
     <div :class="{ show: isShowBackTop }" class="horizon-container">
       <div class="back-to-top" title="回到顶部" @click="scrollToTop">
         <img alt="回到顶部" src="/images/back-top.png" />
@@ -46,17 +47,15 @@
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import IndexSwiper from "@/components/IndexSwiper.vue";
+import IndusSwiper from "@/components/IndusSwiper.vue";
 import MainProduct from "@/components/MainProduct.vue";
 import MainSelect from "@/components/MainSelect.vue";
+import MainSelectSwiper from "@/components/MainSelectSwiper.vue";
 import MainTop from "@/components/MainTop.vue";
 import News from "@/components/News.vue";
 import FooterOne from "@/components/FooterOne.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
-
-import { homeImage, productList, newsList } from "@/server/common";
-
-
-
+import { homeImage, mainProductList, newsList } from "@/server/common";
 // 轮播数据
 
 const swiperData = ref([
@@ -242,20 +241,22 @@ const getHomeImage = async () => {
   }
 };
 
-//获取产品列表
+//获取产品列表 
+
 const getProductList = async () => {
-  const res = await productList();
+  const res = await mainProductList(1, 6);
   console.log(res);
   if (res.code === 200) {
-    productData.value = res.data.slice(0, 6);
+    productData.value = res.data
   }
 };
 
 //获取新闻列表
 const getNewsList = async () => {
+
   const res = await newsList(1, 3);
-  console.log(res);
-  newsContentItems.value = res.data;
+  // console.log(res.data.slice(1,4));
+  newsContentItems.value = res.data.slice(1, 4)
 
 };
 
@@ -407,55 +408,5 @@ onUnmounted(() => {
   line-height: 1;
   transform: translateY(-2px);
   font-size: 30px;
-}
-</style>
-
-<style>
-html,
-body {
-  margin: 0 !important;
-  padding: 0;
-  width: 100%;
-  height: auto !important;
-  overflow-x: hidden;
-  overflow-y: auto !important;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ul,
-ol,
-dl,
-dd,
-figure,
-blockquote {
-  margin: 0;
-  padding: 0;
-}
-
-ul,
-ol {
-  list-style: none;
-}
-
-/* img {
-  display: block;
-  max-width: 100%;
-} */
-
-a {
-  text-decoration: none;
-  color: inherit;
 }
 </style>

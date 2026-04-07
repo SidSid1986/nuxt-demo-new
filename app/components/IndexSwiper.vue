@@ -1,8 +1,9 @@
 <template>
   <div class="swiper-main">
-    <swiper class="home-swiper" :modules="modules" direction="horizontal" :slides-per-view="1" :slides-per-group="1"
-      :initial-slide="0" :loop="true" :autoplay="autoplayOptions" :speed="800" @swiper="onSwiper"
-      @slideChange="onSlideChange" :init="treatData.length > 0">
+    <!-- 关键：去掉 :init，用 v-if 控制渲染 -->
+    <swiper v-if="treatData.length > 0" class="home-swiper" :modules="modules" direction="horizontal"
+      :slides-per-view="1" :slides-per-group="1" :initial-slide="0" :loop="true" :autoplay="autoplayOptions"
+      :speed="800" @swiper="onSwiper" @slideChange="onSlideChange">
       <swiper-slide class="page-slide" v-for="(pageData, pageIndex) in treatData" :key="`page-${pageIndex}`">
         <img :src="pageData.img_url" alt="轮播图" loading="lazy" @error="handleImgError(pageData)" />
       </swiper-slide>
@@ -19,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onUnmounted, onMounted, nextTick } from "vue";
+import { ref, watch, onUnmounted, nextTick } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -50,15 +51,7 @@ const props = defineProps({
 watch(
   () => props.swiperData,
   async (newVal) => {
-    // await nextTick();
     treatData.value = newVal || [];
-
-    console.log(treatData.value);
-
-    if (swiperInstance.value) {
-      swiperInstance.value.autoplay.stop();
-      swiperInstance.value.autoplay.start();
-    }
   },
   { immediate: true, deep: true }
 );
@@ -66,30 +59,46 @@ watch(
 const emit = defineEmits(["swiperChange"]);
 
 const handleImgError = (item) => {
-  item.url = "/images/default.png";
+  item.img_url = "/images/default.png";
 };
 
 const goPrev = () => {
-  if (swiperInstance.value) {
+  if (swiperInstance.value && treatData.value.length > 1) {
     swiperInstance.value.slidePrev();
+    fixSwiperPauseBug(); // 修复
+  }
+};
+const goNext = () => {
+  if (swiperInstance.value && treatData.value.length > 1) {
+    swiperInstance.value.slideNext();
+    fixSwiperPauseBug(); // 修复
   }
 };
 
-const goNext = () => {
-  if (swiperInstance.value) {
-    swiperInstance.value.slideNext();
+// 核心修复函数
+function fixSwiperPauseBug() {
+  if (swiperInstance.value?.autoplay) {
+    swiperInstance.value.autoplay.stop();
+    setTimeout(() => {
+      swiperInstance.value.autoplay.start();
+    }, 0);
   }
-};
+}
 
 const onSwiper = (swiper) => {
   swiperInstance.value = swiper;
+
+  // 刚初始化就唤醒自动轮播
+  setTimeout(() => {
+    swiper.autoplay.stop();
+    swiper.autoplay.start();
+  }, 100);
 };
 
 const onSlideChange = (swiper) => {
   emit("swiperChange", swiper.activeIndex);
 };
 
-// 组件卸载时销毁Swiper实例，避免内存泄漏和请求中断
 onUnmounted(() => {
   if (swiperInstance.value) {
     swiperInstance.value.destroy(true, true);

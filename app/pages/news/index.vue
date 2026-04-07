@@ -224,7 +224,7 @@ onMounted(async () => {
     width: 100%;
     height: 30vh;
     background: url("/images/news/news-title.png") no-repeat center center;
-    background-size: 100% auto;
+    background-size: 100% 100%;
 
     display: flex;
     justify-content: center;

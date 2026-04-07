@@ -152,7 +152,7 @@ const initMapLogic = (BMapGL) => {
     infoWindowInstance = new BMapGL.InfoWindow(content, {
       width: 250,
       height: 100,
-      title: '当前位置'
+      title: ''
     });
 
     markerInstance.openInfoWindow(infoWindowInstance);

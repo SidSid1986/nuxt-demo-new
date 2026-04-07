@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 16:45:12
+ * @LastEditTime: 2026-04-02 14:19:35
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\[type]\[id].vue
  * @Description: 
 -->
@@ -52,11 +52,15 @@
       </div>
 
       <div class="first-pram">
-        <SportDetailTable :sportPram="sportPram" />
+        <SportDetailTable v-if="sportPram.length > 0" :sportPram="sportPram" />
+        <div v-else>参数编辑中</div>
       </div>
 
       <div class="second-pram">
-        <SportDetailTable :sportPram="sportPramTwo" />
+        <SportDetailTable v-if="sportPramTwo.length > 0" :sportPram="sportPramTwo" />
+        <div v-else>参数编辑中</div>
+
+
       </div>
 
       <div class="detail-img">
@@ -124,38 +128,38 @@ const iconContents = ref([
 ])
 
 const sportPram = ref([
-  {
-    id: 1, lineName: "配件", lineValue: "名称",
+  // {
+  //   id: 1, lineName: "配件", lineValue: "名称",
 
-  },
-  {
-    id: 2, lineName: "P317-P327", lineValue: "CAN I/O 模块",
+  // },
+  // {
+  //   id: 2, lineName: "P317-P327", lineValue: "CAN I/O 模块",
 
-  }, {
-    id: 3, lineName: "P750", lineValue: "机器人算法FEC",
+  // }, {
+  //   id: 3, lineName: "P750", lineValue: "机器人算法FEC",
 
-  }, {
-    id: 4, lineName: "P561-P563", lineValue: "UNIPLAY触摸屏7寸&8寸&15寸",
-  }
+  // }, {
+  //   id: 4, lineName: "P561-P563", lineValue: "UNIPLAY触摸屏7寸&8寸&15寸",
+  // }
 ])
 
 const sportPramTwo = ref([
-  {
-    id: 1, lineName: "产品选项", lineValue: "P855",
-  },
+  // {
+  //   id: 1, lineName: "产品选项", lineValue: "P855",
+  // },
 
-  {
+  // {
 
-    id: 2, lineName: "轴0", lineValue: "标准",
+  //   id: 2, lineName: "轴0", lineValue: "标准",
 
-  }, {
-    id: 3, lineName: "轴1", lineValue: "标准",
+  // }, {
+  //   id: 3, lineName: "轴1", lineValue: "标准",
 
-  }, {
-    id: 4, lineName: "轴2", lineValue: "标准",
-  }, {
-    id: 5, lineName: "轴3", lineValue: "扩展轴",
-  }
+  // }, {
+  //   id: 4, lineName: "轴2", lineValue: "标准",
+  // }, {
+  //   id: 5, lineName: "轴3", lineValue: "扩展轴",
+  // }
 ])
 
 const toIndex = () => {
@@ -272,7 +276,7 @@ onMounted(() => {
         align-items: center;
 
         img {
-          // width: 400px;
+          // width: 400px;`
           height: 100%;
           width: auto;
           object-fit: scale-down;

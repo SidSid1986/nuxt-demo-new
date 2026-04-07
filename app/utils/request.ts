@@ -10,13 +10,7 @@ export const request = $fetch.create({
 
   onRequest(context: FetchContext) {
     const config = useRuntimeConfig();
-    const isDev = import.meta.dev;
-
-    if (isDev) {
-      context.options.baseURL = '';
-    } else {
-      context.options.baseURL = config.public.apiBase as string;
-    }
+    context.options.baseURL = config.public.apiBase as string;
   },
 
   onRequestError({ request, error }) {

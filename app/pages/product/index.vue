@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 15:25:13
+ * @LastEditTime: 2026-04-07 10:51:28
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -47,8 +47,8 @@
           </transition>
 
           <!--   分页控件 总页数 > 1   -->
-          <Pagination v-if="total> 1" class="pagination-wrapper" :totalPages="totalPages"
-            :currentPage="currentPage" @changePage="changePage" />
+          <Pagination v-if="total > 1" class="pagination-wrapper" :totalPages="totalPages" :currentPage="currentPage"
+            @changePage="changePage" />
         </div>
       </div>
     </div>
@@ -102,11 +102,6 @@ const currentPageData = ref([]);
 const totalPages = computed(() => {
   return Math.ceil(total.value / pageSize.value);
 });
-
-
-
-
-
 
 
 const tabClick = (index, item) => {
@@ -245,6 +240,7 @@ onMounted(async () => {
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
+      box-sizing: border-box;
 
 
       span {
