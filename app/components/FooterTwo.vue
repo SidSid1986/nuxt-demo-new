@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-28 15:12:20
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-07 10:36:46
+ * @LastEditTime: 2026-04-11 09:32:11
  * @FilePath: \nuxt-free-new\app\components\FooterTwo.vue
  * @Description: 
 -->
@@ -46,9 +46,10 @@
       <div class="footer-two-right">
         <div class="right-line">
           <span class="right-line-title">产品中心</span>
-          <span class="right-line-item" @click="goSportProduct()">运动控制器</span>
-          <span class="right-line-item">伺服驱动器</span>
           <span class="right-line-item " @click="goRobotProduct()">机器人</span>
+          <span class="right-line-item" @click="goSportProduct()">运动控制器</span>
+          <!-- <span class="right-line-item">伺服驱动器</span> -->
+
         </div>
 
         <div class="right-line">

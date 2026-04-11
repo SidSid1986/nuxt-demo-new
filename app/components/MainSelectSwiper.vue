@@ -1,3 +1,11 @@
+<!--
+ * @Author: Sid Li
+ * @Date: 2026-04-07 15:33:34
+ * @LastEditors: Sid Li
+ * @LastEditTime: 2026-04-08 09:15:18
+ * @FilePath: \nuxt-free-new\app\components\MainSelectSwiper.vue
+ * @Description: 
+-->
 <template>
   <div class="main-select-swiper-container">
     <div class="select-content-container">
@@ -47,8 +55,8 @@ onMounted(() => {
 <style scoped lang="scss">
 .main-select-swiper-container {
 
-  border: 2px solid red;
-  height: 70vh;
+  // border: 2px solid red;
+  // height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

@@ -34,6 +34,11 @@
       <FooterTwo />
     </div>
 
+    <!-- 聊天服务 -->
+    <!-- <div class="chat-service">
+      <ChatService />
+    </div> -->
+
 
     <div :class="{ show: isShowBackTop }" class="horizon-container">
       <div class="back-to-top" title="回到顶部" @click="scrollToTop">
@@ -56,8 +61,11 @@ import News from "@/components/News.vue";
 import FooterOne from "@/components/FooterOne.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import { homeImage, mainProductList, newsList } from "@/server/common";
-// 轮播数据
 
+import ChatService from "@/components/ChatService.vue";
+
+
+// 轮播数据
 const swiperData = ref([
   // { id: 3, url: "/images/swiper/v3.png" },
   // { id: 1, url: "/images/swiper/v1.png" },
@@ -322,7 +330,7 @@ onUnmounted(() => {
 
   .main-select {
     width: 100%;
-    height: 70vh;
+    height: 60vh;
   }
 
 
@@ -408,5 +416,12 @@ onUnmounted(() => {
   line-height: 1;
   transform: translateY(-2px);
   font-size: 30px;
+}
+
+.chat-service {
+  position: fixed;
+  right: 20px;
+  bottom: 200px;
+  z-index: 9999;
 }
 </style>

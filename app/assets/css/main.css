@@ -41,4 +41,12 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+/* 全局禁止图片选中 + 禁止按钮区域选中 */
+
+img {
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
  

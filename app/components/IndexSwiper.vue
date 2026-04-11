@@ -1,6 +1,6 @@
 <template>
   <div class="swiper-main">
-    <!-- 关键：去掉 :init，用 v-if 控制渲染 -->
+ 
     <swiper v-if="treatData.length > 0" class="home-swiper" :modules="modules" direction="horizontal"
       :slides-per-view="1" :slides-per-group="1" :initial-slide="0" :loop="true" :autoplay="autoplayOptions"
       :speed="800" @swiper="onSwiper" @slideChange="onSlideChange">

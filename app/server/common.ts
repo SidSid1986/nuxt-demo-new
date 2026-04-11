@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-07 10:56:01
+ * @LastEditTime: 2026-04-09 14:17:37
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -76,6 +76,15 @@ export function solutionList(params: any) {
   });
 }
 
+//solution detail
+export function solutionDetail(id: any) {
+  return request(`/api/solution/detail/${id}`, {
+    method: 'get',
+  });
+}
+
+
+
 // pruduct category list
 export function productCategoryTree() {
   return request('/api/category/tree', {
@@ -101,6 +110,36 @@ export function productDetail(robotType: any, id: any) {
 //main product list
 export function mainProductList(page: any, pageSize: any) {
   return request(`/api/product/main/products?page=${page}&page_size=${pageSize}`, {
+    method: 'get',
+  });
+}
+
+// abtou swiper list
+export function aboutSwiperList() {
+  return request('/api/about/banners', {
+    method: 'get',
+  });
+}
+
+//about step 
+export function aboutStepList() {
+  return request('/api/about/steps', {
+    method: 'get',
+  });
+}
+
+
+//process list
+export function processList(params: any) {
+  return request('/api/process/list', {
+    method: 'get',
+    params,
+  });
+}
+
+//process detail
+export function processDetail(id: any) {
+  return request(`/api/process/detail/${id}`, {
     method: 'get',
   });
 }

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:37:26
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-30 14:25:35
+ * @LastEditTime: 2026-04-11 13:35:16
  * @FilePath: \nuxt-free-new\app\components\FooterOne.vue
  * @Description: 
 -->
@@ -47,6 +47,17 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   width: 100%;
+
+  .footer-one-content-item {
+    // border:1px solid red;
+    height: 100%;
+    width: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 
 
 }

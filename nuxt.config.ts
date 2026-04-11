@@ -20,13 +20,17 @@ export default defineNuxtConfig({
     '@/assets/css/main.css',
   ],
 
- 
+
   plugins: [
     '~/plugins/element-plus.ts',
     '~/plugins/rem-adaptation.client.js'
   ],
   app: {
     head: {
+      title: '阜瑞智能装备',
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ],
       script: [
         {
           src: '/rem-init.js',

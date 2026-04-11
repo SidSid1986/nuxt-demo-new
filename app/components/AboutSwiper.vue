@@ -1,22 +1,10 @@
 <template>
-  <div class="indus-swiper-main">
-    <swiper
-      v-if="treatData.length > 0"
-      class="home-swiper"
-      :modules="modules"
-      :slides-per-view="3"
-      :space-between="10"
-      :loop="treatData.length > 3"
-      :autoplay="autoplayOptions"
-      :speed="800"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-    >
-      <swiper-slide
-        class="page-slide"
-        v-for="(pageData, pageIndex) in treatData"
-        :key="pageIndex"
-      >
+  <div class="about-swiper-main">
+
+    <swiper v-if="treatData.length > 0" class="home-swiper" :modules="modules" :slides-per-view="3" :space-between="10"
+      :loop="treatData.length >= 1" :loop-additional-slides="3" :autoplay="autoplayOptions" :speed="800"
+      @swiper="onSwiper" @slideChange="onSlideChange">
+      <swiper-slide class="page-slide" v-for="(pageData, pageIndex) in treatData" :key="pageIndex">
         <img :src="pageData.img_url" alt="" @error="handleImgError(pageData)" />
       </swiper-slide>
     </swiper>
@@ -33,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onUnmounted } from "vue";
+import { ref, watch, onUnmounted, onMounted } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -55,8 +43,11 @@ const props = defineProps({
 watch(
   () => props.swiperData,
   (newVal) => {
-    treatData.value = [...newVal, ...newVal, ...newVal] || [];
-    console.log(treatData.value);
+    if (newVal.length === 3) {
+      newVal = [...newVal, ...newVal];
+    }
+
+    treatData.value = newVal || [];
   },
   { immediate: true, deep: true }
 );
@@ -66,17 +57,28 @@ const handleImgError = (item) => {
 };
 
 const goPrev = () => {
-  if (swiperInstance.value) swiperInstance.value.slidePrev();
+  if (!swiperInstance.value) return;
+  swiperInstance.value.slidePrev();
 };
+
 const goNext = () => {
-  if (swiperInstance.value) swiperInstance.value.slideNext();
+  if (!swiperInstance.value) return;
+  swiperInstance.value.slideNext();
 };
 
 const onSwiper = (swiper) => {
   swiperInstance.value = swiper;
+
+ 
+  if (treatData.value.length === 3) {
+    setTimeout(() => {
+      swiper.loopCreate();
+      swiper.update();
+    }, 0);
+  }
 };
 
-const onSlideChange = (swiper) => {};
+const onSlideChange = (swiper) => { };
 
 onUnmounted(() => {
   swiperInstance.value?.destroy(true, true);
@@ -85,17 +87,18 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.indus-swiper-main {
+.about-swiper-main {
   width: 100%;
-  height: auto;
+  height: 100%;
   position: relative;
   box-sizing: border-box;
-  // border:1px solid red;
+  // border: 2px solid blue;
 }
 
 .home-swiper {
   width: 100%;
-  height: 400px;
+  height: 40vh;
+  // border: 2px solid red;
 
   :deep(.swiper-button-prev),
   :deep(.swiper-button-next) {
@@ -129,6 +132,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  // border: 2px solid green;
 
   img {
     width: 100%;

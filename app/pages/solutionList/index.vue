@@ -2,8 +2,8 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-11 14:12:42
- * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
+ * @LastEditTime: 2026-04-11 13:53:15
+ * @FilePath: \nuxt-free-new\app\pages\solutionList\index.vue
  * @Description: 
 -->
 <template>
@@ -13,42 +13,27 @@
     </div>
 
     <div class="solution-title-bg">
-      <span> 解决方案</span>
+      <span>行业解决方案</span>
     </div>
 
-    <div class="solution-title">行业解决方案</div>
-
-    <div class="solution-group">
-
-      <!-- <div v-for="(item, index) in groupData" :key="item.id" class="solution-item" @click="selectItem(item, index)"
-        :class="{ 'active-item': index == solutionIndex }">
-        <img :src="index == solutionIndex ? item.icon2 : item.icon1" alt="" />
-        <span :class="{ 'active-text': index == solutionIndex }">{{ item.name }}</span>
-      </div> -->
-
-      <div :class="{ 'active-text': index == solutionIndex }" v-for="(item, index) in groupData" :key="item.id"
-        class="solution-item" @click="selectItem(item, index)" @mouseenter="mouseEnterImg(index)"
-        @mouseleave="mouseLeaveImg">
-        <!-- <img :src="index == solutionIndex ? item.icon2 : item.icon1" alt="" /> -->
-
-        <div class="icon-container">
-          <img :src="item.icon1" :style="{ position: 'absolute', opacity: index !== solutionIndex ? 1 : 0 }" alt="" />
-          <img :src="item.icon2" :style="{ position: 'absolute', opacity: index === solutionIndex ? 1 : 0 }" alt="" />
-        </div>
-        <span class="icon-text">{{ item.name }}</span>
-      </div>
+    <div class="detail-bread">
+      <div><span class="breadcrumb-item" @click="toIndex">首页></span><span class="breadcrumb-item"
+          @click="toprocess">解决方案></span>{{ currentTypeData.name }}</div>
     </div>
 
-    <div class="solution-title">工艺应用解决方案</div>
+    <div class="solution-title">{{ currentTypeData.title }}解决方案</div>
     <div v-if="groupImgData.length > 0" class="solution-img-group">
-      <div @mouseenter="mouseEnterProcess(index)" @mouseleave="mouseLeaveProcess" @click="selectPic(item, index)" v-for="(item, index) in groupImgData" :key="item.id"
-        class="solution-img-item" :class="{ 'active-img': index == imgIndex }">
+      <div v-for="(item, index) in groupImgData" @mouseenter="mounseEnterImg(index)" @mouseleave="mounseLeaveImg"
+        @click="selectPic(item, index)" :key="item.id" class="solution-img-item"
+        :class="{ 'active-img': index == imgIndex }">
         <div class="solution-img">
           <img :src="index == imgIndex ? item.cover1 : item.cover2" alt="" />
           <span class="img-text">
-            {{ item.title }}
+            {{ item.industry_name }}
           </span>
-          <div class="name-line">了解更多</div>
+          <div class="name-line">
+            了解更多
+          </div>
         </div>
       </div>
     </div>
@@ -66,12 +51,12 @@ import { ref, onMounted, computed, watch, } from "vue";
 import Navbar from "~/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
-import { industriesList, solutionList, processList } from "@/server/common";
+import { industriesList, solutionList } from "@/server/common";
 import Pagination from "@/components/normal/Pagination.vue";
 
 const router = useRouter();
 
-const solutionIndex = ref(-1);
+const solutionIndex = ref(0);
 
 const imgIndex = ref(-1);
 
@@ -80,7 +65,7 @@ const currentPage = ref(1);
 const pageSize = ref(6);
 const total = ref(0);
 
-
+const currentTypeData = ref({});
 const fid = ref(0);
 const totalPages = computed(() => {
   return Math.ceil(total.value / pageSize.value);
@@ -201,18 +186,11 @@ const groupImgData = ref([
 
 ]);
 
-const selectItem = (item, index) => {
-  solutionIndex.value = index;
-  fid.value = item.id;
-  // getSolutionList();
-  router.push(`/solutionList?fid=${item.id}`);
-
-};
 
 const selectPic = (item, index) => {
   imgIndex.value = index;
   console.log(item);
-  router.push(`/process/processDetail?id=${item.id}`);
+  router.push(`/solutionDetail?id=${item.id}`);
 };
 
 const getIndustriesList = async () => {
@@ -220,8 +198,9 @@ const getIndustriesList = async () => {
 
   groupData.value = res.data || [];
   console.log(groupData.value);
-  fid.value = res.data[0].id;
-
+  console.log(fid.value);
+  currentTypeData.value = groupData.value.find(item => item.id === fid.value);
+  console.log(currentTypeData.value);
 };
 
 // const getSolutionList = async () => {
@@ -247,18 +226,19 @@ const changePage = (newPageNum) => {
   // 增加边界检查，防止越界
   if (newPageNum >= 1 && newPageNum <= totalPages.value) {
     currentPage.value = newPageNum;
-    getProcessList();
+    getSolutionList();
   }
 };
 
-const getProcessList = async () => {
+const getSolutionList = async () => {
   const params = {
+    fid: fid.value || undefined,
     page: currentPage.value,
     page_size: pageSize.value,
     keyword: '',
     only_active: false // 是否只查启用的，根据需求调整
   };
-  const res = await processList(params);
+  const res = await solutionList(params);
 
   total.value = res.total || 0;
   console.log(res);
@@ -266,31 +246,33 @@ const getProcessList = async () => {
 
 };
 
-const mouseEnterImg = (index) => {
-  console.log(index);
-  solutionIndex.value = index;
-};
-
-const mouseLeaveImg = () => {
-  solutionIndex.value = -1;
-};
-
-const mouseEnterProcess = (index) => {
+const mounseEnterImg = (index) => {
   console.log(index);
   imgIndex.value = index;
 };
 
-const mouseLeaveProcess = () => {
+const mounseLeaveImg = () => {
   imgIndex.value = -1;
 };
+
+const toprocess = () => {
+  router.push(`/solutionList?fid=${fid.value }`);
+}
+
+
+const toIndex = () => {
+  router.push(`/solution`);
+}
 
 
 
 onMounted(async () => {
-  await getIndustriesList();
-  // await getSolutionList();
+  fid.value = router.currentRoute.value.query.fid * 1 || 1;
 
-  await getProcessList();
+  await getIndustriesList();
+  await getSolutionList();
+
+
 });
 </script>
 
@@ -319,6 +301,24 @@ onMounted(async () => {
       font-family: "SourceHanSansCN-Bold";
       margin-left: 20%;
     }
+  }
+
+  .detail-bread {
+    width: 80%;
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+    padding: 20px;
+
+    // border: 1px solid red;
+    .breadcrumb-item {
+      cursor: pointer;
+    }
+
+
   }
 
   .solution-title {
@@ -359,7 +359,6 @@ onMounted(async () => {
     }
 
     .solution-item {
-
       cursor: pointer;
       height: 12vh;
       width: 100%;
@@ -371,40 +370,22 @@ onMounted(async () => {
       box-sizing: border-box;
       border: 2px solid transparent;
 
-      .icon-container {
-        position: relative;
-        // border: 1px solid red;
-        width: 35px;
+      img {
+        width: auto;
         height: 35px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
         margin-right: 10px;
-
-        img {
-          width: auto;
-          height: 35px;
-
-        }
       }
 
-
-
-
-      .icon-text {
+      span {
         // border: 1px solid red;
         display: inline-block;
         font-size: 22px;
         font-family: "SourceHanSansCN-Medium";
       }
 
-
-    }
-
-    .active-text {
-      border: 1px solid #16418a;
-      color: #16418a;
+      .active-text {
+        color: #16418a;
+      }
     }
 
     .active-item {
@@ -477,6 +458,7 @@ onMounted(async () => {
         }
 
         .name-line {
+
           position: absolute;
           min-width: 80px;
           height: 25px;
@@ -490,10 +472,7 @@ onMounted(async () => {
           font-size: 14px;
           font-family: "SourceHanSansCN-Bold";
           text-align: center;
-
         }
-
-
       }
 
 

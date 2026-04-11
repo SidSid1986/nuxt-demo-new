@@ -47,40 +47,44 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted, watchEffect } from 'vue'
-
+import { ref, watch, onMounted, onUnmounted, watchEffect, nextTick } from 'vue'
 import { Back, Right } from '@element-plus/icons-vue'
 
-
-const stepsArr = [
-  { id: 1, title: "2009", img: "/images/about/2009.png" },
-  { id: 2, title: "2013", img: "/images/about/2013.png" },
-  { id: 3, title: "2014", img: "/images/about/2014.png" },
-  { id: 4, title: "2015", img: "/images/about/2015.png" },
-  { id: 5, title: "2016", img: "/images/about/2016.png" },
-  { id: 6, title: "2017", img: "/images/about/2017.png" },
-  { id: 7, title: "2018", img: "/images/about/2018.png" },
-  { id: 8, title: "2019", img: "/images/about/2019.png" },
-  { id: 9, title: "2020", img: "/images/about/2020.png" },
-  { id: 10, title: "2021", img: "/images/about/2021.png" },
-  { id: 11, title: "2022", img: "/images/about/2022.png" },
-  { id: 12, title: "2023", img: "/images/about/2023.png" },
-  { id: 13, title: "2024", img: "/images/about/2024.png" },
-  { id: 14, title: "2025", img: "/images/about/2025.png" },
-]
-
-// 当前显示的图片和年份 
-const currentImage = ref(stepsArr[0].img)
-const currentYear = ref(stepsArr[0].title)
+const props = defineProps({
+  stepsArrData: {
+    type: Array,
+    default: () => []
+  }
+})
 
 
-//  active默认值改为0（ 2009）
+const stepsArr = ref([
+  //   { id: 1, title: "2009", img: "/images/about/2009.png" },
+  // { id: 2, title: "2013", img: "/images/about/2013.png" },
+  // { id: 3, title: "2014", img: "/images/about/2014.png" },
+  // { id: 4, title: "2015", img: "/images/about/2015.png" },
+  // { id: 5, title: "2016", img: "/images/about/2016.png" },
+  // { id: 6, title: "2017", img: "/images/about/2017.png" },
+  // { id: 7, title: "2018", img: "/images/about/2018.png" },
+  // { id: 8, title: "2019", img: "/images/about/2019.png" },
+  // { id: 9, title: "2020", img: "/images/about/2020.png" },
+  // { id: 10, title: "2021", img: "/images/about/2021.png" },
+  // { id: 11, title: "2022", img: "/images/about/2022.png" },
+  // { id: 12, title: "2023", img: "/images/about/2023.png" },
+  // { id: 13, title: "2024", img: "/images/about/2024.png" },
+  // { id: 14, title: "2025", img: "/images/about/2025.png" },
+
+])
+
+// 当前显示的图片和年份
+const currentImage = ref('')
+const currentYear = ref('')
+
 const active = ref(0)
 const progressWidth = ref(0)
 const halfNodeWidthPercent = ref(0)
 const paddingPercent = ref(5)
 const paddingPx = 20
-
 
 const scrollContainer = ref(null)
 const scrollOffset = ref(-paddingPx)
@@ -89,44 +93,56 @@ const nodeWidth = ref(0)
 const totalWidth = ref(0)
 
 
+watch(() => props.stepsArrData, (newVal) => {
+  const data = newVal || []
+  stepsArr.value = data
+
+
+  if (data.length > 0) {
+    currentImage.value = data[0].img
+    currentYear.value = data[0].title
+    active.value = 0
+  }
+
+  nextTick(() => {
+    updateNodeSize()
+    calculateProgress()
+  })
+}, { immediate: true, deep: true })
+
 const calculateProgress = () => {
-  if (stepsArr.length === 0) return
+  if (stepsArr.value.length === 0) return
   const containerWidth = document.querySelector('.progress-bar-container')?.offsetWidth || totalWidth.value
   halfNodeWidthPercent.value = (29 / containerWidth) * 100
-  const baseProgress = (active.value / (stepsArr.length - 1)) * 100
+  const baseProgress = (active.value / (stepsArr.value.length - 1)) * 100
   progressWidth.value = paddingPercent.value + baseProgress * (100 - 2 * paddingPercent.value) / 100
 }
 
-
 const getNodeLeft = (index) => {
-  if (stepsArr.length === 0) return 0
-  return paddingPercent.value + (index / (stepsArr.length - 1)) * (100 - 2 * paddingPercent.value)
+  if (stepsArr.value.length === 0) return 0
+  return paddingPercent.value + (index / (stepsArr.value.length - 1)) * (100 - 2 * paddingPercent.value)
 }
-
 
 const handleNodeClick = (index) => {
   active.value = index
-  // 当前图片和年份
-  currentImage.value = stepsArr[index].img
-  currentYear.value = stepsArr[index].title
+  currentImage.value = stepsArr.value[index].img
+  currentYear.value = stepsArr.value[index].title
   autoScrollToActive(index)
 }
 
-
 const scrollStep = (direction) => {
-  if (stepsArr.length <= visibleCount.value) return
+  if (stepsArr.value.length <= visibleCount.value) return
   const step = nodeWidth.value
   if (direction === 'left') {
     scrollOffset.value = Math.min(scrollOffset.value + step, -paddingPx)
   } else {
-    const maxOffset = -(stepsArr.length - visibleCount.value) * nodeWidth.value - paddingPx
+    const maxOffset = -(stepsArr.value.length - visibleCount.value) * nodeWidth.value - paddingPx
     scrollOffset.value = Math.max(scrollOffset.value - step, maxOffset)
   }
 }
 
-
 const autoScrollToActive = (index) => {
-  if (stepsArr.length <= visibleCount.value) return
+  if (stepsArr.value.length <= visibleCount.value) return
   const minVisibleIndex = Math.abs(Math.round((scrollOffset.value + paddingPx) / nodeWidth.value))
   const maxVisibleIndex = minVisibleIndex + visibleCount.value - 1
 
@@ -137,30 +153,30 @@ const autoScrollToActive = (index) => {
   }
 }
 
-
 const updateNodeSize = () => {
-  if (!scrollContainer.value || stepsArr.length === 0) return
+  if (!scrollContainer.value || stepsArr.value.length === 0) return
   nodeWidth.value = Math.floor(scrollContainer.value.offsetWidth / visibleCount.value)
-  totalWidth.value = stepsArr.length * nodeWidth.value
+  totalWidth.value = stepsArr.value.length * nodeWidth.value
   calculateProgress()
 }
 
-
 watch(active, calculateProgress)
+
 watchEffect(() => {
   setTimeout(updateNodeSize, 0)
 })
 
 onMounted(() => {
-  updateNodeSize()
-  calculateProgress()
   window.addEventListener('resize', updateNodeSize)
 
-  //自动切换图片和年份
-  setInterval(() => {
-    active.value = (active.value + 1) % stepsArr.length
+  // 自动轮播
+  const timer = setInterval(() => {
+    if (stepsArr.value.length === 0) return
+    active.value = (active.value + 1) % stepsArr.value.length
     handleNodeClick(active.value)
   }, 3000)
+
+  onUnmounted(() => clearInterval(timer))
 })
 
 onUnmounted(() => {
@@ -170,7 +186,6 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .step-progress-wrapper {
-  // border: 2px solid green;
   width: 70%;
   height: 45vh;
   display: flex;
@@ -179,14 +194,11 @@ onUnmounted(() => {
   justify-content: flex-end;
   position: relative;
 
-
-
   .scroll-container-border {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    // border: 3px solid green;
     width: 100%;
 
     .scroll-container {
@@ -194,7 +206,6 @@ onUnmounted(() => {
       overflow: hidden;
       position: relative;
       height: 100px;
-      // border: 3px solid red;
     }
 
     .scroll-btn {
@@ -217,8 +228,6 @@ onUnmounted(() => {
         border-color: #d9d9d9 !important;
       }
     }
-
-
   }
 
   .year-image-wrapper {
@@ -230,17 +239,14 @@ onUnmounted(() => {
     height: 220px;
     overflow: hidden;
     z-index: 10;
-    // border: 3px solid yellow;
   }
 
   .year-image {
     width: 100%;
     height: 100%;
-    // object-fit: contain;
     transition: all 0.3s ease;
   }
 }
-
 
 .scroll-btn:disabled {
   cursor: not-allowed;
@@ -251,7 +257,6 @@ onUnmounted(() => {
   background-color: #f3f4f6;
   border-color: #1969B4;
 }
-
 
 .custom-step-progress {
   padding: 40px 0;
@@ -286,7 +291,6 @@ onUnmounted(() => {
 
 .step-item {
   position: absolute;
-  // top: calc(进度条top值 + 进度条高度/2 - 节点高度/2);
   top: calc(24px + 12px/2 - 16px/2);
   transform: translateX(-50%);
   display: flex;
@@ -303,7 +307,6 @@ onUnmounted(() => {
   background-color: #fff;
   border: 2px solid #1969B4;
   transition: all 0.3s ease;
-  // box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
 .step-label {
