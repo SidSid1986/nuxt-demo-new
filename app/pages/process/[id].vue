@@ -23,7 +23,7 @@
 
     <div class="detail-text-container">
       <div class="detail-text-title">{{ detailData.name }}</div>
-      <div class="detail-text-content" v-html="detailData.content"> </div>
+      <div class="detail-text-content rich-text-content" v-html="detailData.content"> </div>
     </div>
 
     <div class="footer-two">

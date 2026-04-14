@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-11 13:53:15
+ * @LastEditTime: 2026-04-11 15:22:47
  * @FilePath: \nuxt-free-new\app\pages\solutionList\index.vue
  * @Description: 
 -->
@@ -29,7 +29,7 @@
         <div class="solution-img">
           <img :src="index == imgIndex ? item.cover1 : item.cover2" alt="" />
           <span class="img-text">
-            {{ item.industry_name }}
+            {{ item.title }}
           </span>
           <div class="name-line">
             了解更多

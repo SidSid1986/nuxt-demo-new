@@ -49,4 +49,22 @@ img {
   -webkit-user-select: none;
   pointer-events: none;
 }
+
+
+/* 全局富文本表格样式 */
+.rich-text-content table {
+  border-collapse: collapse !important;
+  width: 100%;
+}
+.rich-text-content table td,
+.rich-text-content table th {
+  border: 1px solid #dee2e6 !important; /* 灰色细线，符合 Bootstrap 规范 */
+  padding: 0.5rem !important;
+  text-align: center;
+}
+/* 解决表头背景色 */
+.rich-text-content table th {
+  background-color: #f8f9fa !important;
+  font-weight: 600 !important;
+}
  

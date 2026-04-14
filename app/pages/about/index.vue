@@ -23,7 +23,7 @@
         </div>
         <div class="about-top-right">
           <div class="about-top-right-title">烟台阜瑞智能装备有限公司</div>
-          <div v-html="aboutTopText"></div>
+          <div class="rich-text-content" v-html="aboutTopText"></div>
         </div>
       </div>
     </div>

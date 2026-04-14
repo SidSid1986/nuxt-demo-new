@@ -15,7 +15,7 @@
       <span>服务支持</span>
     </div>
     <div class="service-container">
-      <div class="service-text" v-html="serviceText"></div>
+      <div class="service-text rich-text-content" v-html="serviceText"></div>
     </div>
 
 

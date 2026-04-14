@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:37:26
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 13:53:36
+ * @LastEditTime: 2026-04-11 16:16:19
  * @FilePath: \nuxt-free-new\app\pages\news\[id].vue
  * @Description: 
 -->
@@ -20,7 +20,7 @@
         <div class="detail-content-text-date"><span>发布时间:{{ demoContent.
           publish_date }}</span></div>
 
-        <div class="detail-content-text-content" v-html="demoContent.content"></div>
+        <div  class="detail-content-text-content rich-text-content" v-html="demoContent.content"></div>
 
 
       </div>

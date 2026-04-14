@@ -35,9 +35,9 @@
     </div>
 
     <!-- 聊天服务 -->
-    <!-- <div class="chat-service">
+    <div class="chat-service">
       <ChatService />
-    </div> -->
+    </div>
 
 
     <div :class="{ show: isShowBackTop }" class="horizon-container">

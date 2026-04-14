@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-09 15:08:35
+ * @LastEditTime: 2026-04-11 16:16:34
  * @FilePath: \nuxt-free-new\app\pages\solutionDetail\index.vue
  * @Description: 
 -->
@@ -23,7 +23,7 @@
 
     <div class="detail-text-container">
       <div class="detail-text-title">{{ detailData.name }}</div>
-      <div class="detail-text-content" v-html="detailData.content"> </div>
+      <div class="detail-text-content rich-text-content" v-html="detailData.content"> </div>
     </div>
 
     <div class="footer-two">

@@ -2,17 +2,17 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-09 14:17:37
+ * @LastEditTime: 2026-04-14 14:35:38
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
 // services/common.ts
 import request from '@/utils/request';
 
- 
+
 // 通用图片上传
 export function uploadImageCommon(data: FormData) {
- 
+
   return request('/common/upload_image', {
     method: 'POST',
     body: data,
@@ -25,7 +25,7 @@ export function homeImage() {
   });
 }
 
- 
+
 //about
 export function aboutInfo() {
   return request('/api/about/info', {
@@ -34,7 +34,7 @@ export function aboutInfo() {
 }
 
 //download files
-export function fileListApi(page: any, pageSize: any,keyword:any) {
+export function fileListApi(page: any, pageSize: any, keyword: any) {
   return request(`/api/files/list?page=${page}&page_size=${pageSize}&keyword=${keyword}`, {
     method: 'get',
   });
@@ -141,5 +141,37 @@ export function processList(params: any) {
 export function processDetail(id: any) {
   return request(`/api/process/detail/${id}`, {
     method: 'get',
+  });
+}
+
+
+// 获取聊天记录
+export function chatPullMessageLongPoll(visitor_id: string, last_id: number) {
+  return request(`/api/chat/pull?visitor_id=${visitor_id}&last_id=${last_id}`, {
+    method: 'get',
+  });
+}
+
+// 发送聊天消息
+export function chatSendMessage(data: {
+  visitor_id: string;
+  sender: string;
+  content: string;
+}) {
+  return request('/api/chat/send', {
+    method: 'POST',
+    body: data,
+  });
+}
+
+//企业微信
+export function chatSendToWeCom(data: {
+  visitor_id: string;
+  sender: string;
+  content: string;
+}) {
+  return request('/api/chat/send_to_wecom', {
+    method: 'POST',
+    body: data, 
   });
 }
