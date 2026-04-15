@@ -1,11 +1,3 @@
-<!--
- * @Author: Sid Li
- * @Date: 2026-03-05 15:11:36
- * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-01 16:01:24
- * @FilePath: \nuxt-free-new\app\pages\product\[type]\[id].vue
- * @Description: 
--->
 <template>
   <div class="index-container">
     <div class="nav-container">
@@ -40,14 +32,22 @@
 
       <div class="detail-title-text">详细参数</div>
 
+      <!-- 自定义表格 （无固定表头） -->
       <div class="table-content">
-        <DetailTable :detailPram="productData.detailPram" />
-      </div>
-
-      <div v-if="productData.detailPram.detailImg" class="pruduct-detail-img-title">产品图例</div>
-      <div class="pruduct-detail-img-content">
-        <img v-if="productData.detailPram.detailImg" :src="productData.detailPram.detailImg" alt="">
-
+        <el-tabs v-model="activeTab" class="custom-param-tabs">
+          <el-tab-pane v-for="(table, idx) in productData.customTables" :key="idx" :label="table.name"
+            :name="idx.toString()">
+            <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
+              <tbody>
+                <!-- 第一行自动作为灰色表头行，其余为白色内容行 -->
+                <tr v-for="(row, rIdx) in table.rows" :key="rIdx" :class="rIdx === 0 ? 'header-row' : 'content-row'">
+                  <td width="30%">{{ row[0] }}</td>
+                  <td width="70%">{{ row[1] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </el-tab-pane>
+        </el-tabs>
       </div>
 
     </div>
@@ -61,68 +61,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
+import { ref, onMounted } from "vue";
 import Navbar from "@/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
-import FooterTwo from "@/components/FooterTwo.vue"
-import DetailTable from "@/components/DetailTable.vue"
-const router = useRouter();
-
+import FooterTwo from "@/components/FooterTwo.vue";
 import { productDetail } from "@/server/common";
+import { ElTabs, ElTabPane } from 'element-plus';
 
-
-// const productData = ref({
-//   typeName: "SCARA系列",
-//   robotName: "IER50-1200-SR",
-//   detailImg: '/images/productDetail/d1.png',
-//   mainParam: [
-//     {
-//       text: "最大臂展",
-//       num: "1200MM",
-//       icon: "/images/productDetail/tab1.png",
-
-//     },
-//     {
-//       text: "最大负载",
-//       num: "50KG",
-//       icon: "/images/productDetail/tab2.png",
-
-//     },
-//     {
-//       text: "轴数",
-//       num: "4轴",
-//       icon: "/images/productDetail/tab3.png",
-//     },
-//     {
-//       text: "本体重量",
-//       num: "120KG",
-//       icon: "/images/productDetail/tab4.png",
-//     }
-//   ],
-//   detailPram: {
-//     robotName: "IER50-1200-SR",
-//     switchNum: "4轴",
-//     maxWeight: "50KG",
-//     maxArmSpan: "1200MM",
-//     perprecision: "J1+J2:±0.025mm;J3:±0.015mm;J4:±0.005°",
-//     weight: '145kg',
-//     IP: 'IP54',
-//     insType: '地面',
-//     driveType: 'AC伺服电机驱动',
-//     insRequire: '温度:0至45°C(不应有过大温度变化);湿度:10至80%(不得结露);电快速瞬变脉冲群抗扰度:2kV或以下;静电抗扰度:13kV或以下;环境:设置在室内，避免阳光照射，远离灰尘、油烟、盐分、铁屑等，远离易燃性、腐蚀性液体与气体，不得与水接触，不传递冲击与振动等，远离电气干扰源。',
-//     authSupport: 'CE',
-//     remark: '详情请查阅说明书或向我公司咨询',
-//     productImg: '/images/productDetail/1.png',
-//   }
-// });
+const router = useRouter();
 
 const productData = ref({
   typeName: "",
   robotName: "",
-  detailImg: "",
+  productImg: "",
   mainParam: [],
-  detailPram: {}
+  customTables: []
 });
+
+const activeTab = ref("0");
+
 const toIndex = () => {
   router.push('/product');
 };
@@ -132,70 +89,33 @@ const toProduct = () => {
 };
 
 const getProductDetail = async () => {
-  console.log(router.currentRoute.value.params);
-
-  const res = await productDetail(router.currentRoute.value.params.type, router.currentRoute.value.params.id);
+  const res = await productDetail(
+    router.currentRoute.value.params.type,
+    router.currentRoute.value.params.id
+  );
   productData.value = formatProductData(res.data);
+};
 
-}
-//处理数据结构
 const formatProductData = (apiData) => {
-  if (!apiData) return;
+  if (!apiData) return {};
 
   return {
-    // 顶部基础信息
     typeName: apiData.robot_type || "未知系列",
-    robotName: apiData.robot_name || apiData.product_name || "",
+    robotName: apiData.product_name || "",
     productImg: apiData.main_image_url || "",
-
-    // 主要参数（4个卡片）
     mainParam: [
-      {
-        text: "最大臂展",
-        num: apiData.max_arm_span || "",
-        icon: "/images/productDetail/tab1.png",
-      },
-      {
-        text: "最大负载",
-        num: apiData.max_weight || "",
-        icon: "/images/productDetail/tab2.png",
-      },
-      {
-        text: "轴数",
-        num: apiData.switch_num || "",
-        icon: "/images/productDetail/tab3.png",
-      },
-      {
-        text: "本体重量",
-        num: apiData.weight || "",
-        icon: "/images/productDetail/tab4.png",
-      }
+      { text: "最大臂展", num: apiData.max_arm_span || "", icon: "/images/productDetail/tab1.png" },
+      { text: "最大负载", num: apiData.max_weight || "", icon: "/images/productDetail/tab2.png" },
+      { text: "轴数", num: apiData.switch_num || "", icon: "/images/productDetail/tab3.png" },
+      { text: "本体重量", num: apiData.weight || "", icon: "/images/productDetail/tab4.png" },
     ],
-
-    // 详细参数
-    detailPram: {
-      robotName: apiData.robot_name || "",
-      switchNum: apiData.switch_num || "",
-      maxWeight: apiData.max_weight || "",
-      maxArmSpan: apiData.max_arm_span || "",
-      perprecision: apiData.perprecision || "",
-      weight: apiData.weight || "",
-      IP: apiData.ip_level || "", // 接口是null就给默认值
-      insType: apiData.ins_type || "",
-      driveType: apiData.drive_type || "",
-      insRequire: apiData.ins_require || "",
-      authSupport: apiData.auth_support || "",
-      remark: apiData.remark || "",
-      detailImg: apiData.detail_img || "", // 主图
-    }
+    customTables: apiData.custom_tables || []
   };
 };
 
 onMounted(() => {
   getProductDetail();
 });
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -207,7 +127,6 @@ onMounted(() => {
   width: 100%;
   height: auto;
 
-
   .product-bg {
     width: 100%;
     height: 35vh;
@@ -217,7 +136,6 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    // padding-left: 350px;
     box-sizing: border-box;
 
     span {
@@ -227,7 +145,6 @@ onMounted(() => {
       color: #fff;
       font-weight: bold;
       font-family: "SourceHanSansCN-Bold";
-
     }
   }
 
@@ -237,19 +154,15 @@ onMounted(() => {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    // border: 1px solid red;
 
     .breadcrumb-item {
       cursor: pointer;
     }
-
-
   }
 
   .product-detail-container {
     min-height: 60vh;
     width: 60%;
-    // border: 2px solid green;
     margin-top: 3vh;
     display: flex;
     flex-direction: column;
@@ -263,7 +176,6 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      // border: 1px solid red;
 
       .type-name {
         font-size: 20px;
@@ -275,12 +187,10 @@ onMounted(() => {
       .robot-name {
         font-size: 30px;
         color: #16418A;
-
         font-family: "SourceHanSansCN-Bold";
       }
 
       img {
-        // border: 1px solid red;
         width: 15vh;
       }
     }
@@ -291,7 +201,6 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      // border: 1px solid red;
 
       .tab-item {
         height: 10vh;
@@ -302,8 +211,6 @@ onMounted(() => {
         background-color: #F6F6F8;
 
         .tab-item-content {
-          // border: 1px solid red;
-
           .tab-item-text {
             font-size: 20px;
             font-family: "SourceHanSansCN-Bold";
@@ -325,10 +232,8 @@ onMounted(() => {
       font-family: "SourceHanSansCN-Bold";
       height: 5vh;
       line-height: 5vh;
-      // border: 1px solid red;
       margin-top: 2vh;
       background-color: #F6F6F8;
-
     }
 
     .table-content {
@@ -341,31 +246,29 @@ onMounted(() => {
       padding: 3vh;
     }
 
-    .pruduct-detail-img-title {
-      width: 100%;
-      height: 5vh;
-      // border: 1px solid red;
-      line-height: 5vh;
-      text-align: center;
-      font-size: 20px;
-      // color: #16418A;
-      font-family: "SourceHanSansCN-Bold";
+    .custom-param-tabs {
+      --el-tabs-card-border-color: #E8E8E8;
     }
 
-    .pruduct-detail-img-content {
-      min-height: 60vh;
-      width: 60%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      // border: 1px solid red;
-      margin-top: 2vh;
-      margin-bottom: 5vh;
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      border: 1px solid #E8E8E8;
 
-      img {
-        width: 100%;
-        height: 100%;
+      td {
+        border: 1px solid #E8E8E8;
+      }
+
+      // 第一行自动灰色表头
+      .header-row {
+        background-color: #F6F6F8 !important;
+        font-weight: bold;
+      }
+
+      // 内容行白色
+      .content-row {
+        background-color: #fff !important;
       }
     }
   }
@@ -379,7 +282,6 @@ onMounted(() => {
   }
 
   .nav-container,
-  .footer-one,
   .footer-two {
     width: 100%;
   }

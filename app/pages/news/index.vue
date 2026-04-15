@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 14:07:22
+ * @LastEditTime: 2026-04-15 16:12:30
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -34,7 +34,7 @@
       <div v-if="isLoaded" class="news-list-container">
         <div class="news-item-card">
 
-          <div class="news-item-border" v-for="item in newsContentItems" :key="item.id">      
+          <div class="news-item-border" v-for="item in currentPageData" :key="item.id">
             <div class="news-item" @click="toDetail(item.id)">
               <img :src="item.pic" alt="" class="news-item-img">
               <span class="news-item-title">{{ item.title }}</span>

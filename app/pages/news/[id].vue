@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:37:26
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-11 16:16:19
+ * @LastEditTime: 2026-04-15 16:07:33
  * @FilePath: \nuxt-free-new\app\pages\news\[id].vue
  * @Description: 
 -->
@@ -195,7 +195,7 @@ onMounted(() => {
         padding: 0 40px;
         box-sizing: border-box;
         // border: 1px solid red;
-
+        width:100%;
       }
     }
   }

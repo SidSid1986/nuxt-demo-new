@@ -67,4 +67,14 @@ img {
   background-color: #f8f9fa !important;
   font-weight: 600 !important;
 }
+
+.rich-text-content img {
+  width:100%;
+}
+
+.rich-text-content video {
+  width:100%;
+} 
+
+
  

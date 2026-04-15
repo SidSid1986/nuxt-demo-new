@@ -6,7 +6,7 @@
 
       <!-- 公众号迷你窗口  -->
       <div class="mini-chat" v-show="minimizeChat" @click="restoreChat">
-        <img src="https://picsum.photos/32/32" alt="客服头像" class="mini-avatar" />
+        <img src="/images/chat/chatLogo.png" alt="客服头像" class="mini-avatar" />
         <span class="mini-title">在线客服</span>
         <button class="mini-close" @click.stop="closeMiniChat">×</button>
       </div>
@@ -19,7 +19,7 @@
       <!-- 公众号聊天面板  -->
       <div class="chat-panel" v-show="open && !minimizeChat">
         <div class="chat-header">
-          <img src="https://picsum.photos/32/32" alt="客服头像" class="header-avatar" />
+          <!-- <img src="/images/chat/chatLogo.png" alt="客服头像" class="header-avatar" /> -->
           <span class="header-title">在线客服</span>
           <span class="header-status">客服在线</span>
           <div class="window-controls">
@@ -37,7 +37,7 @@
         </div>
         <div class="chat-body" ref="bodyRef">
           <div class="msg-item admin" v-if="open">
-            <img src="https://picsum.photos/40/40?random=1" alt="客服头像" class="msg-avatar" />
+            <img src="/images/chat/chatLogo.png" alt="客服头像" class="msg-avatar" />
             <div class="msg-content">
               <div class="msg-text">您好！很高兴为您服务，请问有什么可以帮助您的？</div>
               <div class="msg-time">{{ getCurrentTime() }}</div>
@@ -45,7 +45,7 @@
           </div>
           <div v-for="item in msgList" :key="item.id" class="msg-item" :class="item.sender">
             <img
-              :src="item.sender === 'visitor' ? 'https://picsum.photos/40/40?random=2' : 'https://picsum.photos/40/40?random=1'"
+              :src="item.sender === 'visitor' ? '/images/chat/we.png' : '/images/chat/we.png'"
               alt="头像" class="msg-avatar" />
             <div class="msg-content">
               <div class="msg-text">{{ item.content }}</div>
@@ -66,7 +66,7 @@
 
       <!-- 企微迷你窗口 -->
       <div class="mini-chat wecom-mini" v-show="minimizeWecom" @click="restoreWecom">
-        <img src="https://picsum.photos/32/32?random=3" alt="企微头像" class="mini-avatar" />
+        <img src="/images/chat/chatLogo.png" alt="企微头像" class="mini-avatar" />
         <span class="mini-title">企业微信咨询</span>
         <button class="mini-close" @click.stop="closeMiniWecom">×</button>
       </div>
@@ -79,7 +79,7 @@
       <!-- 企业微信聊天面板 -->
       <div class="chat-panel wecom-panel" v-show="openWecom && !minimizeWecom">
         <div class="chat-header wecom-header">
-          <img src="https://picsum.photos/32/32?random=3" alt="企微客服头像" class="header-avatar" />
+          <!-- <img src="/images/chat/chatLogo.png" alt="企微客服头像" class="header-avatar" /> -->
           <span class="header-title">企业微信咨询</span>
           <span class="header-status">客服在线</span>
           <div class="window-controls">
@@ -97,7 +97,7 @@
         </div>
         <div class="chat-body" ref="wecomBodyRef">
           <div class="msg-item admin" v-if="openWecom">
-            <img src="https://picsum.photos/40/40?random=4" alt="企微客服头像" class="msg-avatar" />
+            <img src="/images/chat/chatLogo.png" alt="企微客服头像" class="msg-avatar" />
             <div class="msg-content">
               <div class="msg-text">您好！企业微信专属客服为您服务，请问有什么可以帮助您的？</div>
               <div class="msg-time">{{ getCurrentTime() }}</div>
@@ -105,7 +105,7 @@
           </div>
           <div v-for="item in wecomMsgList" :key="item.id" class="msg-item" :class="item.sender">
             <img
-              :src="item.sender === 'visitor' ? 'https://picsum.photos/40/40?random=2' : 'https://picsum.photos/40/40?random=4'"
+              :src="item.sender === 'visitor' ? '/images/chat/wecom.png' : '/images/chat/wecom.png'"
               alt="头像" class="msg-avatar" />
             <div class="msg-content">
               <div class="msg-text">{{ item.content }}</div>
@@ -130,7 +130,7 @@ import {
   chatSendToWeCom,
 } from "@/server/common";
 
- 
+
 // 基础状态 
 const open = ref(false)
 const openWecom = ref(false)
@@ -151,7 +151,7 @@ const wecomVisitorId = ref('wecom_' + Date.now() + Math.random().toString(36).sl
 const wecomLastMsgId = ref(0)
 const isWecomPolling = ref(false)
 
- 
+
 // 公众号客服 
 const startLongPoll = async () => {
   if (isPolling.value) return
@@ -202,7 +202,7 @@ const sendMsg = async () => {
   }
 }
 
- 
+
 // 企业微信客服
 const startWecomLongPoll = async () => {
   if (isWecomPolling.value) return
@@ -253,7 +253,7 @@ const sendWecomMsg = async () => {
   }
 }
 
- 
+
 // 工具方法 
 const formatTime = (time) => {
   const date = new Date(time)
@@ -336,9 +336,8 @@ const closeMiniWecom = () => {
   openWecom.value = false
 }
 
- 
+
 // 监听窗口开关 
- 
 watch([open, minimizeChat], ([val, mini]) => {
   if ((val || mini) && !isPolling.value) startLongPoll()
 })
@@ -354,7 +353,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
- 
 .chat-service {
   position: fixed;
   right: 20px;
@@ -393,7 +391,7 @@ onMounted(() => {
   justify-content: center;
   font-weight: 500;
   flex-shrink: 0;
- 
+
 }
 
 .chat-toggle:hover {
@@ -402,11 +400,11 @@ onMounted(() => {
 }
 
 .chat-toggle.wecom {
-  background: linear-gradient(135deg, #07c160, #069c4d);
+  background: linear-gradient(135deg, #0e777f, #1f9aa3);
 }
 
 .chat-toggle.wecom:hover {
-  box-shadow: 0 8px 20px rgba(7, 193, 96, 0.4);
+  box-shadow: 0 8px 20px rgb(14, 119, 127, 0.4);
 }
 
 /* 迷你窗口（和按钮水平并排） */
@@ -431,7 +429,7 @@ onMounted(() => {
 }
 
 .mini-chat.wecom-mini {
-  background: linear-gradient(135deg, #07c160, #069c4d);
+  background: linear-gradient(135deg, #0e777f, #1f9aa3);
 }
 
 .mini-chat.wecom-mini:hover {
@@ -439,6 +437,7 @@ onMounted(() => {
 }
 
 .mini-avatar {
+  background-color: #FFFFFF;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -475,7 +474,7 @@ onMounted(() => {
 .chat-panel {
   position: absolute;
   bottom: 70px;
-  
+
   right: 0;
   width: 380px;
   height: 550px;
@@ -490,12 +489,12 @@ onMounted(() => {
   z-index: 9999;
 }
 
- 
+
 .wecom-group .chat-panel {
   bottom: 70px;
 }
 
- 
+
 .chat-header {
   padding: 16px;
   background: linear-gradient(135deg, #0088ff, #0066cc);
@@ -507,7 +506,7 @@ onMounted(() => {
 }
 
 .chat-header.wecom-header {
-  background: linear-gradient(135deg, #07c160, #069c4d);
+  background: linear-gradient(135deg, #0e777f, #1f9aa3);
 }
 
 .header-avatar {
@@ -531,7 +530,7 @@ onMounted(() => {
   bottom: 8px;
 }
 
- 
+
 .window-controls {
   position: absolute;
   right: 16px;
@@ -628,9 +627,10 @@ onMounted(() => {
 }
 
 .msg-item.visitor .msg-text {
-  background: linear-gradient(135deg, #0088ff, #0066cc);
-  color: #fff;
-  border-bottom-right-radius: 4px;
+  background: #fff;
+  color: #333;
+  border: 1px solid #e5e6eb;
+  border-bottom-left-radius: 4px;
 }
 
 .msg-item.admin .msg-text {
@@ -710,11 +710,11 @@ onMounted(() => {
 }
 
 .send-btn.wecom-btn {
-  background: linear-gradient(135deg, #07c160, #069c4d);
+  background: linear-gradient(135deg, #0e777f, #1f9aa3);
 }
 
 .send-btn.wecom-btn:hover {
-  background: linear-gradient(135deg, #06b058, #058a44);
+  background: linear-gradient(135deg, #0e777f, #1f9aa3);
 }
 
 /* 响应式适配 */
