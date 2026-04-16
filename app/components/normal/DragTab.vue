@@ -177,6 +177,7 @@ onBeforeUnmount(() => {
     z-index: 1;
     flex-shrink: 0;
     font-family: 'SourceHanSansCN-Regular';
+    text-align: center;
 
     &.active {
       color: #16418a;

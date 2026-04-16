@@ -32,15 +32,41 @@
 
       <div class="detail-title-text">详细参数</div>
 
+
+      <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
+
+      <div class="tab-content-area">
+        <transition name="fade" mode="out-in">
+          <div :key="`${tabActiveIndex}`" class="content-item-container">
+            <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
+              <tbody>
+                <!-- 第一行自动作为灰色表头行，其余为白色内容行 -->
+                <tr v-for="(row, rIdx) in tablesData[tabActiveIndex].rows" :key="rIdx"
+                  :class="rIdx === 0 ? 'header-row' : 'content-row'">
+                  <td width="50%">{{ row[0] }}</td>
+                  <td width="50%">{{ row[1] }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="img-container">
+              <img v-for="(img, index) in productData.customTables[tabActiveIndex].images" :key="index" :src="img.url"
+                alt="">
+            </div>
+
+          </div>
+        </transition>
+      </div>
+
       <!-- 自定义表格 （无固定表头） -->
-      <div class="table-content">
+      <!-- <div class="table-content">
         <el-tabs v-model="activeTab" class="custom-param-tabs">
           <el-tab-pane v-for="(table, idx) in productData.customTables" :key="idx" :label="table.name"
             :name="idx.toString()">
             <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
               <tbody>
-                <!-- 第一行自动作为灰色表头行，其余为白色内容行 -->
-                <tr v-for="(row, rIdx) in table.rows" :key="rIdx" :class="rIdx === 0 ? 'header-row' : 'content-row'">
+              
+                <tr v-for="(row, rIdx) in tables" :key="rIdx" :class="rIdx === 0 ? 'header-row' : 'content-row'">
                   <td width="30%">{{ row[0] }}</td>
                   <td width="70%">{{ row[1] }}</td>
                 </tr>
@@ -48,7 +74,7 @@
             </table>
           </el-tab-pane>
         </el-tabs>
-      </div>
+      </div> -->
 
     </div>
 
@@ -67,6 +93,7 @@ import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 import { productDetail } from "@/server/common";
 import { ElTabs, ElTabPane } from 'element-plus';
+import DragTab from "@/components/normal/DragTab.vue";
 
 const router = useRouter();
 
@@ -79,9 +106,16 @@ const productData = ref({
 });
 
 const activeTab = ref("0");
-
+const tabActiveIndex = ref(0);
+const tabList = ref([]);
+const tablesData = ref([]);
 const toIndex = () => {
   router.push('/product');
+};
+
+const tabClick = (index, item) => {
+  tabActiveIndex.value = index;
+  activeTab.value = index.toString();
 };
 
 const toProduct = () => {
@@ -94,6 +128,21 @@ const getProductDetail = async () => {
     router.currentRoute.value.params.id
   );
   productData.value = formatProductData(res.data);
+
+  console.log(productData.value);
+
+  tabList.value = productData.value.customTables.map((item, index) => ({
+    id: index,
+    label: item.name,
+  }));
+
+  console.log(tabList.value);
+  tablesData.value = productData.value.customTables.map((item, index) => ({
+    rows: item.rows,
+  }));
+
+  console.log(tablesData.value);
+
 };
 
 const formatProductData = (apiData) => {
@@ -244,6 +293,41 @@ onMounted(() => {
       border-bottom: 1px solid #E8E8E8;
       margin-bottom: 2vh;
       padding: 3vh;
+    }
+
+    .tab-content-area {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 16px;
+      // border: 2px solid yellow;
+      min-height: 20vh;
+      margin-top: 2vh;
+      margin-bottom: 5vh;
+
+      .content-item-container {
+        animation: fadeIn 0.3s ease;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+
+        .img-container {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            margin: 2vh 0;
+          }
+        }
+      }
     }
 
     .custom-param-tabs {

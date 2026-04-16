@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-07 10:51:28
+ * @LastEditTime: 2026-04-16 08:41:31
  * @FilePath: \nuxt-free-new\app\pages\product\index.vue
  * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
 -->
@@ -86,8 +86,6 @@ const tabListFid = ref(-1)
 
 
 //  分页与数据相关变量 
-const productContentListMock = ref([]); // 原始所有数据
-const groupedProductData = ref([]);     //  处理后的二维数组：[ [第1页12条], [第2页4条]  ]
 const currentPage = ref(1);             // 当前页码
 const pageSize = ref(12);
 const total = ref(0);
@@ -116,20 +114,7 @@ const tabClick = (index, item) => {
 
 };
 
-// //  据处理函数  
-// const makeProductList = (type) => {
-//   //  先过滤出当前类型的所有数据 
-//   const filteredList = productContentListMock.value.filter(item => item.type === type);
 
-//   //  二维数组 (每页 pageSize 条)
-//   const groups = [];
-//   for (let i = 0; i < filteredList.length; i += pageSize) {
-//     groups.push(filteredList.slice(i, i + pageSize));
-//   }
-
-
-//   groupedProductData.value = groups;
-// };
 
 //  分页切换函数  
 const changePage = (pageNum) => {
@@ -184,33 +169,7 @@ const getProductList = async () => {
 
 
 onMounted(async () => {
-  // 初始化模拟数据
-  // productContentListMock.value = [
-  //   { id: 1, type: 1, typeName: "SCARA 系列", name: "IER50-1200-SR", img: "/images/product/11.png" },
-  //   { id: 2, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-UNO", img: "/images/product/12.png" },
-  //   { id: 3, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-HI", img: "/images/product/13.png" },
-  //   { id: 4, type: 1, typeName: "SCARA 系列", name: "IER20-1000-SR-HI", img: "/images/product/13.png" },
-  //   { id: 5, type: 1, typeName: "SCARA 系列", name: "IER10-800-SR", img: "/images/product/15.png" },
-  //   { id: 6, type: 1, typeName: "SCARA 系列", name: "IER10-700-SR ", img: "/images/product/16.png" },
-  //   { id: 7, type: 1, typeName: "SCARA 系列", name: "IER10-500-SR ", img: "/images/product/16.png" },
-  //   { id: 8, type: 1, typeName: "SCARA 系列", name: "IER6-700-SR ", img: "/images/product/16.png" },
-  //   { id: 9, type: 1, typeName: "SCARA 系列", name: "IER6-600-SR", img: "/images/product/16.png" },
-  //   { id: 10, type: 1, typeName: "SCARA 系列", name: "IER6-500-SR ", img: "/images/product/16.png" },
-  //   { id: 11, type: 1, typeName: "SCARA 系列", name: "IER4-650-SR-U", img: "/images/product/17.png" },
-  //   { id: 12, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 13, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 14, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 15, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 16, type: 1, typeName: "SCARA 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 17, type: 2, typeName: "MINI 系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 18, type: 3, typeName: "中小负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 19, type: 4, typeName: "大负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" },
-  //   { id: 20, type: 5, typeName: "超大负载系列", name: "IER4-550-SR-U", img: "/images/product/17.png" }
-  // ];
 
-  // 默认加载 SCARA 系列 (type 1)
-  //   currentPage 默认为 1
-  // makeProductList(1);
   await getTabList();
 
 });
