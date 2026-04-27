@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-11 15:22:47
+ * @LastEditTime: 2026-04-24 11:06:22
  * @FilePath: \nuxt-free-new\app\pages\solutionList\index.vue
  * @Description: 
 -->
@@ -256,7 +256,9 @@ const mounseLeaveImg = () => {
 };
 
 const toprocess = () => {
-  router.push(`/solutionList?fid=${fid.value }`);
+  // router.push(`/solutionList?fid=${fid.value }`);
+  router.push(`/solution`);
+
 }
 
 

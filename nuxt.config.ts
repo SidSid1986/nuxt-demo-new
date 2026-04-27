@@ -81,6 +81,8 @@ export default defineNuxtConfig({
           target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",
           changeOrigin: true,
           ws: false,
+          timeout: 30000,
+          proxyTimeout: 30000
         },
         '/static': {
           target: process.env.NUXT_PUBLIC_API_BASE || "http://127.0.0.1:8000",

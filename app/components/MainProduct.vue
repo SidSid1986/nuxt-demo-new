@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-02-27 14:46:29
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-02 14:16:21
+ * @LastEditTime: 2026-04-24 14:33:28
  * @FilePath: \nuxt-free-new\app\components\MainProduct.vue
  * @Description: 
 -->
@@ -56,10 +56,14 @@ const handleClick = (item) => {
   console.log(item);
   switch (item.productType) {
     case 'sport':
-      router.push(`/sportProduct/${item.productType}/${item.id}`);
+      // router.push(`/sportProduct/${item.productType}/${item.id}`);
+      router.push(`/sportDetail/${item.categoryId}`);
+
+
       break;
     case 'robot':
-      router.push(`/product/${item.productType}/${item.id}`);
+      // router.push(`/product/${item.productType}/${item.id}`)
+      router.push(`/productDetail/${item.categoryId}`);
       break;
     default:
       break;
@@ -104,7 +108,7 @@ onMounted(() => {
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      height:100%;
+      height: 100%;
 
       // border: 2px solid red;
       box-sizing: border-box;

@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-08 16:05:12
+ * @LastEditTime: 2026-04-24 13:52:35
  * @FilePath: \nuxt-free-new\app\pages\about\index.vue
  * @Description: 
 -->
@@ -56,11 +56,17 @@
     </div>
 
     <div class="map-container">
-      <MapNew />
+      <!-- <MapNew /> -->
+      <MapTX />
+      <!-- <MapGov /> -->
     </div>
 
     <div class="footer-two">
       <FooterTwo />
+    </div>
+        <!-- 聊天服务 -->
+    <div class="chat-service">
+      <ChatService />
     </div>
   </div>
 </template>
@@ -71,10 +77,13 @@ import Navbar from "@/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Step from "@/components/normal/Step.vue"
-import MapNew from "@/components/normal/MapNew.vue"
+// import MapNew from "@/components/normal/MapNew.vue"
+import MapTX from "@/components/normal/MapTX.vue"
+// import MapGov from "@/components/normal/MapGov.vue"
  
 import { aboutInfo, aboutSwiperList ,aboutStepList} from "@/server/common";
 import AboutSwiper from "@/components/AboutSwiper.vue";
+import ChatService from "@/components/ChatService.vue";
 
 
 const router = useRouter();

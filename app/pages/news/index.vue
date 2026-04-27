@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-15 16:12:30
+ * @LastEditTime: 2026-04-21 11:04:07
  * @FilePath: \nuxt-free-new\app\pages\news\index.vue
  * @Description: 
 -->
@@ -56,6 +56,11 @@
       <FooterTwo />
 
     </div>
+
+    <!-- 聊天服务 -->
+    <div class="chat-service">
+      <ChatService />
+    </div>
   </div>
 </template>
 
@@ -66,6 +71,7 @@ import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
 import { newsList } from "@/server/common";
+import ChatService from "@/components/ChatService.vue";
 
 
 const router = useRouter();

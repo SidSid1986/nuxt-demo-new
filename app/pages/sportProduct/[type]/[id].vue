@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-02 14:19:35
+ * @LastEditTime: 2026-04-18 10:47:20
  * @FilePath: \nuxt-free-new\app\pages\sportProduct\[type]\[id].vue
  * @Description: 
 -->
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="product-detail-container">
+    <div v-if="productData.typeName" class="product-detail-container">
       <div class="product-d-title"><span>{{ sportOneItem.product_name }}</span></div>
 
       <div class="product-d-content">
@@ -31,12 +31,12 @@
         </div>
         <div class="product-d-right">
           <div class="line-detail">{{ sportOneItem.detail }}</div>
-          <div class="line-title">编程灵活</div>
-          <div class="line-text">{{ sportOneItem.line1 }}</div>
-          <div class="line-title">通讯丰富</div>
-          <div class="line-text">{{ sportOneItem.line2 }}</div>
-          <div class="line-title">认证齐全</div>
-          <div class="line-text">{{ sportOneItem.line3 }}</div>
+
+          <div v-for="(item, index) in sportOneItem.selling_points
+" :key="index">
+            <div class="line-title">{{ item.title }}</div>
+            <div class="line-text">{{ item.content }}</div>
+          </div>
         </div>
       </div>
 
@@ -49,23 +49,42 @@
 
       <div class="detail-title">
         <span>详细参数</span>
+        <!-- <div>==={{ tabActiveIndex }}</div>
+        <div>===={{ tablesData[tabActiveIndex] }}</div>
+
+     
+        <div v-if="tablesData[tabActiveIndex]?.rows">
+          {{ tablesData[tabActiveIndex].rows }}
+        </div> -->
       </div>
 
-      <div class="first-pram">
-        <SportDetailTable v-if="sportPram.length > 0" :sportPram="sportPram" />
-        <div v-else>参数编辑中</div>
+      <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
+
+
+      <div class="tab-content-area">
+        <transition name="fade" mode="out-in">
+          <div :key="`${tabActiveIndex}`" class="content-item-container">
+            <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
+              <tbody>
+                <tr v-for="(row, rIdx) in tablesData[tabActiveIndex].rows" :key="rIdx"
+                  :class="rIdx === 0 ? 'header-row' : 'content-row'">
+                  <td width="50%">{{ row[0] }}</td>
+                  <td width="50%">{{ row[1] }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="img-container">
+              <img v-for="(img, index) in tablesData[tabActiveIndex].images" :key="index" :src="img.url" alt="">
+            </div>
+
+          </div>
+        </transition>
       </div>
 
-      <div class="second-pram">
-        <SportDetailTable v-if="sportPramTwo.length > 0" :sportPram="sportPramTwo" />
-        <div v-else>参数编辑中</div>
-
-
-      </div>
-
-      <div class="detail-img">
+      <!-- <div class="detail-img">
         <img :src="sportOneItem.img" alt="">
-      </div>
+      </div> -->
     </div>
 
     <div class="footer-two">
@@ -75,27 +94,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
+import { ref, onMounted } from "vue";
 import Navbar from "@/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
-
-import SportDetailTable from "@/components/SportDetailTable.vue";
-
 import { productDetail } from "@/server/common";
+import DragTab from "@/components/normal/DragTab.vue";
+
 
 const router = useRouter();
-
-
 const sportOneItem = ref({
-  // id: 1,
-  // name: "MC404-Z 4轴高性能运动控制器",
-  // detail: "MC404-Z基于TRIO的高性能ARM CORTEX-M7双精密技术，为步进驱动器或脉冲输入伺服驱动器提供4轴脉冲+方向或正交输出控制。TRI0采用先进的FPGA技术，缩小尺寸，并将脉冲输出和伺服电路安装在紧凑的面板安装封装中。MC404-Z安装在坚固的塑料外壳内，带有集成接地机箱，并集成了工业环境中直接连接外部设备所需的所有隔离电路。包括滤波电源，因此它可以从大多数工业机柜中的24V直流逻辑电源供电。",
-  // line1: "支持TRIO Basic以及IEC编程语言",
-  // line2: "内置ETHERNET-IP/MODBUS TCP/ETHERNET接口，支持RS485+RS232,CSNOPEN",
-  // line3: "ROHS、UL、CE认证齐全",
-  // img: "/images/sportDetail/oneImg.png",
+
 })
+const productData = ref({
+  typeName: "",
+
+});
+const tablesData = ref([]);
 
 const iconContents = ref([
   {
@@ -126,41 +141,14 @@ const iconContents = ref([
     img: "/images/sportDetail/icon6.png",
   }
 ])
+const activeTab = ref("0");
+const tabList = ref([]);
+const tabActiveIndex = ref(0);
 
-const sportPram = ref([
-  // {
-  //   id: 1, lineName: "配件", lineValue: "名称",
-
-  // },
-  // {
-  //   id: 2, lineName: "P317-P327", lineValue: "CAN I/O 模块",
-
-  // }, {
-  //   id: 3, lineName: "P750", lineValue: "机器人算法FEC",
-
-  // }, {
-  //   id: 4, lineName: "P561-P563", lineValue: "UNIPLAY触摸屏7寸&8寸&15寸",
-  // }
-])
-
-const sportPramTwo = ref([
-  // {
-  //   id: 1, lineName: "产品选项", lineValue: "P855",
-  // },
-
-  // {
-
-  //   id: 2, lineName: "轴0", lineValue: "标准",
-
-  // }, {
-  //   id: 3, lineName: "轴1", lineValue: "标准",
-
-  // }, {
-  //   id: 4, lineName: "轴2", lineValue: "标准",
-  // }, {
-  //   id: 5, lineName: "轴3", lineValue: "扩展轴",
-  // }
-])
+const tabClick = (index, item) => {
+  tabActiveIndex.value = index;
+  activeTab.value = index.toString();
+};
 
 const toIndex = () => {
   router.push("/product");
@@ -173,10 +161,32 @@ const toProduct = () => {
 
 
 const getProductDetail = async () => {
-  console.log(router.currentRoute.value.params);
+
 
   const res = await productDetail(router.currentRoute.value.params.type, router.currentRoute.value.params.id);
   sportOneItem.value = res.data;
+
+  console.log(sportOneItem.value);
+
+  productData.value = {
+    typeName: sportOneItem.value.robot_type,
+  }
+
+  tabList.value = sportOneItem.value.custom_tables.map((item, index) => ({
+    id: index,
+    label: item.name,
+  }));
+
+
+  tablesData.value = sportOneItem.value.custom_tables.map((item, index) => ({
+    rows: item.rows,
+    images: item.images,
+  }));
+
+  console.log(tablesData.value);
+  console.log(tablesData.value[0].rows);
+
+  //  console.log( tablesData.value[tabActiveIndex.value].rows);
 
 }
 
@@ -373,6 +383,68 @@ onMounted(() => {
         font-family: "SourceHanSansCN-Regular";
       }
     }
+
+    .tab-content-area {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 16px;
+      // border: 2px solid yellow;
+      min-height: 20vh;
+      margin-top: 2vh;
+      margin-bottom: 5vh;
+
+      .content-item-container {
+        animation: fadeIn 0.3s ease;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+
+        .img-container {
+          // border:2px solid red;
+          min-height:50vh;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          img {
+            // border:2px solid yellow;
+            max-height: 400px;
+            margin: 1vh 0;
+          }
+        }
+      }
+    }
+
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      border: 1px solid #E8E8E8;
+
+      td {
+        text-align: center;
+        border: 1px solid #E8E8E8;
+      }
+
+      // 第一行自动灰色表头
+      .header-row {
+        background-color: #F6F6F8 !important;
+        font-weight: bold;
+      }
+
+      // 内容行白色
+      .content-row {
+        background-color: #fff !important;
+      }
+    }
+
   }
 
   .first-pram {

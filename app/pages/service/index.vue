@@ -21,18 +21,22 @@
 
 
     <div class="footer-two">
-
       <FooterTwo />
+    </div>
 
+    <!-- 聊天服务 -->
+    <div class="chat-service">
+      <ChatService />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, } from "vue";
-import Navbar from "~/components/normal/Navbar.vue";
+import Navbar from "@/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
+import ChatService from "@/components/ChatService.vue";
 import { serviceContent } from "@/server/common";
 
 

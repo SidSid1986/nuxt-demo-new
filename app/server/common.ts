@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-24 10:26:50
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-14 14:35:38
+ * @LastEditTime: 2026-04-22 16:32:28
  * @FilePath: \nuxt-free-new\app\server\common.ts
  * @Description: 
  */
@@ -144,34 +144,3 @@ export function processDetail(id: any) {
   });
 }
 
-
-// 获取聊天记录
-export function chatPullMessageLongPoll(visitor_id: string, last_id: number) {
-  return request(`/api/chat/pull?visitor_id=${visitor_id}&last_id=${last_id}`, {
-    method: 'get',
-  });
-}
-
-// 发送聊天消息
-export function chatSendMessage(data: {
-  visitor_id: string;
-  sender: string;
-  content: string;
-}) {
-  return request('/api/chat/send', {
-    method: 'POST',
-    body: data,
-  });
-}
-
-//企业微信
-export function chatSendToWeCom(data: {
-  visitor_id: string;
-  sender: string;
-  content: string;
-}) {
-  return request('/api/chat/send_to_wecom', {
-    method: 'POST',
-    body: data, 
-  });
-}

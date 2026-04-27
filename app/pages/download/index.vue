@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-03-31 09:19:07
+ * @LastEditTime: 2026-04-21 11:05:08
  * @FilePath: \nuxt-free-new\app\pages\download\index.vue
  * @Description: 增加列表分页功能 (每组 15 个) + 搜索过滤
 -->
@@ -51,6 +51,10 @@
       <FooterTwo />
 
     </div>
+    <!-- 聊天服务 -->
+    <div class="chat-service">
+      <ChatService />
+    </div>
   </div>
 </template>
 
@@ -60,6 +64,8 @@ import Navbar from "~/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
 import Pagination from "@/components/normal/Pagination.vue";
 import { Search } from "@element-plus/icons-vue";
+import ChatService from "@/components/ChatService.vue";
+
 import { fileListApi } from "@/server/common";
 import fileIcon from "/images/down/file.png";
 

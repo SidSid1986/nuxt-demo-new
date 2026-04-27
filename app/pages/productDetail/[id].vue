@@ -4,85 +4,27 @@
       <Navbar />
     </div>
 
-    <div class="product-bg"><span>通用机器人</span></div>
-
+    <div class="product-bg"><span>{{ seriesName }}</span></div>
     <div class="product-bread">
-      <div><span class="breadcrumb-item" @click="toIndex">首页></span><span class="breadcrumb-item"
-          @click="toProduct">产品中心></span>{{ productData.typeName }}</div>
-    </div>
-
-    <div v-if="productData.typeName" class="product-detail-container">
-
-      <div class="ad-img-container">
-        <img :src="productData.productImg" alt="">
+      <div>
+        <span class="breadcrumb-item" @click="toIndex">首页></span>
+        <span class="breadcrumb-item" @click="toProduct">产品中心></span>
+        <!-- 最终显示的系列名称 -->
+        {{ seriesName }}
       </div>
-      <!-- 产品详情标题 -->
-      <!-- <div class="img-content">
-        <div class="type-name">{{ productData.typeName }}</div>
-        <div class="robot-name">{{ productData.robotName }}</div>
-        <img :src="productData.productImg" alt="">
-      </div> -->
-
-      <!-- 产品详情tab -->
-      <!-- <div class="detail-tab">
-        <div class="tab-item" v-for="(item, index) in productData.mainParam" :key="index">
-          <img :src="item.icon" alt="">
-          <div class="tab-item-content">
-            <div class="tab-item-text">{{ item.text }}</div>
-            <div class="tab-item-num">{{ item.num }}</div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="detail-title-text">详细参数</div> -->
-
-
-      <!-- <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" /> -->
-
-      <!-- <div class="tab-content-area">
-        <transition name="fade" mode="out-in">
-          <div :key="`${tabActiveIndex}`" class="content-item-container">
-            <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
-              <tbody>
-             
-                <tr v-for="(row, rIdx) in tablesData[tabActiveIndex].rows" :key="rIdx"
-                  :class="rIdx === 0 ? 'header-row' : 'content-row'">
-                  <td width="50%">{{ row[0] }}</td>
-                  <td width="50%">{{ row[1] }}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="img-container">
-              <img v-for="(img, index) in productData.customTables[tabActiveIndex].images" :key="index" :src="img.url"
-                alt="">
-            </div>
-
-          </div>
-        </transition>
-      </div> -->
-
-      <!-- 自定义表格 （无固定表头） -->
-      <!-- <div class="table-content">
-        <el-tabs v-model="activeTab" class="custom-param-tabs">
-          <el-tab-pane v-for="(table, idx) in productData.customTables" :key="idx" :label="table.name"
-            :name="idx.toString()">
-            <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
-              <tbody>
-              
-                <tr v-for="(row, rIdx) in tables" :key="rIdx" :class="rIdx === 0 ? 'header-row' : 'content-row'">
-                  <td width="30%">{{ row[0] }}</td>
-                  <td width="70%">{{ row[1] }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </el-tab-pane>
-        </el-tabs>
-      </div> -->
-
     </div>
 
-    <!-- <div v-else class="loading-container">产品详情补充中</div> -->
+    <div class="product-detail-container">
+      <div v-if="productData.img" class="ad-img-container">
+        <img :src="productData.img" alt="">
+      </div>
+      <div v-if="productData.images" v-for="img in productData.images" :key="img" class="ad-img-container">
+        <img :src="img" alt="">
+      </div>
+      <div v-else class="no-img-container">
+        <span>暂无数据</span>
+      </div>
+    </div>
 
     <div class="footer-two">
       <FooterTwo />
@@ -95,81 +37,76 @@ import { ref, onMounted } from "vue";
 import Navbar from "@/components/normal/Navbar.vue";
 import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
-import { productDetail } from "@/server/common";
-
-import DragTab from "@/components/normal/DragTab.vue";
+import { productList, productCategoryTree } from "@/server/common";
 
 const router = useRouter();
+const categoryId = router.currentRoute.value.params.id;
+const productType = ref('');
 
-const productData = ref({
-  typeName: "",
-  robotName: "",
-  productImg: "",
-  mainParam: [],
-  customTables: []
-});
 
-const activeTab = ref("0");
-const tabActiveIndex = ref(0);
-const tabList = ref([]);
-const tablesData = ref([]);
-const toIndex = () => {
-  router.push('/product');
-};
+const seriesName = ref("加载中...");
 
-const tabClick = (index, item) => {
-  tabActiveIndex.value = index;
-  activeTab.value = index.toString();
-};
+// 产品数据
+const productData = ref({});
 
+// 跳转
+const toIndex = () => router.push('/');
 const toProduct = () => {
-  router.push('/product');
+
+  if (productType.value === 'sport') {
+    router.push('/sportProduct')
+  }
+  else {
+    router.push('/product')
+  }
 };
 
-const getProductDetail = async () => {
-  console.log(11111);
-  const res = await productDetail(
-    router.currentRoute.value.params.type,
-    router.currentRoute.value.params.id
-  );
-  productData.value = formatProductData(res.data);
 
-  console.log(productData.value);
+const findSeriesName = (tree, targetId) => {
+  // 先转字符串统一比较
+  const target = String(targetId);
 
-  tabList.value = productData.value.customTables.map((item, index) => ({
-    id: index,
-    label: item.name,
-  }));
+  function search(items) {
+    for (let item of items) {
+      if (String(item.id) === target) {
+        return item.label;
+      }
+      // 有子节点就递归
+      if (item.children?.length) {
+        const found = search(item.children);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
 
-  console.log(tabList.value);
-  tablesData.value = productData.value.customTables.map((item, index) => ({
-    rows: item.rows,
-  }));
-
-  console.log(tablesData.value);
-
+  return search(tree) || "未知系列";
 };
 
-const formatProductData = (apiData) => {
-  if (!apiData) return {};
+const getProductData = async () => {
+  const res = await productList({
+    category_id: categoryId,
+    page: 1,
+    page_size: 12
+  });
 
-  return {
-    typeName: apiData.robot_type || "未知系列",
-    robotName: apiData.product_name || "",
-    productImg: apiData.main_image_url || "",
-    img: apiData.img,
-    mainParam: [
-      { text: "最大臂展", num: apiData.max_arm_span || "", icon: "/images/productDetail/tab1.png" },
-      { text: "最大负载", num: apiData.max_weight || "", icon: "/images/productDetail/tab2.png" },
-      { text: "轴数", num: apiData.switch_num || "", icon: "/images/productDetail/tab3.png" },
-      { text: "本体重量", num: apiData.weight || "", icon: "/images/productDetail/tab4.png" },
-    ],
-    customTables: apiData.custom_tables || []
-  };
+  //  有产品：直接用产品里的名称
+  if (res.data && res.data.length > 0) {
+    productData.value = res.data[0];
+    seriesName.value = productData.value.robotType;
+    productType.value = productData.value.productType;
+  }
+  //   没有产品：去 tree 里查
+  else {
+    productData.value = {};
+    const treeRes = await productCategoryTree();
+    console.log(treeRes);
+    seriesName.value = findSeriesName(treeRes.data, categoryId);
+  }
 };
 
 onMounted(() => {
-  getProductDetail();
+  getProductData();
 });
 </script>
 

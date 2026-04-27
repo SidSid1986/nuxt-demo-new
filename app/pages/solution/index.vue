@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-05 15:11:36
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-11 14:12:42
+ * @LastEditTime: 2026-04-21 11:04:40
  * @FilePath: \nuxt-free-new\app\pages\solution\index.vue
  * @Description: 
 -->
@@ -41,8 +41,9 @@
 
     <div class="solution-title">工艺应用解决方案</div>
     <div v-if="groupImgData.length > 0" class="solution-img-group">
-      <div @mouseenter="mouseEnterProcess(index)" @mouseleave="mouseLeaveProcess" @click="selectPic(item, index)" v-for="(item, index) in groupImgData" :key="item.id"
-        class="solution-img-item" :class="{ 'active-img': index == imgIndex }">
+      <div @mouseenter="mouseEnterProcess(index)" @mouseleave="mouseLeaveProcess" @click="selectPic(item, index)"
+        v-for="(item, index) in groupImgData" :key="item.id" class="solution-img-item"
+        :class="{ 'active-img': index == imgIndex }">
         <div class="solution-img">
           <img :src="index == imgIndex ? item.cover1 : item.cover2" alt="" />
           <span class="img-text">
@@ -58,6 +59,10 @@
     <div class="footer-two">
       <FooterTwo />
     </div>
+    <!-- 聊天服务 -->
+    <div class="chat-service">
+      <ChatService />
+    </div>
   </div>
 </template>
 
@@ -68,6 +73,7 @@ import { useRouter } from "vue-router";
 import FooterTwo from "@/components/FooterTwo.vue";
 import { industriesList, solutionList, processList } from "@/server/common";
 import Pagination from "@/components/normal/Pagination.vue";
+import ChatService from "@/components/ChatService.vue";
 
 const router = useRouter();
 

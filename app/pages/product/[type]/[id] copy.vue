@@ -12,19 +12,15 @@
     </div>
 
     <div v-if="productData.typeName" class="product-detail-container">
-
-      <div class="ad-img-container">
-        <img :src="productData.productImg" alt="">
-      </div>
       <!-- 产品详情标题 -->
-      <!-- <div class="img-content">
+      <div class="img-content">
         <div class="type-name">{{ productData.typeName }}</div>
         <div class="robot-name">{{ productData.robotName }}</div>
         <img :src="productData.productImg" alt="">
-      </div> -->
+      </div>
 
       <!-- 产品详情tab -->
-      <!-- <div class="detail-tab">
+      <div class="detail-tab">
         <div class="tab-item" v-for="(item, index) in productData.mainParam" :key="index">
           <img :src="item.icon" alt="">
           <div class="tab-item-content">
@@ -32,19 +28,19 @@
             <div class="tab-item-num">{{ item.num }}</div>
           </div>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <div class="detail-title-text">详细参数</div> -->
+      <div class="detail-title-text">详细参数</div>
 
 
-      <!-- <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" /> -->
+      <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
 
-      <!-- <div class="tab-content-area">
+      <div class="tab-content-area">
         <transition name="fade" mode="out-in">
           <div :key="`${tabActiveIndex}`" class="content-item-container">
             <table class="detail-table" cellpadding="12" cellspacing="0" border="1">
               <tbody>
-             
+                <!-- 第一行自动作为灰色表头行，其余为白色内容行 -->
                 <tr v-for="(row, rIdx) in tablesData[tabActiveIndex].rows" :key="rIdx"
                   :class="rIdx === 0 ? 'header-row' : 'content-row'">
                   <td width="50%">{{ row[0] }}</td>
@@ -60,7 +56,7 @@
 
           </div>
         </transition>
-      </div> -->
+      </div>
 
       <!-- 自定义表格 （无固定表头） -->
       <!-- <div class="table-content">
@@ -82,7 +78,7 @@
 
     </div>
 
-    <!-- <div v-else class="loading-container">产品详情补充中</div> -->
+    <div v-else class="loading-container">产品详情补充中</div>
 
     <div class="footer-two">
       <FooterTwo />
@@ -157,7 +153,6 @@ const formatProductData = (apiData) => {
     typeName: apiData.robot_type || "未知系列",
     robotName: apiData.product_name || "",
     productImg: apiData.main_image_url || "",
-    img: apiData.img,
     mainParam: [
       { text: "最大臂展", num: apiData.max_arm_span || "", icon: "/images/productDetail/tab1.png" },
       { text: "最大负载", num: apiData.max_weight || "", icon: "/images/productDetail/tab2.png" },
@@ -217,26 +212,12 @@ onMounted(() => {
 
   .product-detail-container {
     min-height: 60vh;
-    width: 80%;
+    width: 60%;
     margin-top: 3vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-
-    .ad-img-container {
-      // border: 1px solid red;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      img {
-        width: 100%;
-        height: 100vh;
-      }
-    }
 
     .img-content {
       height: 33vh;

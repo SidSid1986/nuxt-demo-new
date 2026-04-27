@@ -1,11 +1,3 @@
-<!--
- * @Author: Sid Li
- * @Date: 2026-03-05 15:11:36
- * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-16 08:41:31
- * @FilePath: \nuxt-free-new\app\pages\product\index.vue
- * @Description: 增加 Tab 横向拖拽滚动功能 + 列表分页功能
--->
 <template>
   <div class="index-container">
     <div class="nav-container">
@@ -13,42 +5,29 @@
     </div>
 
     <div class="product-container">
-      <div class="product-bg"><span>通用机器人</span></div>
+      <div class="product-bg">
+        <span>机器人</span>
+      </div>
 
       <div class="product-list-container">
+        <!-- 顶部 Tab：通用机器人 / 专用机器人 / 协作机器人 -->
+        <DragTab :tabList="parentTabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
 
-        <!--  Tab   -->
-        <DragTab :tabList="tabList" :activeIndex="tabActiveIndex" @tabChange="tabClick" />
-
-        <!--  内容区域  -->
+        <!-- 内容区域：显示当前父分类下的【所有系列】 -->
         <div class="tab-content-area">
-          <transition name="fade" mode="out-in">
-            <!-- key 绑定当前页码， 有过渡效果  -->
-            <div :key="`${tabActiveIndex}-${currentPage}`" class="content-item-container">
-
-              <!-- 遍历当前页的数据 currentPageData  -->
-              <div @click="handleClick(item)" v-for="(item, index) in currentPageData" :key="item.id"
-                class="product-item">
-                <div class="product-item-info">
-                  <div class="product-item-type">{{ item.robotType }}</div>
-                  <div class="product-item-name">{{ item.productName }}</div>
-                  <div class="more">了解更多</div>
-                </div>
-                <div class="product-item-img">
-                  <img :src="item.mainImageUrl" alt="">
-                </div>
-              </div>
-
-              <!-- 空状态提示 -->
-              <div v-if="currentPageData.length === 0" class="empty-state">
-                暂无相关产品
+          <div class="content-item-container">
+            <div v-for="item in currentSeriesList" :key="item.id" class="product-item" @click="goToSeriesDetail(item)">
+              <div class="product-item-info">
+                <div class="product-item-name">{{ item.label }}</div>
+                <div class="product-item-img"><img :src="item.img" alt="" /></div>
+                <div class="more">查看系列</div>
               </div>
             </div>
-          </transition>
 
-          <!--   分页控件 总页数 > 1   -->
-          <Pagination v-if="total > 1" class="pagination-wrapper" :totalPages="totalPages" :currentPage="currentPage"
-            @changePage="changePage" />
+            <div v-if="currentSeriesList.length === 0" class="empty-state">
+              暂无系列
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -56,125 +35,60 @@
     <div class="footer-two">
       <FooterTwo />
     </div>
+
+    <!-- 聊天服务 -->
+    <div class="chat-service">
+      <ChatService />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, reactive, onBeforeUnmount, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import Navbar from "@/components/normal/Navbar.vue";
 import FooterTwo from "@/components/FooterTwo.vue";
-import Pagination from "@/components/normal/Pagination.vue";
-
-import { productCategoryTree, productList } from "@/server/common";
 import DragTab from "@/components/normal/DragTab.vue";
-
+import { productCategoryTree } from "@/server/common";
+import ChatService from "@/components/ChatService.vue";
 import { useRouter } from "vue-router";
+
 const router = useRouter();
 
-
+// 顶部 Tab：二级分类（通用、专用、协作）
+const parentTabList = ref([]);
 const tabActiveIndex = ref(0);
 
-const tabList = ref([
-  // { id: 1, name: "SCARA系列", type: 1 },
-  // { id: 2, name: "MINI系列", type: 2 },
-  // { id: 3, name: "中小负载系列", type: 3 },
-  // { id: 4, name: "大负载系列", type: 4 },
-  // { id: 5, name: "超大负载系列", type: 5 },
-]);
+// 所有机器人数据
+const robotRoot = ref(null);
 
-const tabListFid = ref(-1)
+// 当前选中的二级分类下的【三级分类 = 系列】
+const currentSeriesList = ref([]);
 
-
-//  分页与数据相关变量 
-const currentPage = ref(1);             // 当前页码
-const pageSize = ref(12);
-const total = ref(0);
-const tabSelectedId = ref(-1);              // 每页 12 条
-
-
-
-// 获取当前页展示的数据
-const currentPageData = ref([]);
-
-// 获取当前类型的总页数
-const totalPages = computed(() => {
-  return Math.ceil(total.value / pageSize.value);
-});
-
-
+// 切换 Tab
 const tabClick = (index, item) => {
   tabActiveIndex.value = index;
-  tabSelectedId.value = item.id;
-  getProductList();
-
-  //  切换 Tab 时，重置页码为 1，并重新处理数据
-  currentPage.value = 1;
-  // makeProductList(item.type);
-
-
+  // 显示该二级分类下的所有系列
+  currentSeriesList.value = item.children || [];
 };
 
-
-
-//  分页切换函数  
-const changePage = (pageNum) => {
-  if (pageNum < 1 || pageNum > totalPages.value) return;
-  currentPage.value = pageNum;
-  getProductList();
-  nextTick(() => {
-    setTimeout(() => {
-      const contentArea = document.querySelector('.product-list-container');
-      if (contentArea) {
-        // 使用 scrollIntoView 滚动到该区域顶部
-        contentArea.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    }, 500);
-  });
+// 跳转到系列详情页
+const goToSeriesDetail = (item) => {
+  router.push(`/productDetail/${item.id}`);
 };
 
-const handleClick = (item) => {
-  console.log(item);
-  router.push(`/product/${item.productType}/${item.id}`);
-};
-
-const getTabList = async () => {
+// 获取分类树，只取机器人部分
+const getTree = async () => {
   const res = await productCategoryTree();
-
-  const robotTabs = res.data.filter(item => item.category_type === 'robot');
-  console.log(robotTabs);
-
-  tabList.value = robotTabs[0].children;
-  tabListFid.value = robotTabs[0].id;
-  tabSelectedId.value = robotTabs[0].children[0].id;
-
-  getProductList();
+  const robot = res.data.find((x) => x.category_type === "robot");
+  robotRoot.value = robot;
+  console.log(robot);
+  parentTabList.value = robot.children;
+  currentSeriesList.value = robot.children[0]?.children || [];
 };
-
-const getProductList = async () => {
-  const params = {
-    page: currentPage.value,
-    page_size: pageSize.value,
-    keyword: undefined,
-    model_number: undefined,
-    category_id: tabSelectedId.value,
-    parent_category_id: tabListFid.value
-  };
-  const res = await productList(params);
-  total.value = res.total;
-  currentPageData.value = res.data;
-};
-
 
 onMounted(async () => {
-
-  await getTabList();
-
+  await getTree();
 });
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -199,145 +113,78 @@ onMounted(async () => {
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
+      padding-left: 350px;
       box-sizing: border-box;
 
-
       span {
-        // border: 1px solid red;
         font-size: 40px;
         color: #fff;
         font-weight: bold;
-        font-family: "SourceHanSansCN-Bold";
-        margin-left: 350px;
       }
     }
 
     .product-list-container {
-      margin-top: 2vh;
-      // border: 4px solid red;
+      margin: 2vh 0;
       width: 60%;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
+    }
 
-      .tab-content-area {
-        width: 100%;
+    .tab-content-area {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .content-item-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+
+      .product-item {
+        height: 25vh;
+        background: #f6f6f8;
         display: flex;
-        flex-direction: column;
-
-        justify-content: flex-start;
         align-items: center;
-        font-size: 16px;
-        // border: 2px solid yellow;
-        min-height: 60vh;
-        margin-top: 2vh;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
 
-        .content-item-container {
-          animation: fadeIn 0.3s ease;
-          height: 100%;
+        &:hover {
+          background: #eef1ff;
+        }
+
+        .product-item-name {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 10px;
+          text-align: center;
+        }
+
+        .product-item-img {
+          img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+          }
+
+        }
+
+        .product-item-info {
           width: 100%;
-
-          display: grid;
-
-          //  定义列：3 列，每列自动平分 (1fr)
-          grid-template-columns: repeat(3, 1fr);
-
-
-          gap: 1.3vh;
-
-          align-items: center;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
           justify-content: center;
-          box-sizing: border-box;
+          align-items: center;
+        }
 
-          // 平板：2 列
-          @media (max-width: 1024px) {
-            grid-template-columns: repeat(2, 1fr);
-          }
-
-          // 手机：1 列
-          @media (max-width: 768px) {
-            grid-template-columns: 1fr;
-
-            .product-item {
-              height: 40vh;
-            }
-          }
-
-          .empty-state {
-            grid-column: 1 / -1;
-            width: 100%;
-            text-align: center;
-            padding: 50px 0;
-            color: #999;
-          }
-
-          .product-item {
-            // border: 2px solid green;
-            width: 100%;
-            height: 30vh;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            background-color: #F6F6F8;
-            cursor: pointer;
-
-            &:hover {
-              transform: translateY(-5px);
-              box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-              transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-
-            .product-item-info {
-              display: flex;
-              flex-direction: column;
-              justify-content: flex-end;
-              align-items: center;
-
-              .product-item-name {
-                text-align: center;
-                // border: 1px solid red;
-                font-size: 16px;
-                margin-bottom: 1vh;
-                font-family: "SourceHanSansCN-Bold";
-              }
-
-              .product-item-type {
-                text-align: center;
-                // border: 1px solid red;
-                font-size: 16px;
-                font-family: "SourceHanSansCN-Bold";
-              }
-
-              .more {
-                width: 80px;
-                height: 25px;
-                line-height: 25px;
-                text-align: center;
-                background-color: #16418A;
-                color: #fff;
-                border-radius: 20px;
-                margin-bottom: 1vh;
-                font-size: 12px;
-                font-family: "SourceHanSansCN-Regular";
-              }
-            }
-
-            .product-item-img {
-              width: 200px;
-              height: 18vh;
-              // border: 1px solid red;
-
-              img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain
-              }
-            }
-          }
+        .more {
+          width: 100px;
+          height: 30px;
+          line-height: 30px;
+          background: #16418a;
+          color: #fff;
+          border-radius: 15px;
+          text-align: center;
+          font-size: 14px;
         }
       }
     }
@@ -346,18 +193,6 @@ onMounted(async () => {
   .nav-container,
   .footer-two {
     width: 100%;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 </style>

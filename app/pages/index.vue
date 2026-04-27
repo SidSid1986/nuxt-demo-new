@@ -2,9 +2,13 @@
   <div class="index-container">
     <div class="nav-container">
       <Navbar />
+
     </div>
     <div class="carousel-container">
       <IndexSwiper ref="treatSwiperRef" :swiperData="swiperData" :activeIndex="testIndex" />
+      <div class="logo-container" ref="logoRef">
+        <img src="/images/swiper/logoFly.png" alt="">
+      </div>
     </div>
 
     <div class="main-product">
@@ -63,6 +67,14 @@ import FooterTwo from "@/components/FooterTwo.vue";
 import { homeImage, mainProductList, newsList } from "@/server/common";
 
 import ChatService from "@/components/ChatService.vue";
+
+//   logo  
+const logoRef = ref(null)
+let animationId = null
+let posX = 0    // logo 当前X
+let posY = 0    // logo 当前Y
+let speedX = 1 // X方向速度
+let speedY = 1   // Y方向速度
 
 
 // 轮播数据
@@ -250,7 +262,6 @@ const getHomeImage = async () => {
 };
 
 //获取产品列表 
-
 const getProductList = async () => {
   const res = await mainProductList(1, 6);
   console.log(res);
@@ -269,6 +280,37 @@ const getNewsList = async () => {
 };
 
 
+const startFloatAnimation = () => {
+  const container = document.querySelector(".carousel-container");
+  if (!container || !logoRef.value) return;
+
+  const containerW = container.clientWidth;
+  const containerH = container.clientHeight;
+  const logoW = logoRef.value.offsetWidth;
+  const logoH = logoRef.value.offsetHeight;
+
+  posX = Math.floor(Math.random() * (containerW - logoW));
+  posY = Math.floor(Math.random() * (containerH - logoH));
+
+  const update = () => {
+
+    posX += speedX;
+    posY += speedY;
+
+    // 边界反弹
+    if (posX <= 0 || posX + logoW >= containerW) speedX *= -1;
+    if (posY <= 0 || posY + logoH >= containerH) speedY *= -1;
+
+    // 整数渲染
+    logoRef.value.style.transform = `translate(${posX}px, ${posY}px)`;
+    animationId = requestAnimationFrame(update);
+  };
+
+  cancelAnimationFrame(animationId);
+  update();
+};
+
+
 
 onMounted(async () => {
   await getHomeImage();
@@ -281,6 +323,11 @@ onMounted(async () => {
     passive: true,
   });
   handleScroll();
+
+
+
+  setTimeout(startFloatAnimation, 300)
+  window.addEventListener('resize', startFloatAnimation)
 });
 
 onActivated(() => {
@@ -299,6 +346,9 @@ onUnmounted(() => {
     window.removeEventListener("scroll", scrollHandler, { capture: true });
     scrollHandler = null;
   }
+
+  cancelAnimationFrame(animationId)
+  window.removeEventListener('resize', startFloatAnimation)
 });
 </script>
 
@@ -321,6 +371,35 @@ onUnmounted(() => {
     width: 100%;
     // border: 1px solid red;
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+
+    .logo-container {
+      // border: 3px solid red;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      height: 25vh;
+      box-sizing: border-box;
+
+      transform: translate(0px, 0px);
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-font-smoothing: antialiased;
+
+      // 3D 
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
+      -moz-transform: translate3d(0, 0, 0);
+
+      img {
+        width: 100%;
+        height: 100%;
+        transform: translateZ(0);
+      }
+    }
+
   }
 
   .main-product {
@@ -416,12 +495,5 @@ onUnmounted(() => {
   line-height: 1;
   transform: translateY(-2px);
   font-size: 30px;
-}
-
-.chat-service {
-  position: fixed;
-  right: 20px;
-  bottom: 200px;
-  z-index: 9999;
 }
 </style>

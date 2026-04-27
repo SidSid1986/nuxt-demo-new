@@ -2,7 +2,7 @@
  * @Author: Sid Li
  * @Date: 2026-03-03 14:37:26
  * @LastEditors: Sid Li
- * @LastEditTime: 2026-04-15 16:07:33
+ * @LastEditTime: 2026-04-17 16:32:41
  * @FilePath: \nuxt-free-new\app\pages\news\[id].vue
  * @Description: 
 -->
@@ -20,7 +20,7 @@
         <div class="detail-content-text-date"><span>发布时间:{{ demoContent.
           publish_date }}</span></div>
 
-        <div  class="detail-content-text-content rich-text-content" v-html="demoContent.content"></div>
+        <div class="detail-content-text-content rich-text-content" v-html="demoContent.content"></div>
 
 
       </div>
@@ -195,7 +195,7 @@ onMounted(() => {
         padding: 0 40px;
         box-sizing: border-box;
         // border: 1px solid red;
-        width:100%;
+        width: 100%;
       }
     }
   }
@@ -207,5 +207,17 @@ onMounted(() => {
   .footer-two {
     width: 100%;
   }
+}
+</style>
+
+<style lang="scss">
+.rich-text-content video {
+  width: 600px !important;
+  height: 400px !important;
+}
+
+.rich-text-content div:first-of-type {
+  // border: 2px solid red;
+  text-align: center;
 }
 </style>
